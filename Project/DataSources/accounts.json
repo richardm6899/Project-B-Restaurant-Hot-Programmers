@@ -1,14 +1,39 @@
-﻿[
-	{
-		"id": 1,
-		"emailAddress": "n@b.c",
-		"password": "xyz",
-		"fullName": "Nikola Tesla"
-	},
-	{
-		"id": 2,
-		"emailAddress": "t@b.c",
-		"password": "xyz",
-		"fullName": "Thomas Edison"
-	}
+[
+  {
+    "clientId": 1,
+    "emailAddress": "n@b.com",
+    "password": "xyz",
+    "fullName": "Nikola Tesla",
+    "phoneNumber": "36849255",
+    "allergies": [
+      "penut",
+      "apple"
+    ]
+  },
+  {
+    "clientId": 2,
+    "emailAddress": "t@b.nl",
+    "password": "xyz",
+    "fullName": "Thomas Edison",
+    "phoneNumber": "47830247",
+    "allergies": []
+  },
+  {
+    "clientId": 3,
+    "emailAddress": null,
+    "password": "123",
+    "fullName": "John Smith",
+    "phoneNumber": "42074284",
+    "allergies": [
+      "fish"
+    ]
+  },
+  {
+    "clientId": 4,
+    "emailAddress": "brederode@gmail.com",
+    "password": "rtyuRTYU456",
+    "fullName": "Floor Breoderode",
+    "phoneNumber": "19407399",
+    "allergies": []
+  }
 ]
