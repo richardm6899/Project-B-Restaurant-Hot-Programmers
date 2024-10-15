@@ -1,14 +1,26 @@
 ﻿[
 	{
-		"id": 1,
-		"emailAddress": "n@b.c",
+		"clientId": 1,
+		"emailAddress": "n@b.com",
 		"password": "xyz",
-		"fullName": "Nikola Tesla"
+		"fullName": "Nikola Tesla",
+		"phoneNumber":"36849255",
+		"allergies": ["penut", "apple"]
 	},
 	{
-		"id": 2,
-		"emailAddress": "t@b.c",
+		"clientId": 2,
+		"emailAddress": "t@b.nl",
 		"password": "xyz",
-		"fullName": "Thomas Edison"
+		"fullName": "Thomas Edison",
+		"phoneNumber": "47830247",
+		"allergies": []
+	},
+	{
+		"clientId": 3,
+		"emailAdress": "i@d.hr",
+		"password": "123",
+		"fullName": "John Smith",
+		"phoneNumber": "42074284",
+		"allergies": ["fish"]
 	}
 ]
