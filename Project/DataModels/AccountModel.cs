@@ -3,7 +3,7 @@
 
 public class AccountModel
 {
-    [JsonPropertyName("id")]
+    [JsonPropertyName("clientId")]
     public int Id { get; set; }
 
     [JsonPropertyName("emailAddress")]
@@ -15,16 +15,21 @@ public class AccountModel
     [JsonPropertyName("fullName")]
     public string FullName { get; set; }
 
-    public AccountModel(int id, string emailAddress, string password, string fullName)
+    [JsonPropertyName("phoneNumber")]
+    public string PhoneNumber { get; set; }
+
+    [JsonPropertyName("allergies")]
+    //  list will be made even if no allergies are given.
+    public List<string> Allergies { get; set; } = new List<string>();
+
+    public AccountModel(int id, string emailAddress, string password, string fullName, string phoneNumber, List<string> allergies)
     {
-        Id = id;
-        EmailAddress = emailAddress;
-        Password = password;
-        FullName = fullName;
+        this.Id = id;
+        this.EmailAddress = emailAddress;
+        this.Password = password;
+        this.FullName = fullName;
+        this.PhoneNumber = phoneNumber;
+        this.Allergies = allergies ?? new List<string>();
     }
 
 }
-
-
-
-
