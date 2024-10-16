@@ -30,10 +30,20 @@
   },
   {
     "clientId": 4,
-    "emailAddress": "brederode@gmail.com",
-    "password": "rtyuRTYU456",
-    "fullName": "Floor Breoderode",
-    "phoneNumber": "19407399",
+    "emailAddress": "gyfege@feb.com",
+    "password": "RTYUrtyu5",
+    "fullName": "Flor Brefe",
+    "phoneNumber": "64738573",
+    "allergies": [
+      "fish"
+    ]
+  },
+  {
+    "clientId": 5,
+    "emailAddress": "lalala@lolo.com",
+    "password": "RTYuirtyui567",
+    "fullName": "Blalal Lololo",
+    "phoneNumber": "12345678",
     "allergies": []
   }
 ]
