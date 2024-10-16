@@ -1,0 +1,30 @@
+[
+    {
+        "id": 1,
+        "dishName": "Steak Tartare",
+        "price": 15,
+        "description": "Steak tartare is made from finely chopped raw beef, mixed with seasonings like mustard, capers, shallots, and topped with a raw egg yolk.",
+        "type": "Beef",
+        "allergies": "Egg"
+    },
+
+    {
+        "id": 2,
+        "dishName": "Spare Ribs",
+        "price": 20,
+        "description": "",
+        "type": "Beef",
+        "allergies": "None"
+
+    },
+
+    {
+        "id": 3,
+        "dishName": "Baked Salmon",
+        "price": 25,
+        "description": "",
+        "type": "Fish",
+        "allergies":"Fish"
+    }
+
+]
