@@ -1,0 +1,172 @@
+[
+  {
+    "id": 1,
+    "chairs": 2,
+    "minCapacity": 1,
+    "maxCapacity": 2,
+    "reservations": [
+      {
+        "id": 1,
+        "tableID": 1,
+        "name": "oli",
+        "clientID": 1,
+        "howMany": 1,
+        "date": "2024-04-04T00:00:00"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "chairs": 2,
+    "minCapacity": 1,
+    "maxCapacity": 2,
+    "reservations": []
+  },
+  {
+    "id": 3,
+    "chairs": 2,
+    "minCapacity": 1,
+    "maxCapacity": 2,
+    "reservations": []
+  },
+  {
+    "id": 4,
+    "chairs": 2,
+    "minCapacity": 1,
+    "maxCapacity": 2,
+    "reservations": []
+  },
+  {
+    "id": 5,
+    "chairs": 2,
+    "minCapacity": 1,
+    "maxCapacity": 2,
+    "reservations": []
+  },
+  {
+    "id": 6,
+    "chairs": 2,
+    "minCapacity": 1,
+    "maxCapacity": 2,
+    "reservations": []
+  },
+  {
+    "id": 7,
+    "chairs": 2,
+    "minCapacity": 1,
+    "maxCapacity": 2,
+    "reservations": []
+  },
+  {
+    "id": 8,
+    "chairs": 2,
+    "minCapacity": 1,
+    "maxCapacity": 2,
+    "reservations": []
+  },
+  {
+    "id": 9,
+    "chairs": 4,
+    "minCapacity": 3,
+    "maxCapacity": 4,
+    "reservations": []
+  },
+  {
+    "id": 10,
+    "chairs": 4,
+    "minCapacity": 3,
+    "maxCapacity": 4,
+    "reservations": []
+  },
+  {
+    "id": 11,
+    "chairs": 4,
+    "minCapacity": 3,
+    "maxCapacity": 4,
+    "reservations": []
+  },
+  {
+    "id": 12,
+    "chairs": 4,
+    "minCapacity": 3,
+    "maxCapacity": 4,
+    "reservations": []
+  },
+  {
+    "id": 13,
+    "chairs": 4,
+    "minCapacity": 3,
+    "maxCapacity": 4,
+    "reservations": []
+  },
+  {
+    "id": 14,
+    "chairs": 6,
+    "minCapacity": 4,
+    "maxCapacity": 5,
+    "reservations": []
+  },
+  {
+    "id": 15,
+    "chairs": 6,
+    "minCapacity": 4,
+    "maxCapacity": 5,
+    "reservations": []
+  },
+  {
+    "id": 16,
+    "chairs": 1,
+    "minCapacity": 1,
+    "maxCapacity": 1,
+    "reservations": []
+  },
+  {
+    "id": 17,
+    "chairs": 1,
+    "minCapacity": 1,
+    "maxCapacity": 1,
+    "reservations": []
+  },
+  {
+    "id": 18,
+    "chairs": 1,
+    "minCapacity": 1,
+    "maxCapacity": 1,
+    "reservations": []
+  },
+  {
+    "id": 19,
+    "chairs": 1,
+    "minCapacity": 1,
+    "maxCapacity": 1,
+    "reservations": []
+  },
+  {
+    "id": 20,
+    "chairs": 1,
+    "minCapacity": 1,
+    "maxCapacity": 1,
+    "reservations": []
+  },
+  {
+    "id": 21,
+    "chairs": 1,
+    "minCapacity": 1,
+    "maxCapacity": 1,
+    "reservations": []
+  },
+  {
+    "id": 22,
+    "chairs": 1,
+    "minCapacity": 1,
+    "maxCapacity": 1,
+    "reservations": []
+  },
+  {
+    "id": 23,
+    "chairs": 1,
+    "minCapacity": 1,
+    "maxCapacity": 1,
+    "reservations": []
+  }
+]

@@ -1,2 +1,3 @@
-﻿Console.WriteLine("Welcome to this amazing program");
-Menu.Start();
+﻿// Console.WriteLine("Welcome to this amazing program");
+// Menu.Start();
+Reservation.MakeReservation();
