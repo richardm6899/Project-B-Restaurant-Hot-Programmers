@@ -6,8 +6,19 @@ static class Menu
     //You could edit this to show different menus depending on the user's role
     static public void Start()
     {
+        System.Console.WriteLine("Welome to:");
+        // asscii art banner
+        System.Console.WriteLine(@"
+ _    _   _____   _______      _____   ______       __      _______ 
+| |  | | |  _  | |__   __|    |  ___| |  ____|     /  \    |__   __|
+| |__| | | | | |    | |       | |___  | |____     / /\ \      | |   
+|  __  | | | | |    | |       |___  | |  ____|   / ____ \     | |   
+| |  | | | |_| |    | |        ___| | | |____   / /    \ \    | |   
+|_|  |_| |_____|    |_|       |_____| |______| /_/      \_\   |_|  ");
         Console.WriteLine("Enter 1 to login");
-        Console.WriteLine("Enter 2 to do something else in the future");
+        Console.WriteLine("Enter 2 to do make an account");
+        Console.WriteLine("Enter 3 to look at the menu");
+        Console.WriteLine("Enter 4 to look at info");
         
         string input = Console.ReadLine();
         if (input == "1")
@@ -16,7 +27,17 @@ static class Menu
         }
         else if (input == "2")
         {
+            UserMakeAccount.Start();
+
             Console.WriteLine("This feature is not yet implemented");
+        }
+        else if (input == "3")
+        {
+            FoodMenuDisplay.Start();
+        }
+        else if (input == "4")
+        {
+            RestaurantInfo.Start();
         }
         else
         {
