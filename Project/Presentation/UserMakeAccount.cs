@@ -3,7 +3,7 @@ static class UserMakeAccount
 
     public static void Start()
     {
-        
+
         System.Console.WriteLine("Welcome to the make an account page.");
         System.Console.WriteLine("Are you sure you want to make an account? Y/N");
         string user_answer = System.Console.ReadLine();
@@ -11,7 +11,7 @@ static class UserMakeAccount
         {
             Menu.Start();
         }
-        else if(user_answer.ToLower() != "y" && user_answer.ToLower() != "yes")
+        else if (user_answer.ToLower() != "y" && user_answer.ToLower() != "yes")
         {
             System.Console.WriteLine("Invalid input");
             Start();
@@ -112,13 +112,51 @@ static class UserMakeAccount
 
         // allergies
         List<string> allergies = [];
+        System.Console.WriteLine("Do you have/ do you want to fill in you allergies. Y/N ");
+        string user_answer_allergies = Console.ReadLine();
 
+        while (user_answer_allergies.ToLower() != "n" && user_answer_allergies.ToLower() != "no" && user_answer_allergies.ToLower() != "y" && user_answer_allergies.ToLower() != "yes")
+        {
+            System.Console.WriteLine("Invalid input.");
+            System.Console.WriteLine("Do you have/ do you want to fill in you allergies. Y/N ");
+            user_answer_allergies = Console.ReadLine();
+
+        };
+
+        if (user_answer_allergies.ToLower() == "y" || user_answer_allergies.ToLower() == "yes")
+        {
+            System.Console.WriteLine(@"Here are a list of our allergies:
+            1. Fish
+            2. Nuts
+            3. Shellfish
+            If you see any of your allergies please enter the numbers, sperate numbers by comma/space: ");
+            string user_allergies = Console.ReadLine();
+            foreach (char num in user_allergies)
+            {
+                // ignore the whitespace.
+                if (char.IsWhiteSpace(num)) continue;
+
+                if (num == '1')
+                {
+                    allergies.Add("fish");
+                }
+                if (num == '2')
+                {
+                    allergies.Add("nuts");
+                }
+                if (num == '3')
+                {
+                    allergies.Add("shellfish");
+                }
+            }
+
+        }
 
 
         // make full name
         string fullName = $"{FirstName} {LastName}";
         // make an account with all given info
-        AccountModel account = AccountsLogic.CreateAccount(fullName, email, password, phoneNumber, allergies);
-        
+        System.Console.WriteLine(AccountsLogic.CreateAccount(fullName, email, password, phoneNumber, allergies));
+
     }
 }

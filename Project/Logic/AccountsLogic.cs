@@ -67,12 +67,18 @@ public class AccountsLogic
         return false;
     }
 
-    public static AccountModel CreateAccount(string fullName, string email, string password, string phoneNumber, List<string> allergies)
+    public static string CreateAccount(string fullName, string email, string password, string phoneNumber, List<string> allergies)
     {
         int newID = AccountsAccess.LoadAll().Count + 1;
         AccountModel account = new(newID, email, password, fullName, phoneNumber, allergies);
-        
-        return account;
+        AccountsLogic ac = new AccountsLogic();
+        ac.UpdateList(account);
+        if (ac.GetById(newID) == null)
+        {
+            return "Something went wrong. :(";
+        }
+
+        else return "Account made";
     }
 
     public static bool CheckCreateEmail(string email)
@@ -100,9 +106,9 @@ public class AccountsLogic
         {
             return "Password must contain an Uppercase Letter.";
         }
-        if(!password.Any(char.IsSymbol) && !password.Any(char.IsNumber))
+        if (!password.Any(char.IsSymbol) && !password.Any(char.IsNumber))
         {
-            return"Passwrord must contain a Number or Symbol";
+            return "Passwrord must contain a Number or Symbol";
         }
         else return "Password has been set";
 
