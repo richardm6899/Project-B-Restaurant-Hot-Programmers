@@ -1,0 +1,74 @@
+[
+    {
+        "id": 1,
+        "dishName": "Steak Tartare",
+        "price": 15,
+        "description": "Steak tartare is made from finely chopped raw beef, mixed with seasonings like mustard, capers, shallots, and topped with a raw egg yolk.",
+        "type": "Beef",
+        "allergies": ["egg"]
+    },
+
+    {
+        "id": 2,
+        "dishName": "Spare Ribs",
+        "price": 20,
+        "description": "",
+        "type": "beef",
+        "allergies": ["none"]
+
+    },
+
+    {
+        "id": 3,
+        "dishName": "Baked Salmon",
+        "price": 25,
+        "description": "",
+        "type": "fish",
+        "allergies":["fish"]
+    },
+
+    {
+        "id": 4,
+        "dishName": "Hot Fries",
+        "price": 6,
+        "description": "",
+        "type": "side",
+        "allergies":["gluten"]
+    },
+    
+    {
+        "id": 5,
+        "dishName": "Hot Cheesy Cornbread",
+        "price": 25,
+        "description": "",
+        "type": "side",
+        "allergies":["gluten", "lactose"]
+    },
+    
+    {
+        "id": 6,
+        "dishName": "Grilled Steak",
+        "price": 25,
+        "description": "",
+        "type": "beef",
+        "allergies":["fish"]
+    },
+    
+    {
+        "id": 7,
+        "dishName": "Rib Eye 1kg",
+        "price": 60,
+        "description": "",
+        "type": "beef",
+        "allergies":["none"]
+    },
+    
+    {
+        "id": 8,
+        "dishName": "Hot No-Beef-Beef",
+        "price": 25,
+        "description": "",
+        "type": "vegan",
+        "allergies": ["none"]
+    }
+]

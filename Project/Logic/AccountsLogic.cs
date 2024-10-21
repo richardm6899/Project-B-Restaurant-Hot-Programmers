@@ -71,12 +71,18 @@ public class AccountsLogic
         return false;
     }
 
-    public static AccountModel CreateAccount(string fullName, string email, string password, string phoneNumber, List<string> allergies)
+    public static string CreateAccount(string fullName, string email, string password, string phoneNumber, List<string> allergies)
     {
         int newID = AccountsAccess.LoadAll().Count + 1;
         AccountModel account = new(newID, email, password, fullName, phoneNumber, allergies);
+        AccountsLogic ac = new AccountsLogic();
+        ac.UpdateList(account);
+        if (ac.GetById(newID) == null)
+        {
+            return "Something went wrong. :(";
+        }
 
-        return account;
+        else return "Account made";
     }
 
     public static bool CheckCreateEmail(string email)
@@ -114,7 +120,3 @@ public class AccountsLogic
 
     public static string CapitalizeFirstLetter(string toCapitalize) => char.ToUpper(toCapitalize[0]) + toCapitalize.Substring(1);
 }
-
-
-
-
