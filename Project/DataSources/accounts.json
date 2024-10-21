@@ -45,5 +45,13 @@
     "fullName": "Blalal Lololo",
     "phoneNumber": "12345678",
     "allergies": []
+  },
+  {
+    "clientId": 6,
+    "emailAddress": "brederodef@gmail.com",
+    "password": "ABCabc123",
+    "fullName": "Floor Brederode",
+    "phoneNumber": "19407399",
+    "allergies": []
   }
 ]

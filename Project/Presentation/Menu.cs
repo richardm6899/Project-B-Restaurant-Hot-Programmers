@@ -28,16 +28,17 @@ static class Menu
         else if (input == "2")
         {
             UserMakeAccount.Start();
-
-            Console.WriteLine("This feature is not yet implemented");
+            Start();
         }
         else if (input == "3")
         {
             FoodMenuDisplay.Start();
+            Start();
         }
         else if (input == "4")
         {
             RestaurantInfo.Start();
+            Start();
         }
         else
         {

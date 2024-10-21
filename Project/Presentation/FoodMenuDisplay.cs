@@ -27,9 +27,13 @@ public class FoodMenuDisplay
 
         // Display the menu
         DisplayMenuItems(menuItems);
+
+        System.Console.WriteLine("Press enter to return to the menu.");
+        Console.ReadLine();
+        return;
     }
 
-        private static void DisplayMenuItems(List<FoodMenuModel> menuItems)
+    private static void DisplayMenuItems(List<FoodMenuModel> menuItems)
     {
         if (menuItems.Any())
         {
