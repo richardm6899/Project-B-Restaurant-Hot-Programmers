@@ -62,7 +62,16 @@
     "chairs": 2,
     "minCapacity": 1,
     "maxCapacity": 2,
-    "reservations": []
+    "reservations": [
+      {
+        "id": 4,
+        "tableID": 8,
+        "name": "TEST",
+        "clientID": 2,
+        "howMany": 2,
+        "date": "2024-11-13T00:00:00"
+      }
+    ]
   },
   {
     "id": 9,
@@ -83,7 +92,16 @@
     "chairs": 4,
     "minCapacity": 3,
     "maxCapacity": 4,
-    "reservations": []
+    "reservations": [
+      {
+        "id": 2,
+        "tableID": 11,
+        "name": "TEST",
+        "clientID": 2,
+        "howMany": 4,
+        "date": "2024-04-04T00:00:00"
+      }
+    ]
   },
   {
     "id": 12,
@@ -102,15 +120,15 @@
   {
     "id": 14,
     "chairs": 6,
-    "minCapacity": 4,
-    "maxCapacity": 5,
+    "minCapacity": 5,
+    "maxCapacity": 6,
     "reservations": []
   },
   {
     "id": 15,
     "chairs": 6,
-    "minCapacity": 4,
-    "maxCapacity": 5,
+    "minCapacity": 5,
+    "maxCapacity": 6,
     "reservations": []
   },
   {
