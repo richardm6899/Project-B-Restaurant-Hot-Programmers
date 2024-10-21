@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Text.Json;
 
@@ -15,7 +16,7 @@ public class FoodMenuLogic
     // Method to return all food menu items
     public List<FoodMenuModel> GetAllMenuItems()
     {
-        
+
         return _foodMenu;
     }
 
@@ -24,4 +25,12 @@ public class FoodMenuLogic
     {
         return _foodMenu.FirstOrDefault(item => item.DishName == dishName);
     }
+
+    public List<FoodMenuModel> GetMenuExcludingAllergies(List<string> allergiesToAvoid)
+        {
+            return _foodMenu.Where(item =>
+                item.Allergies == null || !item.Allergies.Any(allergy => allergiesToAvoid.Contains(allergy))
+            ).ToList();
+        }
+
 }

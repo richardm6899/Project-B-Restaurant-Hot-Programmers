@@ -19,9 +19,9 @@ public class FoodMenuModel
     public string Type { get; set;}
 
     [JsonPropertyName("allergies")]
-    public string Allergies { get; set;}
+    public List<string> Allergies { get; set;}
 
-    public FoodMenuModel(int id, string dishName, int price, string description, string type, string allergies)
+    public FoodMenuModel(int id, string dishName, int price, string description, string type, List<string> allergies)
     {
         Id = id;
         DishName = dishName;
