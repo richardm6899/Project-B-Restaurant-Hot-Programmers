@@ -7,7 +7,7 @@ using System.Text.Json;
 //This class is not static so later on we can use inheritance and interfaces
 public class AccountsLogic
 {
-    public List<AccountModel> _accounts;
+    private List<AccountModel> _accounts;
 
     //Static properties are shared across all instances of the class
     //This can be used to get the current logged in account from anywhere in the program
@@ -54,12 +54,10 @@ public class AccountsLogic
         return CurrentAccount;
     }
 
-<<<<<<< HEAD
     public List<AccountModel> GetAccounts()
     {
         return _accounts;
     }
-=======
     // if email already used returns true else false
     public bool CheckEmailInJson(string email)
     {
@@ -77,7 +75,7 @@ public class AccountsLogic
     {
         int newID = AccountsAccess.LoadAll().Count + 1;
         AccountModel account = new(newID, email, password, fullName, phoneNumber, allergies);
-        
+
         return account;
     }
 
@@ -106,16 +104,15 @@ public class AccountsLogic
         {
             return "Password must contain an Uppercase Letter.";
         }
-        if(!password.Any(char.IsSymbol) && !password.Any(char.IsNumber))
+        if (!password.Any(char.IsSymbol) && !password.Any(char.IsNumber))
         {
-            return"Passwrord must contain a Number or Symbol";
+            return "Passwrord must contain a Number or Symbol";
         }
         else return "Password has been set";
 
     }
 
     public static string CapitalizeFirstLetter(string toCapitalize) => char.ToUpper(toCapitalize[0]) + toCapitalize.Substring(1);
->>>>>>> 32f21c33d4cf333149f385d5ac4d8759ad4eda08
 }
 
 
