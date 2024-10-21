@@ -5,7 +5,7 @@ static class UserLogin
 
     public static void Start()
     {
-        Console.WriteLine("Welcome to the login page");
+        Console.WriteLine("Welcome to hot peppers");
         Console.WriteLine("Please enter your email address");
         string email = Console.ReadLine();
         Console.WriteLine("Please enter your password");
@@ -21,7 +21,7 @@ static class UserLogin
         }
         else
         {
-            Console.WriteLine("No account found with that email and password");
+            Console.WriteLine("No account found with that email or password, try again!");
         }
     }
 }

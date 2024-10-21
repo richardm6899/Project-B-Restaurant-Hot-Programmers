@@ -54,6 +54,10 @@ public class AccountsLogic
         return CurrentAccount;
     }
 
+    public List<AccountModel> GetAccounts()
+    {
+        return _accounts;
+    }
     // if email already used returns true else false
     public bool CheckEmailInJson(string email)
     {
@@ -116,7 +120,3 @@ public class AccountsLogic
 
     public static string CapitalizeFirstLetter(string toCapitalize) => char.ToUpper(toCapitalize[0]) + toCapitalize.Substring(1);
 }
-
-
-
-
