@@ -3,14 +3,14 @@ using System.Text.Json.Serialization;
 
 public class RestaurantModel
 {
-    [JsonPropertyName("Tittle")]
+    [JsonPropertyName("tittle")]
     public string tittle { get; set; }
 
     [JsonPropertyName("description")]
     public string description { get; set; }
 
     [JsonPropertyName("openingHours")]
-    public string opening_hours { get; set; }
+    public List<string> opening_hours { get; set; }
 
     [JsonPropertyName("location")]
     public string location { get; set; }
@@ -24,13 +24,14 @@ public class RestaurantModel
     [JsonPropertyName("FAQ")]
     public List<string> faq { get; set; }
 
-    public RestaurantModel(string tittle, string description, string opening_hours, string location, string phone_number, string email_address, List<string> faq)
+    public RestaurantModel(string tittle, string description, List<string> opening_hours, string location, string phone_number, string email_address, List<string> faq)
     {
         this.tittle = tittle;
         this.description = description;
         this.opening_hours = opening_hours;
         this.location = location;
         this.phone_number = phone_number;
+        this.email_address = email_address;
         this.faq = faq ?? new List<string>();
     }
 

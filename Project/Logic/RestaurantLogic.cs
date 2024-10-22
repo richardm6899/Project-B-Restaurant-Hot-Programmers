@@ -6,4 +6,9 @@ public class RestaurantLogic
     {
         _restaurant = RestaurantAccess.LoadAll();
     }
+
+    public List<RestaurantModel> GetRestaurantInfo()
+    {
+        return _restaurant;
+    }
 }
