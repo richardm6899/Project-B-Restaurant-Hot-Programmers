@@ -42,7 +42,7 @@ public class ReservationLogic
 
     }
     //to add reservation to table.reservation list
-    public void AssignTable(int table_id, ReservationModel reservation)
+    private void AssignTable(int table_id, ReservationModel reservation)
     {
         foreach (var table in _tables)
         {
@@ -73,6 +73,7 @@ public class ReservationLogic
         }
         return null;
     }
+
     // date is today will be changed later for time of day
     // check if table is already reserved at the same time
 
@@ -122,6 +123,7 @@ public class ReservationLogic
             if (HowMany >= table.MinCapacity && HowMany <= table.MaxCapacity)
             {
                 AvailableTables.Add(table);
+                
             }
 
 
@@ -170,7 +172,7 @@ public class ReservationLogic
         return null;
     }
     // unassign reservation from table by reservation id
-    public ReservationModel UnassignTable(int reservation_id)
+    private ReservationModel UnassignTable(int reservation_id)
     {
         foreach (var table in _tables)
         {
