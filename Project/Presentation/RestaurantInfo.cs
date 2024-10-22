@@ -37,8 +37,7 @@ public class RestaurantInfo
 
         System.Console.WriteLine("Press enter to return to the menu.");
         Console.ReadLine();
-        Menu.Start();
-        }
+        return;
     }
 
     // name: The Hot Seat

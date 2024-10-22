@@ -1,6 +1,6 @@
 static class Menu
 {
-
+    
     //This shows the menu. You can call back to this method to show the menu again
     //after another presentation method is completed.
     //You could edit this to show different menus depending on the user's role
@@ -28,16 +28,17 @@ static class Menu
         else if (input == "2")
         {
             UserMakeAccount.Start();
-
-            Console.WriteLine("This feature is not yet implemented");
+            Start();
         }
         else if (input == "3")
         {
-            FoodMenuDisplay.Start();
+            FoodMenuDisplay.StartFoodMenu(default);
+            Start();
         }
         else if (input == "4")
         {
             RestaurantInfo.Start();
+            Start();
         }
         else
         {
