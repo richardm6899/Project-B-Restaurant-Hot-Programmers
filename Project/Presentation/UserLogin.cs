@@ -20,7 +20,7 @@ static class UserLogin
             acc = accountsLogic.CheckLogin(email, password);
 
             // check if account exists
-            if(acc == null)
+            if (acc == null)
             {
                 Console.WriteLine("No account found with that email or password, try again!");
                 Menu.Start();
@@ -37,7 +37,7 @@ static class UserLogin
             System.Console.WriteLine("Enter 4 to see the food menu.");
             System.Console.WriteLine("Enter 5 to see the restaurant info.");
             System.Console.WriteLine("Enter 6 to see your accounts data.");
-            System.Console.WriteLine("Enter 6 to log out");
+            System.Console.WriteLine("Enter 7 to log out");
 
             string user_logged_in_answer = System.Console.ReadLine();
             switch (user_logged_in_answer)
@@ -57,7 +57,7 @@ static class UserLogin
                 // see accounts reservation
                 case "3":
                     System.Console.WriteLine("Your reservations: ");
-                    reservationLogic.DisplayReservations(acc.Id);
+                    System.Console.WriteLine(reservationLogic.DisplayReservations(acc.Id));
                     Console.ReadLine();
                     Start();
                     break;
@@ -91,5 +91,5 @@ static class UserLogin
             //Menu.Start();
         }
 
-     }
+    }
 }
