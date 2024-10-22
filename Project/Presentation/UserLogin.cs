@@ -71,9 +71,28 @@ static class UserLogin
                     RestaurantInfo.Start();
                     Start();
                     break;
+                //  show account data
                 case "6":
                     System.Console.WriteLine("Your accounts data: ");
-                    System.Console.WriteLine("Not implemented yet.");
+                    // full name
+                    System.Console.WriteLine("Name: " + acc.FullName);
+                    // email
+                    System.Console.WriteLine("Email: " + acc.EmailAddress);
+                    // phone numb
+                    System.Console.WriteLine("Phone number: " + acc.PhoneNumber);
+                    // pass
+                    System.Console.WriteLine("Password: " + acc.Password);
+                    // allergies
+                    if (acc.Allergies.Count() != 0)
+                    {
+                        System.Console.WriteLine("Allergies: ");
+                        foreach (string allergie in acc.Allergies)
+                        {
+                            System.Console.WriteLine(allergie);
+                        }
+                    }
+                    else System.Console.WriteLine("No allergies given");
+                    Console.ReadLine();
                     Start();
                     break;
                 // log out
