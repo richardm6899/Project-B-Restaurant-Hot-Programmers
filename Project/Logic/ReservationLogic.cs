@@ -141,18 +141,18 @@ public class ReservationLogic
     {
         // if reservation is before the date then return false
         // if reservation is past 3 months return false
-        
+
         if (date < DateTime.Today)
         {
             return false;
         }
         else if (date > DateTime.Now.AddMonths(3))
         {
-            
+
             return false;
         }
         else
-        return true;
+            return true;
     }
     // cancel reservation -------------------------------------------  
     //remove table by id from reservations
@@ -249,5 +249,23 @@ public class ReservationLogic
             }
         }
         return ReturnString;
+    }
+    public List<int> IsReservationInAccount(int clientID, int reservation_id)
+    {
+        List<int> valid_reservations = new();
+        foreach (var client in accountsLogic._accounts)
+        {
+            if (clientID == client.Id)
+            {
+                foreach (var reservationID in client.ReservationIDs)
+                {
+                    if (reservation_id == reservationID)
+                    {
+                        valid_reservations.Add(reservation_id);
+                    }
+                }
+            }
+        }
+        return valid_reservations;
     }
 }
