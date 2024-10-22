@@ -6,6 +6,7 @@ public class ReservationLogic
     public List<ReservationModel> _reservations { get; set; }
     public List<TableModel> _tables { get; set; }
     public List<TableModel> AvailableTables { get; set; } //for available table check
+    private AccountsLogic accountsLogic = new AccountsLogic();
 
     // load tables into properties
     public ReservationLogic()
@@ -35,6 +36,9 @@ public class ReservationLogic
         AssignTable(tableID, reservation);
         _reservations.Add(reservation);
 
+        AccountModel acc = accountsLogic.GetById(clientID);
+        acc.ReservationIDs.Add(reservation.Id);
+        accountsLogic.UpdateList(acc);
 
         ReservationAccess.WriteAllReservations(_reservations);
         TableAccess.WriteAllTables(_tables);

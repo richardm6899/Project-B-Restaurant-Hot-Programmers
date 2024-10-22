@@ -6,7 +6,7 @@ static class Reservation
     static private ReservationLogic reservationlogic = new();
     // displays table restaurant
 
-    public static void MakeReservation()
+    public static void MakeReservation(string name, int clientID)
     {
 
         bool reservation = true;
@@ -126,9 +126,9 @@ static class Reservation
                             string confirmation = Console.ReadLine().ToUpper();
                             if (confirmation == "Y")
                             {
-                                ReservationModel Reservation = reservationlogic.Create_reservation(TableID, "TEST", 02, HowMany, Date);
+                                ReservationModel Reservation = reservationlogic.Create_reservation(TableID, name, clientID, HowMany, Date);
 
-                                System.Console.WriteLine(reservationlogic.DisplayReservation(Reservation.Id)); ;
+                                System.Console.WriteLine(reservationlogic.DisplayReservation(Reservation.Id));
                                 System.Console.WriteLine();
                                 System.Console.WriteLine("reservation created");
                                 System.Console.WriteLine("[enter]");
@@ -168,7 +168,7 @@ static class Reservation
             }
         }
     }
-    public static void CancelReservation()
+    public static void CancelReservation(int clientID)
     {
         bool cancelreservation = true;
         while (cancelreservation)
@@ -178,13 +178,13 @@ static class Reservation
 
             if (choice == "Y")
             {
-                if (reservationlogic.DisplayReservations(2) != "")
+                if (reservationlogic.DisplayReservations(clientID) != "")
                 {
                     bool ReservationIDCheck = true;
                     while (ReservationIDCheck)
                     {
                         System.Console.WriteLine("Which reservation would you like to cancel?\n");
-                        System.Console.WriteLine(reservationlogic.DisplayReservations(2)); ;
+                        System.Console.WriteLine(reservationlogic.DisplayReservations(clientID)); ;
                         System.Console.WriteLine("enter ID: ");
                         string str_id = Console.ReadLine();
                         {

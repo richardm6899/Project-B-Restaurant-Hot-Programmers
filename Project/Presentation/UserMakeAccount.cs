@@ -1,5 +1,6 @@
 static class UserMakeAccount
 {
+    private static AccountsLogic accountsLogic = new AccountsLogic();
 
     public static void Start()
     {
@@ -29,7 +30,6 @@ static class UserMakeAccount
             correct_email = AccountsLogic.CheckCreateEmail(email);
         }
         // check if email is already in json file (if there is already an account with this email)
-        AccountsLogic accountsLogic = new AccountsLogic();
         bool emailAlreadyExists = accountsLogic.CheckEmailInJson(email);
         if (emailAlreadyExists)
         {
@@ -46,7 +46,6 @@ static class UserMakeAccount
             firstNameLower = Console.ReadLine();
         }
         string FirstName = AccountsLogic.CapitalizeFirstLetter(firstNameLower);
-        System.Console.WriteLine(FirstName);
 
         // last name
         System.Console.WriteLine("What is your Last Name: ");
@@ -129,7 +128,7 @@ static class UserMakeAccount
             1. Fish
             2. Nuts
             3. Shellfish
-            If you see any of your allergies please enter the numbers, sperate numbers by comma/space: ");
+            If you see any of your allergies please enter the numbers, separate numbers by comma/space: ");
             string user_allergies = Console.ReadLine();
             foreach (char num in user_allergies)
             {
