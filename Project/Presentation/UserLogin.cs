@@ -4,6 +4,8 @@ static class UserLogin
 
     static private AccountModel acc = null;
 
+    static private ReservationLogic reservationLogic = new ReservationLogic();
+
 
     public static void Start()
     {
@@ -31,9 +33,10 @@ static class UserLogin
             Console.WriteLine("Welcome back " + acc.FullName);
             System.Console.WriteLine("Enter 1 to make a reservation.");
             System.Console.WriteLine("Enter 2 to cancel a reservation.");
-            System.Console.WriteLine("Enter 3 to see your information.");
+            System.Console.WriteLine("Enter 3 to see your reservations.");
             System.Console.WriteLine("Enter 4 to see the food menu.");
             System.Console.WriteLine("Enter 5 to see the restaurant info.");
+            System.Console.WriteLine("Enter 6 to see your accounts data.");
             System.Console.WriteLine("Enter 6 to log out");
 
             string user_logged_in_answer = System.Console.ReadLine();
@@ -42,7 +45,7 @@ static class UserLogin
                 // make reservation
                 case "1":
                     System.Console.WriteLine("Make reservation:");
-                    System.Console.WriteLine("Not implemented yet");
+                    Reservation.MakeReservation(acc.FullName);
                     Start();
                     break;
                 // cancel reservation
@@ -54,7 +57,8 @@ static class UserLogin
                 // see accounts reservation
                 case "3":
                     System.Console.WriteLine("Your reservations: ");
-                    System.Console.WriteLine("Not implemented yet");
+                    reservationLogic.DisplayReservations(acc.Id);
+                    Console.ReadLine();
                     Start();
                     break;
                 //  see the food menu
@@ -67,13 +71,19 @@ static class UserLogin
                     RestaurantInfo.Start();
                     Start();
                     break;
-                // log out
                 case "6":
+                    System.Console.WriteLine("Your accounts data: ");
+                    System.Console.WriteLine("Not implemented yet.");
+                    Start();
+                    break;
+                // log out
+                case "7":
                     acc = null;
                     Menu.Start();
                     break;
                 default:
                     System.Console.WriteLine("Invalid input");
+                    Start();
                     break;
             }
 
@@ -81,5 +91,5 @@ static class UserLogin
             //Menu.Start();
         }
 
-    }
+     }
 }

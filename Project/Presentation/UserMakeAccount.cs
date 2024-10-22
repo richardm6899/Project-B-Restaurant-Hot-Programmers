@@ -46,7 +46,6 @@ static class UserMakeAccount
             firstNameLower = Console.ReadLine();
         }
         string FirstName = AccountsLogic.CapitalizeFirstLetter(firstNameLower);
-        System.Console.WriteLine(FirstName);
 
         // last name
         System.Console.WriteLine("What is your Last Name: ");
@@ -129,7 +128,7 @@ static class UserMakeAccount
             1. Fish
             2. Nuts
             3. Shellfish
-            If you see any of your allergies please enter the numbers, sperate numbers by comma/space: ");
+            If you see any of your allergies please enter the numbers, separate numbers by comma/space: ");
             string user_allergies = Console.ReadLine();
             foreach (char num in user_allergies)
             {
