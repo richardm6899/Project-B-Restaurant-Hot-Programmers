@@ -6,7 +6,7 @@ static class Reservation
     static private ReservationLogic reservationlogic = new();
     // displays table restaurant
 
-    public static void MakeReservation(string name)
+    public static void MakeReservation(string name, int clientID)
     {
 
         bool reservation = true;
@@ -126,9 +126,9 @@ static class Reservation
                             string confirmation = Console.ReadLine().ToUpper();
                             if (confirmation == "Y")
                             {
-                                ReservationModel Reservation = reservationlogic.Create_reservation(TableID, name, 02, HowMany, Date);
+                                ReservationModel Reservation = reservationlogic.Create_reservation(TableID, name, clientID, HowMany, Date);
 
-                                System.Console.WriteLine(reservationlogic.DisplayReservation(Reservation.Id)); ;
+                                System.Console.WriteLine(reservationlogic.DisplayReservation(Reservation.Id));
                                 System.Console.WriteLine();
                                 System.Console.WriteLine("reservation created");
                                 System.Console.WriteLine("[enter]");

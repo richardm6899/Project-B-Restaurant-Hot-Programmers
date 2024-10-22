@@ -74,7 +74,7 @@ public class AccountsLogic
     public static string CreateAccount(string fullName, string email, string password, string phoneNumber, List<string> allergies)
     {
         int newID = AccountsAccess.LoadAll().Count + 1;
-        AccountModel account = new(newID, email, password, fullName, phoneNumber, allergies);
+        AccountModel account = new(newID, email, password, fullName, phoneNumber, allergies, default);
         AccountsLogic ac = new AccountsLogic();
         ac.UpdateList(account);
         if (ac.GetById(newID) == null)

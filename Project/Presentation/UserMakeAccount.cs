@@ -1,5 +1,6 @@
 static class UserMakeAccount
 {
+    private static AccountsLogic accountsLogic = new AccountsLogic();
 
     public static void Start()
     {
@@ -29,7 +30,6 @@ static class UserMakeAccount
             correct_email = AccountsLogic.CheckCreateEmail(email);
         }
         // check if email is already in json file (if there is already an account with this email)
-        AccountsLogic accountsLogic = new AccountsLogic();
         bool emailAlreadyExists = accountsLogic.CheckEmailInJson(email);
         if (emailAlreadyExists)
         {

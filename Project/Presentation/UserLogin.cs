@@ -45,7 +45,7 @@ static class UserLogin
                 // make reservation
                 case "1":
                     System.Console.WriteLine("Make reservation:");
-                    Reservation.MakeReservation(acc.FullName);
+                    Reservation.MakeReservation(acc.FullName, acc.Id);
                     Start();
                     break;
                 // cancel reservation

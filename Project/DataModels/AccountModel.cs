@@ -22,7 +22,13 @@ public class AccountModel
     //  list will be made even if no allergies are given.
     public List<string> Allergies { get; set; } = new List<string>();
 
-    public AccountModel(int id, string emailAddress, string password, string fullName, string phoneNumber, List<string> allergies)
+    [JsonPropertyName("reservationId")]
+    public List<int> ReservationIDs { get; set; }
+
+    // tbh idk why this needs to be here, but it does. it doesnt work without.
+    public AccountModel() { }
+
+    public AccountModel(int id, string emailAddress, string password, string fullName, string phoneNumber, List<string> allergies, List<int> reservationsIDs)
     {
         this.Id = id;
         this.EmailAddress = emailAddress;
@@ -30,6 +36,7 @@ public class AccountModel
         this.FullName = fullName;
         this.PhoneNumber = phoneNumber;
         this.Allergies = allergies ?? new List<string>();
+        this.ReservationIDs = reservationsIDs ?? new List<int>();
     }
 
 }

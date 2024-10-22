@@ -102,11 +102,12 @@ public class TestAccountLogic
     // Compares if two accounts are equal, which are first added in a list through UpdateList().
     public void UpdateList_ExistingAccount_UpdateSuccessful()
     {
+        // int id, string emailAddress, string password, string fullName, string phoneNumber, List<string> allergies, List<int> reservationsIDs)
         // Arrange
-        var existingAccount = new AccountModel(1, "test@example.com", "password", "John Doe", "1234567890", ["Dough"]);
+        var existingAccount = new AccountModel(1, "test@example.com", "password", "John Doe", "1234567890", ["Dough"], [3]);
         _accountsLogic.UpdateList(existingAccount);
 
-        var updatedAccount = new AccountModel(1, "updated@example.com", "newpassword", "John Doe", "0987654321", ["Dough"]);
+        var updatedAccount = new AccountModel(1, "updated@example.com", "newpassword", "John Doe", "0987654321", ["Dough"], [3]);
 
         // Act
         _accountsLogic.UpdateList(updatedAccount);
@@ -121,7 +122,7 @@ public class TestAccountLogic
     public void UpdateList_NewAccount_AddedToAccounts()
     {
         // Arrange
-        var newAccount = new AccountModel(2, "richard@example.com", "richardpassword", "Richard Morris", "0653269420", ["spicy food"]);
+        var newAccount = new AccountModel(2, "richard@example.com", "richardpassword", "Richard Morris", "0653269420", ["spicy food"], []);
 
         // Act
         _accountsLogic.UpdateList(newAccount);
@@ -156,7 +157,7 @@ public class TestAccountLogic
     public void CheckLogin_ValidCredentials_ReturnsAccount()
     {
         // Arrange
-        var account = new AccountModel(2, "richard@example.com", "richardpassword", "Richard Morris", "0653269420", ["spicy food"]);
+        var account = new AccountModel(2, "richard@example.com", "richardpassword", "Richard Morris", "0653269420", ["spicy food"], []);
         _accountsLogic.UpdateList(account);
 
         // Act
