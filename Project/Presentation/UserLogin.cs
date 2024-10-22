@@ -63,7 +63,7 @@ static class UserLogin
                     break;
                 //  see the food menu
                 case "4":
-                    FoodMenuDisplay.Start();
+                    FoodMenuDisplay.StartFoodMenu(acc.Allergies);
                     Start();
                     break;
                 // see restaurant info
