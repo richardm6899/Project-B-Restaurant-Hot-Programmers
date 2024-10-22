@@ -1,0 +1,23 @@
+[
+    {
+        "tittle": "The hottest meals in town",
+        "description": "Hot Seats provides the most delicious barbecue meals that you can get ever get. From Steaks to Ribs, chopped with the finest knifes.",
+        "openingHours": [
+            "Monday: 12:00 - 22:00",
+            "Tuesday: 12:00 - 22:00",
+            "Wednesday: 12:00 - 22:00",
+            "Thursday: 12:00 - 22:00",
+            "Friday: 12:00 - 24:00",
+            "Saturday: 12:00 - 24:00",
+            "Sunday: 12:00 - 22:00"
+        ],
+        "location": "Wijhaven 107, 3011 WN Rotterdam",
+        "phoneNumber": "06123456789",
+        "emailAddress": "Hotseat@gmail.com",
+        "FAQ": [
+            "What is the best meal from the menu?",
+            "Can i bring my kids?",
+            "Is it possible to get discounts?"
+        ]
+    }
+]
