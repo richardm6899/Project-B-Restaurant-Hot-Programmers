@@ -51,7 +51,7 @@ static class UserLogin
                 // cancel reservation
                 case "2":
                     System.Console.WriteLine("Cancel reservation");
-                    System.Console.WriteLine("Not implemented yet");
+                    Reservation.CancelReservation(acc.Id);
                     Start();
                     break;
                 // see accounts reservation
