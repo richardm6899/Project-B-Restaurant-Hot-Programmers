@@ -97,7 +97,7 @@ static class Reservation
 
                 while (tableIDcheck)
                 {
-                    
+
                     System.Console.WriteLine("These are the available tables:");
                     System.Console.WriteLine(reservationlogic.PrintAvailableTables()); ;
 
@@ -127,7 +127,8 @@ static class Reservation
                             if (confirmation == "Y")
                             {
                                 ReservationModel Reservation = reservationlogic.Create_reservation(TableID, name, clientID, HowMany, Date);
-
+                                TableAccess.LoadAllTables();
+                                ReservationAccess.LoadAllReservations();
                                 System.Console.WriteLine(reservationlogic.DisplayReservation(Reservation.Id));
                                 System.Console.WriteLine();
                                 System.Console.WriteLine("reservation created");
@@ -178,6 +179,7 @@ static class Reservation
 
             if (choice == "Y")
             {
+
                 if (reservationlogic.DisplayReservations(clientID) != "")
                 {
                     bool ReservationIDCheck = true;
@@ -190,8 +192,10 @@ static class Reservation
                         {
                             if (int.TryParse(str_id, out int reservationid))
                             {
-                                if (reservationlogic.DisplayReservation(reservationid) != null)
+                                // can only choose id if in reserved by person
+                                if (reservationlogic.DisplayReservation(reservationid) != null && reservationlogic.IsReservationInAccount(clientID, reservationid).Contains(reservationid))
                                 {
+
                                     ReservationIDCheck = false;
                                     bool confirmation = true;
                                     while (confirmation)
@@ -207,7 +211,8 @@ static class Reservation
                                             ReservationModel reservation = reservationlogic.GetReservationById(reservationid);
                                             System.Console.WriteLine(reservationlogic.DisplayReservation(reservation.Id) + " has been canceled.\n");
                                             reservationlogic.RemoveReservationByID(reservationid);
-
+                                            TableAccess.LoadAllTables();
+                                            ReservationAccess.LoadAllReservations();
                                             System.Console.WriteLine("[enter]");
                                             Console.ReadLine();
 
