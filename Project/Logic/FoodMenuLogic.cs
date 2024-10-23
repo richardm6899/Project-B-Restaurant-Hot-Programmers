@@ -25,7 +25,7 @@ public class FoodMenuLogic
     {
         return _foodMenu.FirstOrDefault(item => item.DishName == dishName);
     }
-
+    
     public List<FoodMenuModel> GetMenuExcludingAllergies(List<string> allergiesToAvoid)
         {
             return _foodMenu.Where(item =>

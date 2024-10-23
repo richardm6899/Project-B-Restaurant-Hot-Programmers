@@ -7,11 +7,11 @@ public class FoodMenuDisplay
         bool wrong = false;
         List<FoodMenuModel> menuItems = new List<FoodMenuModel>();
         if (allergies != null)
-        {
-            Console.WriteLine("Do you want to exclude your allergies? (Type 'yes' or 'no')");
-            string excludeChoice = Console.ReadLine().ToLower();
+        {            
             do
             {
+                Console.WriteLine("Do you want to exclude your allergies? (Type 'yes' or 'no')");
+                string excludeChoice = Console.ReadLine().ToLower();    
                 switch (excludeChoice)
                 {
                     case "yes":
@@ -37,11 +37,10 @@ public class FoodMenuDisplay
         }
         else
         {
-            Console.WriteLine("Do you want to exclude certain allergies? (Type 'yes' or 'no')");
-            string excludeChoice = Console.ReadLine().ToLower();
             do
             {
-
+                Console.WriteLine("Do you want to exclude certain allergies? (Type 'yes' or 'no')");
+                string excludeChoice = Console.ReadLine().ToLower();
                 switch (excludeChoice)
                 {
                     case "yes":

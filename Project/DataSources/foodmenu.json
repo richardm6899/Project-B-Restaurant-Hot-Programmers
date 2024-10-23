@@ -28,7 +28,7 @@
         "dishName": "Hot Fries",
         "price": 6,
         "description": "Crispy hot fries served with a choice of dipping sauces.",
-        "type": ["Side", "Snacks"],
+        "type": ["Side"],
         "allergies": ["gluten"]
     },
     {
@@ -36,7 +36,7 @@
         "dishName": "Hot Cheesy Cornbread",
         "price": 25,
         "description": "Moist cornbread mixed with melted cheddar cheese, served hot.",
-        "type": ["Side", "Snacks"],
+        "type": ["Side"],
         "allergies": ["gluten", "lactose"]
     },
     {
@@ -84,7 +84,7 @@
         "dishName": "Grilled Chicken Wings",
         "price": 12,
         "description": "Marinated chicken wings, grilled and basted in a smoky barbecue sauce, served with ranch dip.",
-        "type": ["Poultry", "Snacks"],
+        "type": ["Poultry", "Side"],
         "allergies": ["none"]
     },
     {
@@ -92,7 +92,7 @@
         "dishName": "BBQ Beans",
         "price": 8,
         "description": "Slow-cooked beans in a rich barbecue sauce, seasoned with smoked spices.",
-        "type": ["Side", "Snacks"],
+        "type": ["Vegan", "Side"],
         "allergies": ["none"]
     }
 ]
