@@ -45,6 +45,13 @@ public class FoodMenuDisplay
                 {
                     case "yes":
                         // Get allergies from the user 
+                        allergies = foodMenuLogic.GetAllAllergies();
+                        Console.WriteLine($"Allergies:");
+                        foreach(string allergy in allergies)
+                        {
+                            Console.WriteLine($"-{allergy}");
+                        }
+                        
                         Console.WriteLine("Enter allergies to avoid (comma-separated):");
                         string input = Console.ReadLine();
                         List<string> allergiesToAvoid = input.Split(',').Select(allergy => allergy.Trim()).ToList();
