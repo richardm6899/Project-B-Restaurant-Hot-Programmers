@@ -6,9 +6,11 @@
     "fullName": "Nikola Tesla",
     "phoneNumber": "36849255",
     "allergies": [
-      "penut",
+      "peanut",
       "apple"
-    ]
+    ],
+    "reservationId": null,
+    "type": "client"
   },
   {
     "clientId": 2,
@@ -16,7 +18,9 @@
     "password": "xyz",
     "fullName": "Thomas Edison",
     "phoneNumber": "47830247",
-    "allergies": []
+    "allergies": [],
+    "reservationId": null,
+    "type": "client"
   },
   {
     "clientId": 3,
@@ -26,7 +30,9 @@
     "phoneNumber": "42074284",
     "allergies": [
       "fish"
-    ]
+    ],
+    "reservationId": null,
+    "type": "client"
   },
   {
     "clientId": 4,
@@ -36,7 +42,9 @@
     "phoneNumber": "64738573",
     "allergies": [
       "fish"
-    ]
+    ],
+    "reservationId": null,
+    "type": "client"
   },
   {
     "clientId": 5,
@@ -44,7 +52,9 @@
     "password": "RTYuirtyui567",
     "fullName": "Blalal Lololo",
     "phoneNumber": "12345678",
-    "allergies": []
+    "allergies": [],
+    "reservationId": null,
+    "type": "client"
   },
   {
     "clientId": 6,
@@ -52,6 +62,38 @@
     "password": "ABCabc123",
     "fullName": "Floor Brederode",
     "phoneNumber": "19407399",
-    "allergies": []
+    "allergies": [],
+    "reservationId": null,
+    "type": "client"
+  },
+  {
+    "clientId": 7,
+    "emailAddress": "admin@test.nl",
+    "password": "Test123!",
+    "fullName": "Test Test",
+    "phoneNumber": "19407399",
+    "allergies": [],
+    "reservationId": null,
+    "type": "admin"
+  },
+  {
+    "clientId": 8,
+    "emailAddress": "staff@test.nl",
+    "password": "TestStaff1",
+    "fullName": "Jane Doe",
+    "phoneNumber": "123456789",
+    "allergies": [],
+    "reservationId": [],
+    "type": "staff"
+  },
+  {
+    "clientId": 8,
+    "emailAddress": "finance@test.nl",
+    "password": "TestFinance1",
+    "fullName": "Alex Barnes",
+    "phoneNumber": "123456789",
+    "allergies": [],
+    "reservationId": [],
+    "type": "finance"
   }
 ]

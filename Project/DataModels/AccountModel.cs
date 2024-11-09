@@ -25,10 +25,14 @@ public class AccountModel
     [JsonPropertyName("reservationId")]
     public List<int> ReservationIDs { get; set; }
 
+    [JsonPropertyName("type")]
+
+    public string Type { get; set; }
+
     // tbh idk why this needs to be here, but it does. it doesnt work without.
     public AccountModel() { }
 
-    public AccountModel(int id, string emailAddress, string password, string fullName, string phoneNumber, List<string> allergies, List<int> reservationsIDs)
+    public AccountModel(int id, string emailAddress, string password, string fullName, string phoneNumber, List<string> allergies, List<int> reservationsIDs, string type)
     {
         this.Id = id;
         this.EmailAddress = emailAddress;
@@ -37,6 +41,7 @@ public class AccountModel
         this.PhoneNumber = phoneNumber;
         this.Allergies = allergies ?? new List<string>();
         this.ReservationIDs = reservationsIDs ?? new List<int>();
+        this.Type = type;
     }
 
 }
