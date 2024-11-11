@@ -37,7 +37,8 @@ static class UserLogin
             System.Console.WriteLine("Enter 4 to see the food menu.");
             System.Console.WriteLine("Enter 5 to see the restaurant info.");
             System.Console.WriteLine("Enter 6 to see your accounts data.");
-            System.Console.WriteLine("Enter 7 to log out");
+            System.Console.WriteLine("Enter 7 to modify data.");
+            System.Console.WriteLine("Enter 8 to log out");
 
             string user_logged_in_answer = System.Console.ReadLine();
             switch (user_logged_in_answer)
@@ -80,6 +81,8 @@ static class UserLogin
                     System.Console.WriteLine("Your accounts data: ");
                     // full name
                     System.Console.WriteLine("Name: " + acc.FullName);
+                    // age
+                    System.Console.WriteLine("Age: " + acc.Age);
                     // email
                     System.Console.WriteLine("Email: " + acc.EmailAddress);
                     // phone numb
@@ -101,6 +104,10 @@ static class UserLogin
                     break;
                 // log out
                 case "7":
+                    ModifyData.Start(acc, accountsLogic);
+                    Start();
+                    break;
+                case "8":
                     acc = null;
                     Menu.Start();
                     break;

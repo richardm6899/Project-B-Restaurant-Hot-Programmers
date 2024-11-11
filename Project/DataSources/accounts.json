@@ -1,57 +1,68 @@
 [
   {
     "clientId": 1,
-    "emailAddress": "n@b.com",
+    "emailAddress": "0",
     "password": "xyz",
-    "fullName": "Nikola Tesla",
+    "fullName": "richard",
+    "age": 25,
     "phoneNumber": "36849255",
     "allergies": [
-      "penut",
-      "apple"
-    ]
+      "pear"
+    ],
+    "reservationId": null
   },
   {
     "clientId": 2,
     "emailAddress": "t@b.nl",
     "password": "xyz",
     "fullName": "Thomas Edison",
+    "age": 35,
     "phoneNumber": "47830247",
-    "allergies": []
+    "allergies": [],
+    "reservationId": null
   },
   {
     "clientId": 3,
     "emailAddress": null,
     "password": "123",
     "fullName": "John Smith",
+    "age": 17,
     "phoneNumber": "42074284",
     "allergies": [
       "fish"
-    ]
+    ],
+    "reservationId": null
   },
   {
     "clientId": 4,
     "emailAddress": "gyfege@feb.com",
     "password": "RTYUrtyu5",
     "fullName": "Flor Brefe",
+    "age": 20,
     "phoneNumber": "64738573",
     "allergies": [
       "fish"
-    ]
+    ],
+    "reservationId": null
   },
   {
     "clientId": 5,
     "emailAddress": "lalala@lolo.com",
     "password": "RTYuirtyui567",
     "fullName": "Blalal Lololo",
+    "age": 2,
     "phoneNumber": "12345678",
-    "allergies": []
+    "allergies": [],
+    "reservationId": null
   },
   {
     "clientId": 6,
     "emailAddress": "brederodef@gmail.com",
     "password": "ABCabc123",
     "fullName": "Floor Brederode",
+    "age": 151,
     "phoneNumber": "19407399",
-    "allergies": []
+    "allergies": [],
+    "reservationId": null
   }
 ]
