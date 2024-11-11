@@ -57,7 +57,7 @@ static class UserLogin
 
         }
     }
-
+  
     private static string ReadPassword()
     {
         StringBuilder passwordBuilder = new StringBuilder();

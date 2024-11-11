@@ -71,10 +71,10 @@ public class AccountsLogic
         return false;
     }
 
-    public static string CreateAccount(string fullName, string email, string password, string phoneNumber, List<string> allergies, string type)
+    public static string CreateAccount(string fullName, string email, string password, string phoneNumber, int age, List<string> allergies, string type)
     {
         int newID = AccountsAccess.LoadAll().Count + 1;
-        AccountModel account = new(newID, email, password, fullName, phoneNumber, allergies, default, type);
+        AccountModel account = new(newID, email, password, fullName, age, phoneNumber, allergies, default, type);
         AccountsLogic ac = new AccountsLogic();
         ac.UpdateList(account);
         if (ac.GetById(newID) == null)
@@ -119,4 +119,87 @@ public class AccountsLogic
     }
 
     public static string CapitalizeFirstLetter(string toCapitalize) => char.ToUpper(toCapitalize[0]) + toCapitalize.Substring(1);
+
+    public void ChangeName(int id, string newFullName)
+{
+    AccountModel account = GetById(id);
+    if (account != null)
+    {
+        account.FullName = newFullName;
+        UpdateList(account);
+    }
+}
+    public void ChangeAge(int id, int age)
+{
+    AccountModel account = GetById(id);
+    if (account != null)
+    {
+        account.Age = age;
+        UpdateList(account);
+    }
+}
+    public void ChangeAllergies(int id, List<string> newAllergies)
+{
+    AccountModel account = GetById(id);
+    if (account != null)
+    {
+        account.Allergies = newAllergies;
+        UpdateList(account);
+    }
+}
+    public string ChangePassword(int id, string oldPassword, string newPassword)
+{
+    AccountModel account = GetById(id);
+    if (account != null && account.Password == oldPassword)
+    {
+        string passwordCheck = CheckCreatePassword(newPassword);
+        if (passwordCheck == "Password has been set")
+        {
+            account.Password = newPassword;
+            UpdateList(account);
+            return "Password changed successfully";
+        }
+        else
+        {
+            return passwordCheck;
+        }
+    }
+    else
+    {
+        return "Invalid old password";
+    }
+}
+    public string ChangeEmail(int id, string newEmail)
+{
+    AccountModel account = GetById(id);
+    if (account != null)
+    {
+        if (!CheckEmailInJson(newEmail))
+        {
+            account.EmailAddress = newEmail;
+            UpdateList(account);
+            return "Email changed successfully";
+        }
+        else
+        {
+            return "Email already exists";
+        }
+    }
+    else
+    {
+        return "Account not found";
+    }
+}
+    public string UserInfo(int id)
+{
+    AccountModel account = GetById(id);
+    if (account != null)
+    {
+        return $"Your accounts data:\nName: {account.FullName}\nEmail: {account.EmailAddress}\nPhone Number: {account.PhoneNumber}\nAllergies: {string.Join(", ", account.Allergies)}";
+    }
+    else
+    {
+        return "Account not found";
+    }
+}
 }
