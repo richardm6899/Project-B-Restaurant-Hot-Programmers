@@ -39,7 +39,12 @@ public class ReservationLogic
         _reservations.Add(reservation);
 
         AccountModel acc = accountsLogic.GetById(clientID);
-        acc.ReservationIDs.Add(reservation.Id);
+        if (acc.ReservationIDs == null)
+        {
+            acc.ReservationIDs = new();
+            acc.ReservationIDs.Add(reservation.Id);
+        }
+        else acc.ReservationIDs.Add(reservation.Id);
         accountsLogic.UpdateList(acc);
 
         ReservationAccess.WriteAllReservations(_reservations);
@@ -296,6 +301,17 @@ public class ReservationLogic
         }
         return valid_reservations;
     }
+
+    public List<string> DisplayAllReservations()
+    {
+        List<string> Reservations = new();
+        foreach(ReservationModel reservation in _reservations)
+        {
+            Reservations.Add($"reservation details:\nReservation ID: {reservation.Id}\nTable number: {reservation.TableID}\nName: {reservation.Name}\nPersonal ID: {reservation.ClientID}\nPerson Amount: {reservation.HowMany}\nDate of Reservation: {reservation.Date.Date}\n\n");
+        }
+        return Reservations;
+    }
+
     public string TypeOfReservation(int table_id)
     {
         foreach (var table in _tables)
@@ -348,4 +364,5 @@ public class ReservationLogic
     // return_string += $"|{receipt.Cost}                 |\n";
     // return_string += $"|                   |\n";
     // return_string += $" -------------------\n";
+
 }
