@@ -11,51 +11,60 @@
         "name": "oli",
         "clientID": 1,
         "howMany": 1,
-        "date": "2024-04-04T00:00:00"
+        "date": "2024-04-04T00:00:00",
+        "status": "Ongoing",
+        "typeofreservation": null
       }
-    ]
+    ],
+    "typeoftable": "Regular"
   },
   {
     "id": 2,
     "chairs": 2,
     "minCapacity": 1,
     "maxCapacity": 2,
-    "reservations": []
+    "reservations": [],
+    "typeoftable": "Regular"
   },
   {
     "id": 3,
     "chairs": 2,
     "minCapacity": 1,
     "maxCapacity": 2,
-    "reservations": []
+    "reservations": [],
+    "typeoftable": "Regular"
   },
   {
     "id": 4,
     "chairs": 2,
     "minCapacity": 1,
     "maxCapacity": 2,
-    "reservations": []
+    "reservations": [],
+    "typeoftable": "Regular"
   },
   {
     "id": 5,
     "chairs": 2,
     "minCapacity": 1,
     "maxCapacity": 2,
-    "reservations": []
+    "reservations": [],
+    "typeoftable": "Regular"
   },
   {
     "id": 6,
     "chairs": 2,
     "minCapacity": 1,
     "maxCapacity": 2,
-    "reservations": []
+    "reservations": [],
+    "typeoftable": "Regular"
   },
   {
     "id": 7,
     "chairs": 2,
     "minCapacity": 1,
     "maxCapacity": 2,
-    "reservations": []
+    "reservations": [],
+    "typeoftable": "Regular"
   },
   {
     "id": 8,
@@ -69,23 +78,28 @@
         "name": "TEST",
         "clientID": 2,
         "howMany": 2,
-        "date": "2024-11-13T00:00:00"
+        "date": "2024-11-13T00:00:00",
+        "status": "Ongoing",
+        "typeofreservation": null
       }
-    ]
+    ],
+    "typeoftable": "Regular"
   },
   {
     "id": 9,
     "chairs": 4,
     "minCapacity": 3,
     "maxCapacity": 4,
-    "reservations": []
+    "reservations": [],
+    "typeoftable": "Regular"
   },
   {
     "id": 10,
     "chairs": 4,
     "minCapacity": 3,
     "maxCapacity": 4,
-    "reservations": []
+    "reservations": [],
+    "typeoftable": "Regular"
   },
   {
     "id": 11,
@@ -99,92 +113,107 @@
         "name": "TEST",
         "clientID": 2,
         "howMany": 4,
-        "date": "2024-04-04T00:00:00"
+        "date": "2024-04-04T00:00:00",
+        "status": "Ongoing",
+        "typeofreservation": null
       }
-    ]
+    ],
+    "typeoftable": "Regular"
   },
   {
     "id": 12,
     "chairs": 4,
     "minCapacity": 3,
     "maxCapacity": 4,
-    "reservations": []
+    "reservations": [],
+    "typeoftable": "Regular"
   },
   {
     "id": 13,
     "chairs": 4,
     "minCapacity": 3,
     "maxCapacity": 4,
-    "reservations": []
+    "reservations": [],
+    "typeoftable": "Regular"
   },
   {
     "id": 14,
     "chairs": 6,
     "minCapacity": 5,
     "maxCapacity": 6,
-    "reservations": []
+    "reservations": [],
+    "typeoftable": "Regular"
   },
   {
     "id": 15,
     "chairs": 6,
     "minCapacity": 5,
     "maxCapacity": 6,
-    "reservations": []
+    "reservations": [],
+    "typeoftable": "Regular"
   },
   {
     "id": 16,
     "chairs": 1,
     "minCapacity": 1,
     "maxCapacity": 1,
-    "reservations": []
+    "reservations": [],
+    "typeoftable": "HotSeat"
   },
   {
     "id": 17,
     "chairs": 1,
     "minCapacity": 1,
     "maxCapacity": 1,
-    "reservations": []
+    "reservations": [],
+    "typeoftable": "HotSeat"
   },
   {
     "id": 18,
     "chairs": 1,
     "minCapacity": 1,
     "maxCapacity": 1,
-    "reservations": []
+    "reservations": [],
+    "typeoftable": "HotSeat"
   },
   {
     "id": 19,
     "chairs": 1,
     "minCapacity": 1,
     "maxCapacity": 1,
-    "reservations": []
+    "reservations": [],
+    "typeoftable": "HotSeat"
   },
   {
     "id": 20,
     "chairs": 1,
     "minCapacity": 1,
     "maxCapacity": 1,
-    "reservations": []
+    "reservations": [],
+    "typeoftable": "HotSeat"
   },
   {
     "id": 21,
     "chairs": 1,
     "minCapacity": 1,
     "maxCapacity": 1,
-    "reservations": []
+    "reservations": [],
+    "typeoftable": "HotSeat"
   },
   {
     "id": 22,
     "chairs": 1,
     "minCapacity": 1,
     "maxCapacity": 1,
-    "reservations": []
+    "reservations": [],
+    "typeoftable": "HotSeat"
   },
   {
     "id": 23,
     "chairs": 1,
     "minCapacity": 1,
     "maxCapacity": 1,
-    "reservations": []
+    "reservations": [],
+    "typeoftable": "HotSeat"
   }
 ]
