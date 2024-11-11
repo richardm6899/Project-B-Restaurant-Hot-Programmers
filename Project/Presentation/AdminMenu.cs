@@ -1,5 +1,6 @@
 class AdminMenu
 {
+    static private ReservationLogic reservationLogic = new ReservationLogic();
     public static void Start(AccountModel acc)
     {
         Console.WriteLine("Welcome to the admin menu.");
@@ -26,10 +27,11 @@ class AdminMenu
                 System.Console.WriteLine("Make reservation:");
                 // when you want to make a reservation as admin you have to ask all info of the person that wants to make said reservation
                 // don't add the info of the admin to the reservation.
+                AdminMakeReservation.Start(acc);
                 System.Console.WriteLine("Not implemented yet");
                 Start(acc);
                 break;
-                
+
             // cancel reservation
             case "2":
                 System.Console.WriteLine("Cancel reservation");
@@ -41,7 +43,11 @@ class AdminMenu
             // see all reservations
             case "3":
                 System.Console.WriteLine("All reservations: ");
-                System.Console.WriteLine("Not implemented yet");
+                List<string> reservations = reservationLogic.DisplayAllReservations();
+                foreach(string Reservation in reservations)
+                {
+                    System.Console.WriteLine(Reservation);
+                }
                 Start(acc);
                 break;
 
