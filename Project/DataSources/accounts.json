@@ -7,9 +7,11 @@
     "age": 25,
     "phoneNumber": "36849255",
     "allergies": [
-      "pear"
+      "peanut",
+      "apple"
     ],
-    "reservationId": null
+    "reservationId": null,
+    "type": "client"
   },
   {
     "clientId": 2,
@@ -19,7 +21,8 @@
     "age": 35,
     "phoneNumber": "47830247",
     "allergies": [],
-    "reservationId": null
+    "reservationId": null,
+    "type": "client"
   },
   {
     "clientId": 3,
@@ -31,7 +34,8 @@
     "allergies": [
       "fish"
     ],
-    "reservationId": null
+    "reservationId": null,
+    "type": "client"
   },
   {
     "clientId": 4,
@@ -43,7 +47,8 @@
     "allergies": [
       "fish"
     ],
-    "reservationId": null
+    "reservationId": null,
+    "type": "client"
   },
   {
     "clientId": 5,
@@ -53,7 +58,8 @@
     "age": 2,
     "phoneNumber": "12345678",
     "allergies": [],
-    "reservationId": null
+    "reservationId": null,
+    "type": "client"
   },
   {
     "clientId": 6,
@@ -63,6 +69,37 @@
     "age": 151,
     "phoneNumber": "19407399",
     "allergies": [],
-    "reservationId": null
+    "reservationId": null,
+    "type": "client"
+  },
+  {
+    "clientId": 7,
+    "emailAddress": "admin@test.nl",
+    "password": "Test123!",
+    "fullName": "Test Test",
+    "phoneNumber": "19407399",
+    "allergies": [],
+    "reservationId": null,
+    "type": "admin"
+  },
+  {
+    "clientId": 8,
+    "emailAddress": "staff@test.nl",
+    "password": "TestStaff1",
+    "fullName": "Jane Doe",
+    "phoneNumber": "123456789",
+    "allergies": [],
+    "reservationId": [],
+    "type": "staff"
+  },
+  {
+    "clientId": 8,
+    "emailAddress": "finance@test.nl",
+    "password": "TestFinance1",
+    "fullName": "Alex Barnes",
+    "phoneNumber": "123456789",
+    "allergies": [],
+    "reservationId": [],
+    "type": "finance"
   }
 ]

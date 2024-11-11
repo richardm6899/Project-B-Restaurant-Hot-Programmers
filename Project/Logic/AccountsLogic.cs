@@ -39,7 +39,7 @@ public class AccountsLogic
 
     }
 
-    public AccountModel GetById(int id)
+    public virtual AccountModel GetById(int id)
     {
         return _accounts.Find(i => i.Id == id);
     }
@@ -71,10 +71,10 @@ public class AccountsLogic
         return false;
     }
 
-    public static string CreateAccount(string fullName, string email, string password, string phoneNumber, int age, List<string> allergies)
+    public static string CreateAccount(string fullName, string email, string password, string phoneNumber, int age, List<string> allergies, string type)
     {
         int newID = AccountsAccess.LoadAll().Count + 1;
-        AccountModel account = new(newID, email, password, fullName, age, phoneNumber, allergies, default);
+        AccountModel account = new(newID, email, password, fullName, age, phoneNumber, allergies, default, type);
         AccountsLogic ac = new AccountsLogic();
         ac.UpdateList(account);
         if (ac.GetById(newID) == null)
@@ -195,7 +195,7 @@ public class AccountsLogic
     AccountModel account = GetById(id);
     if (account != null)
     {
-        return $"Your accountsdata:\nName: {account.FullName}\nEmail: {account.EmailAddress}\nPhone Number: {account.PhoneNumber}\nAllergies: {string.Join(", ", account.Allergies)}";
+        return $"Your accounts data:\nName: {account.FullName}\nEmail: {account.EmailAddress}\nPhone Number: {account.PhoneNumber}\nAllergies: {string.Join(", ", account.Allergies)}";
     }
     else
     {
