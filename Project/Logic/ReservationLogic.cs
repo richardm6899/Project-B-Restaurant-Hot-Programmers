@@ -307,7 +307,20 @@ public class ReservationLogic
         List<string> Reservations = new();
         foreach(ReservationModel reservation in _reservations)
         {
-            Reservations.Add($"reservation details:\nReservation ID: {reservation.Id}\nTable number: {reservation.TableID}\nName: {reservation.Name}\nPersonal ID: {reservation.ClientID}\nPerson Amount: {reservation.HowMany}\nDate of Reservation: {reservation.Date.Date}\n\n");
+            Reservations.Add($"reservation details:\nReservation ID: {reservation.Id}\nTable number: {reservation.TableID}\nName: {reservation.Name}\nPersonal ID: {reservation.ClientID}\nPerson Amount: {reservation.HowMany}\nDate of Reservation: {reservation.Date.Date}\nStatus of reservation: {reservation.Status}\n");
+        }
+        return Reservations;
+    }
+
+    public List<string> DisplayAllOngoingReservations()
+    {
+        List<string> Reservations = new();
+        foreach(ReservationModel reservation in _reservations)
+        {
+            if(reservation.Status == "Ongoing")
+            {
+                Reservations.Add($"reservation details:\nReservation ID: {reservation.Id}\nTable number: {reservation.TableID}\nName: {reservation.Name}\nPersonal ID: {reservation.ClientID}\nPerson Amount: {reservation.HowMany}\nDate of Reservation: {reservation.Date.Date}\nStatus of reservation: {reservation.Status}\n");
+            }
         }
         return Reservations;
     }

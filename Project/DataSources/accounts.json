@@ -79,7 +79,9 @@
     "fullName": "Test Test",
     "phoneNumber": "19407399",
     "allergies": [],
-    "reservationId": null,
+    "reservationId": [
+      4
+    ],
     "type": "admin"
   },
   {

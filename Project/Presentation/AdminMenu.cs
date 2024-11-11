@@ -35,6 +35,7 @@ class AdminMenu
             // cancel reservation
             case "2":
                 System.Console.WriteLine("Cancel reservation");
+                Reservation.AdminCancelReservation();
                 // admin can cancel all reservations
                 System.Console.WriteLine("Not implemented yet");
                 Start(acc);
