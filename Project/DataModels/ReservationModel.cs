@@ -10,6 +10,7 @@ public class ReservationModel
     [JsonPropertyName("tableID")]
     public int TableID { get; set; }
 
+
     [JsonPropertyName("name")]
     public string Name { get; set; }
 
@@ -22,7 +23,14 @@ public class ReservationModel
     [JsonPropertyName("date")]
     public DateTime Date { get; set; }
 
-    public ReservationModel(int id, int tableID, string name, int clientID, int howMany, DateTime date)
+    [JsonPropertyName("status")]
+    public string Status { get; set; }
+
+    [JsonPropertyName("typeofreservation")]
+    public string TypeOfReservation { get; set; }
+
+
+    public ReservationModel(int id, int tableID, string name, int clientID, int howMany, DateTime date, string typeofreservation)
     {
         Id = id;
 
@@ -31,7 +39,10 @@ public class ReservationModel
 
         ClientID = clientID;
         HowMany = howMany;
+
         Date = Convert.ToDateTime(date);
+        Status = "Ongoing";
+        TypeOfReservation = typeofreservation;
     }
 
 
