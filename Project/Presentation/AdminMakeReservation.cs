@@ -19,8 +19,20 @@ class AdminMakeReservation
 
         System.Console.WriteLine("Name: ");
         string Name = Console.ReadLine();
-        Reservation.MakeReservation(Name, acc.Id);
-        
-
+        System.Console.WriteLine("Phonenumber: ");
+        string Number = Console.ReadLine();
+        System.Console.WriteLine("Email: ");
+        string Email = Console.ReadLine();
+        bool emailCheck = AccountsLogic.CheckCreateEmail(Email);
+        if (emailCheck == false)
+        {
+            while (emailCheck == false)
+            {
+                System.Console.WriteLine("Incorrect email, please re-enter an email: ");
+                Email = Console.ReadLine();
+                emailCheck = AccountsLogic.CheckCreateEmail(Email);
+            }
+        }
+        Reservation.MakeReservation(Name, acc.Id, Number, Email);
     }
 }
