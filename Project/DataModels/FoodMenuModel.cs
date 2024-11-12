@@ -10,7 +10,7 @@ public class FoodMenuModel
     public string DishName { get; set; }
 
     [JsonPropertyName("price")]
-    public int Price { get; set; }
+    public float Price { get; set; }
 
     [JsonPropertyName("description")]
     public string Description { get; set; }
@@ -21,7 +21,7 @@ public class FoodMenuModel
     [JsonPropertyName("allergies")]
     public List<string> Allergies { get; set;}
 
-    public FoodMenuModel(int id, string dishName, int price, string description, List<string> type, List<string> allergies)
+    public FoodMenuModel(int id, string dishName, float price, string description, List<string> type, List<string> allergies)
     {
         Id = id;
         DishName = dishName;
