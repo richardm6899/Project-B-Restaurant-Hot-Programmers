@@ -42,7 +42,6 @@ public class ReceiptModel
         Date = date;
         Name = name;
         PhoneNumber = phoneNumber;
-        Email = email;
         Status = "Ongoing";
     }
 }

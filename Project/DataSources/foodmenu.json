@@ -2,7 +2,7 @@
     {
         "id": 1,
         "dishName": "Steak Tartare",
-        "price": 15,
+        "price": 20.00,
         "description": "Steak tartare is made from finely chopped raw beef, mixed with seasonings like mustard, capers, shallots, and topped with a raw egg yolk.",
         "type": ["Beef", "Main Course"],
         "allergies": ["egg"]
@@ -10,7 +10,7 @@
     {
         "id": 2,
         "dishName": "Spare Ribs",
-        "price": 20,
+        "price": 22.50,
         "description": "Slow-cooked spare ribs, glazed in a smoky barbecue sauce, tender and falling off the bone.",
         "type": ["Beef", "Main Course"],
         "allergies": ["none"]
@@ -18,7 +18,7 @@
     {
         "id": 3,
         "dishName": "Baked Salmon",
-        "price": 25,
+        "price": 25.00,
         "description": "Oven-baked salmon fillet seasoned with herbs and lemon, served with a side of vegetables.",
         "type": ["Fish", "Main Course"],
         "allergies": ["fish"]
@@ -26,7 +26,7 @@
     {
         "id": 4,
         "dishName": "Hot Fries",
-        "price": 6,
+        "price": 7.50,
         "description": "Crispy hot fries served with a choice of dipping sauces.",
         "type": ["Side"],
         "allergies": ["gluten"]
@@ -34,7 +34,7 @@
     {
         "id": 5,
         "dishName": "Hot Cheesy Cornbread",
-        "price": 25,
+        "price": 17.50,
         "description": "Moist cornbread mixed with melted cheddar cheese, served hot.",
         "type": ["Side"],
         "allergies": ["gluten", "lactose"]
@@ -42,7 +42,7 @@
     {
         "id": 6,
         "dishName": "Grilled Steak",
-        "price": 25,
+        "price": 25.50,
         "description": "Juicy grilled steak served with a side of mashed potatoes and grilled vegetables.",
         "type": ["Beef", "Main Course"],
         "allergies": ["none"]
@@ -50,7 +50,7 @@
     {
         "id": 7,
         "dishName": "Rib Eye 1kg",
-        "price": 60,
+        "price": 60.00,
         "description": "A 1kg Rib Eye steak grilled to perfection, served with a rich red wine jus.",
         "type": ["Beef", "Main Course"],
         "allergies": ["none"]
@@ -58,7 +58,7 @@
     {
         "id": 8,
         "dishName": "Hot No-Beef-Beef",
-        "price": 25,
+        "price": 25.00,
         "description": "A vegan-friendly, plant-based steak served hot with a side of grilled veggies.",
         "type": ["Vegan", "Main Course"],
         "allergies": ["none"]
@@ -66,7 +66,7 @@
     {
         "id": 9,
         "dishName": "Pulled Pork Sandwich",
-        "price": 14,
+        "price": 14.50,
         "description": "Tender pulled pork slow-cooked in barbecue sauce, served on a toasted bun with coleslaw.",
         "type": ["Pork", "Main Course"],
         "allergies": ["gluten"]
@@ -74,7 +74,7 @@
     {
         "id": 10,
         "dishName": "Smoked Brisket",
-        "price": 30,
+        "price": 30.00,
         "description": "A generous serving of slow-smoked beef brisket, served with barbecue sauce and pickles.",
         "type": ["Beef", "Main Course"],
         "allergies": ["none"]
@@ -82,7 +82,7 @@
     {
         "id": 11,
         "dishName": "Grilled Chicken Wings",
-        "price": 12,
+        "price": 12.50,
         "description": "Marinated chicken wings, grilled and basted in a smoky barbecue sauce, served with ranch dip.",
         "type": ["Poultry", "Side"],
         "allergies": ["none"]
@@ -90,7 +90,7 @@
     {
         "id": 12,
         "dishName": "BBQ Beans",
-        "price": 8,
+        "price": 8.50,
         "description": "Slow-cooked beans in a rich barbecue sauce, seasoned with smoked spices.",
         "type": ["Vegan", "Side"],
         "allergies": ["none"]
