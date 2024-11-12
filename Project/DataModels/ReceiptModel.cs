@@ -19,7 +19,10 @@ public class ReceiptModel
     [JsonPropertyName("date")]
     public DateTime Date { get; set; }
 
-    
+    [JsonPropertyName("status")]
+    public string Status { get; set; }
+
+
     public ReceiptModel(int id, int reservationId, int clientId, int cost, DateTime date)
     {
         Id = id;
@@ -27,6 +30,7 @@ public class ReceiptModel
         ClientId = clientId;
         Cost = cost;
         Date = date;
+        Status = "Ongoing";
     }
 }
 
