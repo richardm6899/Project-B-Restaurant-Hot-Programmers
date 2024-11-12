@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1,
+    "reservationid": 4,
+    "clientid": 7,
+    "cost": 60,
+    "date": "2024-11-11T00:00:00"
+  },
+  {
+    "id": 2,
+    "reservationid": 4,
+    "clientid": 7,
+    "cost": 50,
+    "date": "2024-11-15T00:00:00"
+  }
+]

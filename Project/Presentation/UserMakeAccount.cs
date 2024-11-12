@@ -87,12 +87,12 @@ static class UserMakeAccount
         // age
         bool correct_age = false;
         System.Console.WriteLine("What is your age: ");
+        int age = Convert.ToInt32(Console.ReadLine());
         do
         {
             try
             {
-                int age = Convert.ToInt32(Console.ReadLine());
-                if (age <= 0 || age >= 130)
+                if (age <= 0 || age >= 150)
                 {
                     System.Console.WriteLine("Invalid age, please re-enter Age: ");
                 }
@@ -102,6 +102,7 @@ static class UserMakeAccount
                     Menu.Start();
                 }
                 else correct_age = true;
+
             }
             catch (FormatException)
             {
@@ -155,7 +156,6 @@ static class UserMakeAccount
         // make full name
         string fullName = $"{FirstName} {LastName}";
         // make an account with all given info
-        System.Console.WriteLine(AccountsLogic.CreateAccount(fullName, email, password, phoneNumber, allergies, "client"));
-
+        System.Console.WriteLine(AccountsLogic.CreateAccount(fullName, email, password, phoneNumber, age, allergies, "client"));
     }
 }
