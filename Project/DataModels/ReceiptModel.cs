@@ -33,6 +33,7 @@ public class ReceiptModel
 
 
     public ReceiptModel(int id, int reservationId, int clientId, int cost, DateTime date, string name, string phoneNumber, string email)
+
     {
         Id = id;
         ReservationId = reservationId;
