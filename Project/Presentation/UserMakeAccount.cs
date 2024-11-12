@@ -75,12 +75,12 @@ static class UserMakeAccount
 
         // number
         System.Console.WriteLine("Enter your phonenumber: ");
-        Console.Write("+31 6");
+        Console.Write("+");
         string phoneNumber = Console.ReadLine();
-        while (phoneNumber.Count() != 8)
+        while (phoneNumber.Count() <= 8)
         {
             System.Console.WriteLine("Phone number not long enough, please enter another number: ");
-            Console.Write("+31 6");
+            Console.Write("+");
             phoneNumber = Console.ReadLine();
         }
 
@@ -92,9 +92,10 @@ static class UserMakeAccount
         {
             try
             {
-                if (age <= 0 || age >= 150)
+                if (age <= 0 || age > 150)
                 {
                     System.Console.WriteLine("Invalid age, please re-enter Age: ");
+                    age = Convert.ToInt32(Console.ReadLine());
                 }
                 else if (age < 18)
                 {
