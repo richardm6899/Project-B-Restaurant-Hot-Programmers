@@ -96,9 +96,8 @@ class AdminMenu
                 // look at finances
                 case "8":
                     System.Console.WriteLine("Look at restaurant finances.");
-                    System.Console.WriteLine("not implemented yet");
-                    System.Console.WriteLine("[enter]");
-                    System.Console.ReadLine();
+                    Finances.Finance();
+
                     break;
 
                 // make an account
@@ -119,7 +118,8 @@ class AdminMenu
 
                 default:
                     System.Console.WriteLine("Invalid input");
-                    Start(acc);
+                    System.Console.WriteLine("[enter]");
+                    Console.ReadLine();
                     break;
 
             }
