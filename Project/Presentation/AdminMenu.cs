@@ -51,7 +51,7 @@ class AdminMenu
                 // see all reservations
                 case "3":
                     System.Console.WriteLine("All reservations: ");
-                    List<string> reservations = reservationLogic.DisplayAllReservations();
+                    List<string> reservations = reservationLogic.DisplayAllReservationList();
                     foreach (string Reservation in reservations)
                     {
                         System.Console.WriteLine(Reservation);

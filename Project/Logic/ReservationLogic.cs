@@ -313,7 +313,7 @@ public class ReservationLogic
         return valid_reservations;
     }
 
-    public List<string> DisplayAllReservations()
+    public List<string> DisplayAllReservationList()
     {
         List<string> Reservations = new();
         foreach(ReservationModel reservation in _reservations)
