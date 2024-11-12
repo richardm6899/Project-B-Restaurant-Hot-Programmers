@@ -55,7 +55,7 @@ class AdminMenu
             // edit food menu
             case "5":
                 System.Console.WriteLine("Editing the food menu.");
-                System.Console.WriteLine("Not implemented yet.");
+                FoodMenuDisplay.EditFoodMenuMenu();
                 Start(acc);
                 break;
 
