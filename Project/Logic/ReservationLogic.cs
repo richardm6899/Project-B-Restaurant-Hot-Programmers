@@ -338,10 +338,10 @@ public class ReservationLogic
     }
 
     // receipt ------------------------------------------
-    public ReceiptModel CreateReceipt(ReservationModel reservation, int cost)
+    public ReceiptModel CreateReceipt(ReservationModel reservation, int cost, string number, string email)
     {
         int id = _receipts.Count() + 1;
-        ReceiptModel receipt = new(id, reservation.Id, reservation.ClientID, cost, reservation.Date);
+        ReceiptModel receipt = new(id, reservation.Id, reservation.ClientID, cost, reservation.Date, reservation.Name, number, email);
         _receipts.Add(receipt);
         ReceiptAccess.WriteAllReceipts(_receipts);
         return receipt;
@@ -349,11 +349,13 @@ public class ReservationLogic
     public string DisplayReceipt(ReceiptModel receipt)
     {
         string return_string = "";
-        return_string += $" -------------------\n";
-        return_string += $"|   Hot Retaurant   |\n";
-        return_string += $"|~~~~~~~~~~~~~~~~~~~|\n";
-        return_string += $"|Date: {receipt.Date.ToShortDateString()}   |\n";
-        return_string += $"|Client id: {receipt.ClientId}       |\n";
+        return_string += $" -----------------------\n";
+        return_string += $"|     Hot Retaurant     |\n";
+        return_string += $"|~~~~~~~~~~~~~~~~~~~~~~~|\n";
+        return_string += $"|Status: {receipt.Status}        |\n";
+        return_string += $"|Date: {receipt.Date.ToShortDateString()}       |\n";
+        return_string += $"|Client Name: {receipt.Name}       |\n";
+        return_string += $"|Client Email: {receipt.Email}           |\n";
         return_string += $"|Reservation no.{receipt.ReservationId}  |\n";
         return_string += $"|Ordered:           |\n";
         return_string += $"|                   |\n";
@@ -363,6 +365,17 @@ public class ReservationLogic
         return_string += $"|                   |\n";
         return_string += $" -------------------\n";
         return return_string;
+    }
+    public ReceiptModel GetReceiptById(int id)
+    {
+        foreach (var receipt in _receipts)
+        {
+            if (receipt.ReservationId == id)
+            {
+                return receipt;
+            }
+        }
+        return null;
     }
     // return_string += $" -------------------\n";
     // return_string += $"|   Hot Retaurant   |\n";

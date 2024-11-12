@@ -7,7 +7,7 @@ static class Reservation
     static private ReservationLogic reservationlogic = new();
     // displays table restaurant
 
-    public static void MakeReservation(string name, int clientID)
+    public static void MakeReservation(string name, int clientID, string number, string email)
     {
         int cost = 50;
         string typeofreservation;
@@ -172,7 +172,7 @@ static class Reservation
                                 ReservationModel Reservation = reservationlogic.Create_reservation(TableID, name, clientID, HowMany, Date, typeofreservation);
                                 TableAccess.LoadAllTables();
                                 ReservationAccess.LoadAllReservations();
-                                ReceiptModel receipt = reservationlogic.CreateReceipt(Reservation, cost);
+                                ReceiptModel receipt = reservationlogic.CreateReceipt(Reservation, cost, number, email );
 
                                 System.Console.WriteLine(reservationlogic.DisplayReservation(Reservation.Id));
                                 System.Console.WriteLine();
