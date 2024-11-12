@@ -64,12 +64,16 @@ class FinancialMenu
                 case "5":
                     acc = null;
                     financialStart = false;
+                    System.Console.WriteLine("Goodbye...");
+                    System.Console.WriteLine("[enter]");
+                    Console.ReadLine();
 
                     break;
 
                 default:
                     System.Console.WriteLine("Invalid input");
                     System.Console.WriteLine("[enter]");
+                    Console.ReadLine();
                     break;
             }
 

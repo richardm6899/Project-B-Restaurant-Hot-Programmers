@@ -28,6 +28,8 @@ class StaffMenu
                     // when you want to make a reservation as staff you have to ask all info of the person that wants to make said reservation
                     // don't add the info of the staff to the reservation.
                     System.Console.WriteLine("Not implemented yet");
+                    System.Console.WriteLine("[enter]");
+                    Console.ReadLine();
 
                     break;
 
@@ -36,6 +38,8 @@ class StaffMenu
                     System.Console.WriteLine("Cancel reservation");
                     // staff can cancel all reservations
                     System.Console.WriteLine("Not implemented yet");
+                    System.Console.WriteLine("[enter]");
+                    Console.ReadLine();
 
                     break;
 
@@ -44,12 +48,16 @@ class StaffMenu
                     System.Console.WriteLine("Find reservation.");
                     // can be found by name or maybe reservation id
                     System.Console.WriteLine("Not implemented yet.");
+                    System.Console.WriteLine("[enter]");
+                    Console.ReadLine();
                     break;
 
                 // see all reservations
                 case "4":
                     System.Console.WriteLine("All reservations: ");
                     System.Console.WriteLine("Not implemented yet");
+                    System.Console.WriteLine("[enter]");
+                    Console.ReadLine();
 
                     break;
 
