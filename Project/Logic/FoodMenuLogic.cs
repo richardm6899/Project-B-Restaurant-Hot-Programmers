@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Net;
 using System.Text.Json;
 
 public class FoodMenuLogic
@@ -33,4 +34,42 @@ public class FoodMenuLogic
             ).ToList();
         }
 
+    public void AddDish(string dishName, float price, string description, List<string> type, List<string> allergies)
+    {
+        // Determine the next available ID
+        int newId = _foodMenu.Count > 0 ? _foodMenu.Max(d => d.Id) + 1 : 1;
+
+        // Create the new dish model
+        FoodMenuModel newDish = new FoodMenuModel(newId, dishName, price, description, type, allergies);
+
+        // Add to the menu list
+        _foodMenu.Add(newDish);
+
+        // Save updated list to JSON
+        FoodMenuAccess.WriteAll(_foodMenu);
+    }
+
+
+    public string DeleteDishByName(string dishName)
+        {
+            // Find the dish by name (case-insensitive search)
+            var dishToRemove = _foodMenu.FirstOrDefault(d => d.DishName.Equals(dishName, StringComparison.OrdinalIgnoreCase));
+            if (dishToRemove != null)
+            {
+                if(FoodMenuDisplay.ConfirmationForDeletion(dishName))
+                {
+                    _foodMenu.Remove(dishToRemove);
+                    
+                    FoodMenuAccess.WriteAll(_foodMenu);
+                    return "Dish was succesfully deleted";   
+                }
+                else
+                {
+                    return "Deletion has stopped.";
+                }
+
+            }
+            
+            return "Dish was not found.";
+    }
 }
