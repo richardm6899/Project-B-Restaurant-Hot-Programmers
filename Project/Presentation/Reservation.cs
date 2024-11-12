@@ -235,7 +235,7 @@ static class Reservation
                     while (ReservationIDCheck)
                     {
                         System.Console.WriteLine("Which reservation would you like to cancel?\n");
-                        System.Console.WriteLine(reservationlogic.DisplayReservations(clientID)); ;
+                        System.Console.WriteLine(reservationlogic.DisplayReservations(clientID));
                         System.Console.WriteLine("enter ID: ");
                         string str_id = Console.ReadLine();
                         {
@@ -315,6 +315,44 @@ static class Reservation
                 System.Console.WriteLine("[enter]");
                 System.Console.ReadLine();
             }
+        }
+    }
+
+    public static void AdminCancelReservation()
+    {
+        bool cancelreservation = true;
+        while (cancelreservation)
+        {
+            System.Console.WriteLine("Would you like to cancel a reservation? (Y/N)");
+            string choice = Console.ReadLine().ToUpper();
+            if (choice == "Y")
+            {
+                List<string> ongoingReservations = reservationlogic.DisplayAllOngoingReservations();
+                foreach (string reservation in ongoingReservations)
+                {
+                    System.Console.WriteLine(reservation);
+                }
+
+                bool Canceling = true;
+                while (Canceling)
+                {
+                    // make this so when an incorrect input is entered ask again
+                    // make an escape
+                    System.Console.WriteLine("ID to cancel: ");
+                    int cancelID = Convert.ToInt32(Console.ReadLine());
+
+                    reservationlogic.RemoveReservationByID(cancelID);
+                    Canceling = false;
+                }
+            }
+            else if (choice == "N")
+            {
+                System.Console.WriteLine("Goodbye....");
+                System.Console.WriteLine("[enter]");
+                System.Console.ReadLine();
+                cancelreservation = false;
+            }
+            else System.Console.WriteLine("Incorrect input");
         }
     }
 }

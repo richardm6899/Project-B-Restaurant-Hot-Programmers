@@ -1,10 +1,12 @@
 class AdminMenu
 {
+    static private ReservationLogic reservationLogic = new ReservationLogic();
     public static void Start(AccountModel acc)
     {
         bool adminMenu = true;
         while (adminMenu)
         {
+
             Console.WriteLine("Welcome to the admin menu.");
             System.Console.WriteLine("-----------------------------------------");
             Console.WriteLine("Welcome back " + acc.FullName);
@@ -24,30 +26,38 @@ class AdminMenu
             string user_logged_in_answer = System.Console.ReadLine();
             switch (user_logged_in_answer)
             {
+
+
                 // make reservation
                 case "1":
                     System.Console.WriteLine("Make reservation:");
                     // when you want to make a reservation as admin you have to ask all info of the person that wants to make said reservation
                     // don't add the info of the admin to the reservation.
+                    AdminMakeReservation.Start(acc);
                     System.Console.WriteLine("Not implemented yet");
-                    
-                    
 
                     break;
 
                 // cancel reservation
                 case "2":
                     System.Console.WriteLine("Cancel reservation");
+                    Reservation.AdminCancelReservation();
                     // admin can cancel all reservations
-                    System.Console.WriteLine("Not implemented yet");
+
+
 
                     break;
 
                 // see all reservations
                 case "3":
                     System.Console.WriteLine("All reservations: ");
-                    System.Console.WriteLine("Not implemented yet");
-
+                    List<string> reservations = reservationLogic.DisplayAllReservations();
+                    foreach (string Reservation in reservations)
+                    {
+                        System.Console.WriteLine(Reservation);
+                    }
+                    System.Console.WriteLine("[enter]");
+                    System.Console.ReadLine();
                     break;
 
                 //  see the food menu
@@ -61,6 +71,8 @@ class AdminMenu
                 case "5":
                     System.Console.WriteLine("Editing the food menu.");
                     System.Console.WriteLine("Not implemented yet.");
+                    System.Console.WriteLine("[enter]");
+                    System.Console.ReadLine();
 
                     break;
 
@@ -88,26 +100,32 @@ class AdminMenu
                 // look at finances
                 case "8":
                     System.Console.WriteLine("Look at restaurant finances.");
-                    Finances.Finance();
+                    System.Console.WriteLine("not implemented yet");
+                    System.Console.WriteLine("[enter]");
+                    System.Console.ReadLine();
                     break;
 
                 // make an account
                 case "9":
                     System.Console.WriteLine("Create an account:");
-                    AdminLogic newAdmin = new("Jane Doe", "admin@test2.nl", "TestAdmin2", "123456789");
-                    newAdmin.CreateAdmin();
+                    System.Console.WriteLine("Not implemented yet.");
+                    System.Console.WriteLine("[enter]");
+                    System.Console.ReadLine();
+                    // AdminLogic newAdmin = new("Jane Doe", "admin@test2.nl", "TestAdmin2", "123456789", 23);
+                    // newAdmin.CreateAdmin();
                     break;
 
                 // log out
                 case "10":
                     acc = null;
-                    adminMenu = false;
+                    Menu.Start();
                     break;
 
                 default:
                     System.Console.WriteLine("Invalid input");
-
+                    Start(acc);
                     break;
+
             }
         }
     }
