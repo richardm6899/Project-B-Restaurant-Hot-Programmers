@@ -21,6 +21,28 @@ public class FoodMenuLogic
         return _foodMenu;
     }
 
+        public List<string> GetAllAllergies()
+    {
+        List<string> Allergies = [];
+        foreach(FoodMenuModel dish in _foodMenu)
+        {
+            foreach(string allergy in dish.Allergies)
+            {
+                if(!Allergies.Contains(allergy))
+                {
+                    if(allergy != "none")
+                    {
+                        Allergies.Add(allergy);
+                    }
+                }
+                else
+                {
+                    continue;
+                }
+            }
+        }
+        return Allergies;
+    }
     // Method to return food menu item by name
     public FoodMenuModel GetMenuItemByName(string dishName)
     {
