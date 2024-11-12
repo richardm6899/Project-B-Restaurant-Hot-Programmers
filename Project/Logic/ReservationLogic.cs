@@ -19,7 +19,7 @@ public class ReservationLogic
     }
     // create reservation -----------------------------------------
     // create table with given  info and checks
-    public TableModel Createtable(int chairs, int minCapacity, int maxCapacity, string type)
+    public TableModel Createtable(int chairs, int minCapacity, int maxCapacity, string type) //tested
     {
 
         int new_id = _tables.Count + 1;
@@ -30,7 +30,7 @@ public class ReservationLogic
     }
 
     // create reservation with given checks
-    public ReservationModel Create_reservation(int tableID, string name, int clientID, int howMany, DateTime date, string typeofreservation)
+    public ReservationModel Create_reservation(int tableID, string name, int clientID, int howMany, DateTime date, string typeofreservation)//tested
     {
         int new_id = _reservations.Count + 1;
         ReservationModel reservation = new(new_id, tableID, name, clientID, howMany, date, typeofreservation);
@@ -191,8 +191,12 @@ public class ReservationLogic
                 reservation.Status = "Canceled";
                 UnassignTable(reservation_id);
                 ReservationAccess.WriteAllReservations(_reservations);
+                if (GetReceiptById(reservation_id) != null)
+                {
+                    GetReceiptById(reservation_id).Status = "Canceled";
+                }
                 TableAccess.WriteAllTables(_tables);
-                GetReceiptById(reservation_id).Status = "Canceled";
+                ReceiptAccess.WriteAllReceipts(_receipts);
 
                 return reservation;
             }
