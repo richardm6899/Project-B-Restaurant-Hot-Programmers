@@ -96,8 +96,9 @@ class AdminMenu
             // make an account
             case "9":
                 System.Console.WriteLine("Create an account:");
-                AdminLogic newAdmin = new("Jane Doe", "admin@test2.nl", "TestAdmin2", "123456789");
-                newAdmin.CreateAdmin();
+                System.Console.WriteLine("Not implemented yet.");
+                // AdminLogic newAdmin = new("Jane Doe", "admin@test2.nl", "TestAdmin2", "123456789", 23);
+                // newAdmin.CreateAdmin();
                 break;
 
             // log out
