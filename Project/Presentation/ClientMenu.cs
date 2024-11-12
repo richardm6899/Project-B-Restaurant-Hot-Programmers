@@ -22,9 +22,10 @@ class ClientMenu
             switch (user_logged_in_answer)
             {
                 // make reservation
+                //  public static void MakeReservation(string name, int clientID, string number, string email)
                 case "1":
                     System.Console.WriteLine("Make reservation:");
-                    Reservation.MakeReservation(acc.FullName, acc.Id);
+                    Reservation.MakeReservation(acc.FullName, acc.Id, acc.PhoneNumber, acc.EmailAddress);
                     ReservationAccess.WriteAllReservations(reservationLogic._reservations);
                     TableAccess.WriteAllTables(reservationLogic._tables);
 

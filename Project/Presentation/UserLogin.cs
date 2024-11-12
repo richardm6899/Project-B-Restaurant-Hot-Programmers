@@ -26,7 +26,6 @@ static class UserLogin
             string password = ReadPassword();
 
             acc = accountsLogic.CheckLogin(email, password);
-
             // check if account exists
             if (acc == null)
             {
@@ -46,18 +45,18 @@ static class UserLogin
             {
                 ClientMenu.Start(acc);
             }
-            else if(acc.Type == "staff")
+            else if (acc.Type == "staff")
             {
                 StaffMenu.Start(acc);
             }
-            else if(acc.Type == "finance")
+            else if (acc.Type == "finance")
             {
                 FinancialMenu.Start(acc);
             }
 
         }
     }
-  
+
     private static string ReadPassword()
     {
         StringBuilder passwordBuilder = new StringBuilder();
