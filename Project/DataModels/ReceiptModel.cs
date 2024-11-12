@@ -41,6 +41,7 @@ public class ReceiptModel
         Cost = cost;
         Date = date;
         Name = name;
+        Email = email;
         PhoneNumber = phoneNumber;
         Status = "Ongoing";
     }
