@@ -43,7 +43,7 @@ static class UserLogin
             }
             else if (acc.Type == "client")
             {
-                ClientMenu.Start(acc);
+                ClientMenu.Start(acc, accountsLogic);
             }
             else if (acc.Type == "staff")
             {

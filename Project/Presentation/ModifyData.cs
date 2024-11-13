@@ -18,43 +18,106 @@ public class ModifyData
         switch (user_answer)
         {
             case "1":
-                Console.Write("Enter new name: ");
-                string newName = Console.ReadLine();
-                accountsLogic.ChangeName(account.Id, newName);
-                Console.WriteLine($"Name changed to {account.FullName}");
+                bool valid_name = false;
+                while (valid_name == false)
+                {
+                    Console.Write("Enter new name: ");
+                    string newName = Console.ReadLine();
+                    if (!string.IsNullOrWhiteSpace(newName) && !newName.Any(char.IsDigit) && newName.Any(char.IsLetter))
+                    {
+                        string nameChange = accountsLogic.ChangeName(account.Id, newName);
+                        Console.WriteLine(nameChange);
+                        valid_name = true;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Must only contain letters");
+                    }
+                }
                 break;
             case "2":
-                Console.Write("Enter new age: ");
-                int newAge = int.Parse(Console.ReadLine());
-                if(newAge < 18 || newAge > 150)
+                bool valid_age = false;
+                while (valid_age == false)
                 {
-                Console.WriteLine("Age must be between 18 and 150");
-                }
-                else
-                {
-                accountsLogic.ChangeAge(account.Id, newAge);
-                Console.WriteLine($"Age changed to {account.Age}");
+                    Console.Write("Enter new age: ");
+                    string input = Console.ReadLine();
+                    if (int.TryParse(input, out int newAge))
+                    {
+                        string ageChange = accountsLogic.ChangeAge(account.Id, newAge);
+                        if (newAge >= 18 && newAge < 151)
+                        {
+                            Console.WriteLine(ageChange);
+                            valid_age = true;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Age must be between 18 and 150");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Age must be a number");
+                    }
                 }
                 break;
             case "3":
-                Console.Write("Enter new allergies (comma separated): ");
-                string newAllergies = Console.ReadLine();
-                accountsLogic.ChangeAllergies(account.Id, newAllergies.Split(',').ToList());
-                Console.WriteLine($"Allergies changed to {account.Allergies}");
+                bool valid_allergies = false;
+                while (valid_allergies == false)
+                {
+                    Console.Write("Enter new allergies (separated by commas): ");
+                    string newAllergies = Console.ReadLine();
+                    if (!string.IsNullOrWhiteSpace(newAllergies))
+                    {
+                        string allergiesChange = accountsLogic.ChangeAllergies(account.Id, newAllergies.Split(',').ToList());
+                        Console.WriteLine(allergiesChange);
+                        valid_allergies = true;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Please enter a valid allergy");
+                    }
+                }
                 break;
             case "4":
-                Console.Write("Enter old password: ");
-                string oldPassword = Console.ReadLine();
-                Console.Write("Enter new password: ");
-                string newPassword = Console.ReadLine();
-                accountsLogic.ChangePassword(account.Id, oldPassword, newPassword);
-                Console.WriteLine($"Password changed to {account.Password}");
+                bool valid_password = false;
+                while (valid_password == false)
+                {
+                    Console.Write("Enter old password: ");
+                    string oldPassword = Console.ReadLine();
+                    Console.Write("Enter new password: ");
+                    string newPassword = Console.ReadLine();
+                    if (oldPassword == account.Password)
+                    {
+                        string passwordChange = accountsLogic.ChangePassword(account.Id, oldPassword, newPassword);
+                        Console.WriteLine(passwordChange);
+                        if (passwordChange == "Password changed successfully")
+                        {
+                            valid_password = true;
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Please enter a valid password");
+                    }
+                }
                 break;
             case "5":
-                Console.Write("Enter new email: ");
-                string newEmail = Console.ReadLine();
-                string emailResult = accountsLogic.ChangeEmail(account.Id, newEmail);
-                Console.WriteLine($"Email changed to {account.EmailAddress}");
+                bool valid_email = false;
+                while (valid_email == false)
+                {
+                    Console.Write("Enter new email: ");
+                    string newEmail = Console.ReadLine();
+                    if (!string.IsNullOrWhiteSpace(newEmail) && newEmail.Contains("@."))
+                    {
+                        string emailChange = accountsLogic.ChangeEmail(account.Id, newEmail);
+                        Console.WriteLine(emailChange);
+                        valid_email = true;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Please enter a valid email address, must contain @");
+                    }
+                }
                 break;
             case "6":
                 string userInfo = accountsLogic.UserInfo(account.Id);

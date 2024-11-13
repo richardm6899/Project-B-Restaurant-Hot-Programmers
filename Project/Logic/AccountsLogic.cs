@@ -120,35 +120,69 @@ public class AccountsLogic
 
     public static string CapitalizeFirstLetter(string toCapitalize) => char.ToUpper(toCapitalize[0]) + toCapitalize.Substring(1);
 
-    public void ChangeName(int id, string newFullName)
+    public string ChangeName(int id, string newFullName)
 {
+
     AccountModel account = GetById(id);
     if (account != null)
     {
         account.FullName = newFullName;
         UpdateList(account);
+        return "Name changed successfully";
+    }
+    else
+    {
+        return "Account not found";
     }
 }
-    public void ChangeAge(int id, int age)
+
+public string ChangeAge(int id, int age)
 {
+    if (age < 18 || age > 150)
+    {
+        return "Age must be between 18 and 150";
+    }
+
     AccountModel account = GetById(id);
     if (account != null)
     {
         account.Age = age;
         UpdateList(account);
+        return "Age changed successfully";
+    }
+    else
+    {
+        return "Account not found";
     }
 }
-    public void ChangeAllergies(int id, List<string> newAllergies)
+
+public string ChangeAllergies(int id, List<string> newAllergies)
 {
+    if (newAllergies == null || newAllergies.Count == 0)
+    {
+        return "Allergies list is required";
+    }
+
     AccountModel account = GetById(id);
     if (account != null)
     {
         account.Allergies = newAllergies;
         UpdateList(account);
+        return "Allergies changed successfully";
+    }
+    else
+    {
+        return "Account not found";
     }
 }
-    public string ChangePassword(int id, string oldPassword, string newPassword)
+
+public string ChangePassword(int id, string oldPassword, string newPassword)
 {
+    if (string.IsNullOrWhiteSpace(oldPassword) || string.IsNullOrWhiteSpace(newPassword))
+    {
+        return "Old password and new password are required";
+    }
+
     AccountModel account = GetById(id);
     if (account != null && account.Password == oldPassword)
     {
@@ -169,8 +203,14 @@ public class AccountsLogic
         return "Invalid old password";
     }
 }
-    public string ChangeEmail(int id, string newEmail)
+
+public string ChangeEmail(int id, string newEmail)
 {
+    if (string.IsNullOrWhiteSpace(newEmail))
+    {
+        return "Email is required";
+    }
+
     AccountModel account = GetById(id);
     if (account != null)
     {
@@ -190,7 +230,8 @@ public class AccountsLogic
         return "Account not found";
     }
 }
-    public string UserInfo(int id)
+
+public string UserInfo(int id)
 {
     AccountModel account = GetById(id);
     if (account != null)
