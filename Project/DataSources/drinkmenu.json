@@ -1,0 +1,63 @@
+[
+    {
+        "id": 1,
+        "drinkName": "Cherry Smash Bourbon",
+        "price": 7.50,
+        "description": "This is a deliciously boozy summer cocktail for true bourbon lovers out there. A simple mix of delicious bourbon-infused sweet cocktail cherries and vibrant summer lemons makes a cold thirst-quenching easy summer bourbon cocktail that truly lets bourbon shine",
+        "type": [
+            "Cocktail",
+            "Alcohol"
+        ],
+        "allergies": [
+            "Cherry"
+        ]
+    },
+    {
+        "id": 2,
+        "drinkName": "Coca Cola",
+        "price": 2.95,
+        "description": "A refreshing soft drink.",
+        "type": [
+            "Soft Drink"
+        ],
+        "allergies": [
+            "Milk",
+            "Soy",
+            "Eggs",
+            "Fish",
+            "Shellfish",
+            "Peanuts",
+            "Tree Nuts",
+            "Sesame",
+            "Wheat"
+        ]
+    },
+    {
+        "id": 3,
+        "drinkName": "Triple IPA",
+        "price": 5.00,
+        "description": "A Triple IPA is a high-gravity, hoppy beer that is brewed with a significant amount of malt and hops. Triple IPAs are known for their intense hop flavor and aroma, as well as their high alcohol content. 10% alcohol.",
+        "type": [
+            "Bier"
+        ],
+        "allergies": [
+            "Hops"
+        ]
+    },
+    {
+        "id": 4,
+        "drinkName": "Smoked Hot Chocolate",
+        "price": 10.50,
+        "description": "A rich dark chocolate with a touch of smoked vanilla, creating a cozy, campfire warmth in every sip. Finished with a toasted marshmallow and a drizzle of smoked chili caramel, it's the perfect way to wind down after a hearty meal.",
+        "type": [
+            "Hot Drink"
+        ],
+        "allergies": [
+            "Dairy",
+            "Soy",
+            "Tree Nuts",
+            "Gluten",
+            "Spices"
+        ]
+    }
+]
