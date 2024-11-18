@@ -41,10 +41,9 @@ public class ReservationLogic
         AccountModel acc = accountsLogic.GetById(clientID);
         if (acc.ReservationIDs == null)
         {
-            acc.ReservationIDs = new();
-            acc.ReservationIDs.Add(reservation.Id);
+            acc.ReservationIDs = new List<int>(); // Initialize the list
         }
-        else acc.ReservationIDs.Add(reservation.Id);
+        acc.ReservationIDs.Add(reservation.Id);
         accountsLogic.UpdateList(acc);
 
         ReservationAccess.WriteAllReservations(_reservations);
@@ -366,7 +365,7 @@ public class ReservationLogic
     public string DisplayReceipt(ReceiptModel receipt)
     {
         string return_string = "";
-     
+
         return_string += $" -----------------------\n";
         return_string += $"|     Hot Retaurant     |\n";
         return_string += $"|~~~~~~~~~~~~~~~~~~~~~~~|\n";
