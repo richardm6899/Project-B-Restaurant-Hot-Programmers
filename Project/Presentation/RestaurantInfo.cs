@@ -19,6 +19,12 @@ public class RestaurantInfo
                 System.Console.WriteLine($"{hours}");
             }
             System.Console.WriteLine($"-------------------------------------------------");
+            System.Console.WriteLine("Days that we are closed:");
+            foreach (var dates in restaurant.closed_dates)
+            {
+                System.Console.WriteLine($"- {dates}");
+            }
+            System.Console.WriteLine($"-------------------------------------------------");
             // basic info (number, email)
             // System.Console.WriteLine();
             // info about restaurant 1 (the one we are working on now)
