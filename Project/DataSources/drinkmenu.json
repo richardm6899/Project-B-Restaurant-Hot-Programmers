@@ -3,7 +3,7 @@
         "id": 1,
         "drinkName": "Cherry Smash Bourbon",
         "price": 7.50,
-        "description": "This is a deliciously boozy summer cocktail for true bourbon lovers out there. A simple mix of delicious bourbon-infused sweet cocktail cherries and vibrant summer lemons makes a cold thirst-quenching easy summer bourbon cocktail that truly lets bourbon shine",
+        "description": "This is a deliciously boozy summer cocktail for true bourbon lovers out there. A simple mix of delicious bourbon-infused sweet cocktail cherries and vibrant summer lemons makes a cold thirst-quenching easy summer bourbon cocktail that truly lets bourbon shine.",
         "type": [
             "Cocktail",
             "Alcohol"
@@ -23,12 +23,8 @@
         "allergies": [
             "Milk",
             "Soy",
-            "Eggs",
-            "Fish",
-            "Shellfish",
             "Peanuts",
             "Tree Nuts",
-            "Sesame",
             "Wheat"
         ]
     },
@@ -38,7 +34,8 @@
         "price": 5.00,
         "description": "A Triple IPA is a high-gravity, hoppy beer that is brewed with a significant amount of malt and hops. Triple IPAs are known for their intense hop flavor and aroma, as well as their high alcohol content. 10% alcohol.",
         "type": [
-            "Bier"
+            "Alcohol",
+            "Beer"
         ],
         "allergies": [
             "Hops"
@@ -58,6 +55,140 @@
             "Tree Nuts",
             "Gluten",
             "Spices"
+        ]
+    },
+    {
+        "id": 5,
+        "drinkName": "Frozen Pineapple Margarita",
+        "price": 8.00,
+        "description": "A tropical twist on the classic margarita, blended with frozen pineapple, tequila, lime juice, and a touch of agave syrup. The perfect frozen cocktail to cool off on a hot day.",
+        "type": [
+            "Cocktail",
+            "Alcohol"
+        ],
+        "allergies": [
+            "Pineapple",
+            "Lime"
+        ]
+    },
+    {
+        "id": 6,
+        "drinkName": "Matcha Latte",
+        "price": 4.50,
+        "description": "A smooth, creamy green tea latte made with high-quality matcha powder and steamed milk. A calming, yet energizing drink that's perfect for any time of day.",
+        "type": [
+            "Hot Drink"
+        ],
+        "allergies": [
+            "Dairy",
+            "Soy"
+        ]
+    },
+    {
+        "id": 7,
+        "drinkName": "Watermelon Mojito",
+        "price": 7.00,
+        "description": "A refreshing summer cocktail made with fresh watermelon, mint leaves, lime, rum, and a splash of soda water. Perfect for sipping by the pool or at a backyard barbecue.",
+        "type": [
+            "Cocktail",
+            "Alcohol"
+        ],
+        "allergies": [
+            "Lime",
+            "Mint"
+        ]
+    },
+    {
+        "id": 8,
+        "drinkName": "Cinnamon Roll Latte",
+        "price": 5.25,
+        "description": "A deliciously sweet and comforting latte flavored with cinnamon and brown sugar, topped with whipped cream and a sprinkle of cinnamon. The perfect drink for cold mornings or a cozy treat.",
+        "type": [
+            "Hot Drink"
+        ],
+        "allergies": [
+            "Dairy",
+            "Soy",
+            "Gluten"
+        ]
+    },
+    {
+        "id": 9,
+        "drinkName": "Blueberry Lemon Fizz",
+        "price": 4.25,
+        "description": "A refreshing non-alcoholic drink made with freshly squeezed lemon juice, blueberry syrup, soda water, and a touch of mint. Perfect for a summer afternoon!",
+        "type": [
+            "Soft Drink"
+        ],
+        "allergies": [
+            "Lemon",
+            "Mint"
+        ]
+    },
+    {
+        "id": 10,
+        "drinkName": "Peach Bellini",
+        "price": 9.00,
+        "description": "A sparkling and fruity cocktail made with peach purée and Prosecco. A refreshing, light drink perfect for brunch or special occasions.",
+        "type": [
+            "Cocktail",
+            "Alcohol"
+        ],
+        "allergies": [
+            "Peach"
+        ]
+    },
+    {
+        "id": 11,
+        "drinkName": "Strawberry Basil Lemonade",
+        "price": 5.00,
+        "description": "A refreshing non-alcoholic beverage made with fresh strawberries, lemon juice, basil leaves, and a touch of honey. A perfect combination of sweet, tart, and herbaceous flavors.",
+        "type": [
+            "Soft Drink"
+        ],
+        "allergies": [
+            "Lemon", 
+            "Herbs"
+        ]
+    },
+    {
+        "id": 12,
+        "drinkName": "Ginger Peach Iced Tea",
+        "price": 3.75,
+        "description": "A chilled and flavorful iced tea made with organic black tea, ginger syrup, and fresh peach puree. A perfect drink to cool off during hot summer days.",
+        "type": [
+            "Cold Drink"
+        ],
+        "allergies": [
+            "Caffeine"
+        ]
+    },
+    {
+        "id": 13,
+        "drinkName": "Spiced Pumpkin Latte",
+        "price": 5.75,
+        "description": "A creamy latte made with rich pumpkin puree, warm spices like cinnamon and nutmeg, and a touch of sweetness. Perfect for fall and the holiday season.",
+        "type": [
+            "Hot Drink"
+        ],
+        "allergies": [
+            "Dairy",
+            "Gluten",
+            "Soy"
+        ]
+    },
+    {
+        "id": 14,
+        "drinkName": "Berry Mojito",
+        "price": 7.50,
+        "description": "A twist on the classic mojito, made with fresh berries, mint, lime, rum, and a splash of soda water.",
+        "type": [
+            "Cocktail",
+            "Alcohol"
+        ],
+        "allergies": [
+            "Mint",
+            "Lime"
         ]
     }
 ]
