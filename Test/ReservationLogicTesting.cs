@@ -56,10 +56,8 @@ public class TestReservationLogic
     }
 
     [TestMethod]
-    [DataRow("12/11/2024")]
-    [DataRow("22/01/2025")]
-
-
+    [DataRow("29/11/2024")]
+    [DataRow("01/01/2025")]
     // you can only book 3 months ahead
 
     // date of test: 12/11/2024
