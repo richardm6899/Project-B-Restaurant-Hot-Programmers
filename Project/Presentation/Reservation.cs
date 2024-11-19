@@ -71,8 +71,16 @@ static class Reservation
                         // can be more personalised in terms of what the user filled in wrong by making returns numbers
                         if (reservationlogic.IsValidDate(Date))
                         {
-
-                            dateCheck = false;
+                            if (RestaurantLogic.closed_Day(Date))
+                            {
+                                Console.WriteLine("Sorry, the restaurant is closed that day.");
+                                Console.WriteLine($"The next open day is: {RestaurantLogic.next_Open_Day(Date)}");
+                            }
+                            else
+                            {
+                                dateCheck = false;
+                            }
+                          
                             bool timeslotbool = true;
                             while (timeslotbool)
                             {
@@ -95,7 +103,6 @@ static class Reservation
                                     System.Console.ReadLine();
                                 }
                             }
-
                         }
                         else
                         {
@@ -110,8 +117,6 @@ static class Reservation
                         System.Console.WriteLine("[enter]");
                         System.Console.ReadLine();
                     }
-
-
                 }
 
                 // check if not table is not already booked at same day/time
@@ -197,11 +202,8 @@ static class Reservation
                             if (confirmation == "Y")
                             {
 
-
                                 ReservationModel Reservation = reservationlogic.Create_reservation(TableID, name, clientID, HowMany, Date, typeofreservation, TimeSlot);
-
                                 ReceiptModel receipt = reservationlogic.CreateReceipt(Reservation, cost, number, email);
-
                                 System.Console.WriteLine(reservationlogic.DisplayReservation(Reservation.Id));
                                 System.Console.WriteLine();
                                 System.Console.WriteLine("This is your receipt for now: ");

@@ -1,10 +1,11 @@
 public class RestaurantInfo
 {
-    static private RestaurantLogic RestaurantLogic = new RestaurantLogic();
+    static private RestaurantLogic restaurantLogic = new RestaurantLogic();
+
     public static void Start()
     {
 
-        List<RestaurantModel> restaurants = RestaurantLogic.GetRestaurantInfo();
+        List<RestaurantModel> restaurants = restaurantLogic.GetRestaurantInfo();
         foreach (var restaurant in restaurants)
         {
             System.Console.WriteLine("Welcome to the information tab, here is all the info about all our restaurants.");
