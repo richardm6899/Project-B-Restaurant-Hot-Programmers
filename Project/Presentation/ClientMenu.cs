@@ -27,16 +27,14 @@ class ClientMenu
                 case "1":
                     System.Console.WriteLine("Make reservation:");
                     Reservation.MakeReservation(acc.FullName, acc.Id, acc.PhoneNumber, acc.EmailAddress);
-                    ReservationAccess.WriteAllReservations(reservationLogic._reservations);
-                    TableAccess.WriteAllTables(reservationLogic._tables);
+                    
 
                     break;
                 // cancel reservation
                 case "2":
                     System.Console.WriteLine("Cancel reservation");
                     Reservation.CancelReservation(acc.Id);
-                    ReservationAccess.WriteAllReservations(reservationLogic._reservations);
-                    TableAccess.WriteAllTables(reservationLogic._tables);
+                    
 
                     break;
                 // see accounts reservation

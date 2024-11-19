@@ -112,7 +112,7 @@ public class AccountsLogic
         }
         if (!password.Any(char.IsSymbol) && !password.Any(char.IsNumber))
         {
-            return "Passwrord must contain a Number or Symbol";
+            return "Password must contain a Number or Symbol";
         }
         else return "Password has been set";
 

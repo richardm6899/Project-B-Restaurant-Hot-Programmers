@@ -30,10 +30,10 @@ public class ReservationLogic
     }
 
     // create reservation with given checks
-    public ReservationModel Create_reservation(int tableID, string name, int clientID, int howMany, DateTime date, string typeofreservation)//tested
+    public ReservationModel Create_reservation(int tableID, string name, int clientID, int howMany, DateTime date, string typeofreservation, string timeslot)//tested
     {
         int new_id = _reservations.Count + 1;
-        ReservationModel reservation = new(new_id, tableID, name, clientID, howMany, date, typeofreservation);
+        ReservationModel reservation = new(new_id, tableID, name, clientID, howMany, date, typeofreservation, timeslot);
         // add reservation to table.reservation list
         AssignTable(tableID, reservation);
         _reservations.Add(reservation);
@@ -41,10 +41,9 @@ public class ReservationLogic
         AccountModel acc = accountsLogic.GetById(clientID);
         if (acc.ReservationIDs == null)
         {
-            acc.ReservationIDs = new();
-            acc.ReservationIDs.Add(reservation.Id);
+            acc.ReservationIDs = new List<int>(); // Initialize the list
         }
-        else acc.ReservationIDs.Add(reservation.Id);
+        acc.ReservationIDs.Add(reservation.Id);
         accountsLogic.UpdateList(acc);
 
         ReservationAccess.WriteAllReservations(_reservations);
@@ -123,21 +122,26 @@ public class ReservationLogic
     //     }
 
     // }
-    public void CheckDate(DateTime date)
+    public void CheckDate(DateTime date, string timeSlot)
     {
-        HashSet<int> tables_to_remove = new();
+        // Create a collection to hold IDs of tables that are already booked
+        HashSet<int> bookedTableIds = new();
 
-        // Collect IDs of tables that are already booked at the same time of day
+        // Identify tables that have reservations on the specified date and time slot
         foreach (var table in _tables)
         {
-            if (table.Reservations.Any(res => res.Date == date))
+            // Check if the table has any reservation matching the given date and time slot
+            bool isBooked = table.Reservations.Any(reservation =>
+                reservation.Date == date && reservation.TimeSlot == timeSlot);
+
+            if (isBooked)
             {
-                tables_to_remove.Add(table.Id);
+                bookedTableIds.Add(table.Id); // Add the table's ID to the set
             }
         }
 
-        // Remove all tables from AvailableTables if their ID is in tables_to_remove
-        AvailableTables.RemoveAll(table => tables_to_remove.Contains(table.Id));
+        // Remove all tables from AvailableTables that have matching IDs in bookedTableIds
+        AvailableTables.RemoveAll(table => bookedTableIds.Contains(table.Id));
     }
 
     // check which table person is allowed to book based on how many people are coming
@@ -190,11 +194,12 @@ public class ReservationLogic
 
                 reservation.Status = "Canceled";
                 UnassignTable(reservation_id);
-                ReservationAccess.WriteAllReservations(_reservations);
+                
                 if (GetReceiptById(reservation_id) != null)
                 {
                     GetReceiptById(reservation_id).Status = "Canceled";
                 }
+                ReservationAccess.WriteAllReservations(_reservations);
                 TableAccess.WriteAllTables(_tables);
                 ReceiptAccess.WriteAllReceipts(_receipts);
 
@@ -365,7 +370,7 @@ public class ReservationLogic
     public string DisplayReceipt(ReceiptModel receipt)
     {
         string return_string = "";
-     
+
         return_string += $" -----------------------\n";
         return_string += $"|     Hot Retaurant     |\n";
         return_string += $"|~~~~~~~~~~~~~~~~~~~~~~~|\n";
@@ -407,5 +412,27 @@ public class ReservationLogic
     // return_string += $"|{receipt.Cost}                 |\n";
     // return_string += $"|                   |\n";
     // return_string += $" -------------------\n";
+
+    // timeslot --------------------------------------------
+    public static string TimSlotChooser(string id)
+    {
+        if (id == "1")
+        {
+            return "Lunch (12:00 - 14:00)";
+        }
+        else if (id == "2")
+        {
+            return "Dinner 1 (17:00 - 19:00)";
+        }
+        else if (id == "3")
+        {
+            return "Dinner 2 (19:00 - 21:00)";
+        }
+        else if (id == "4")
+        {
+            return "Dinner 3 (21:00 - 23:00)";
+        }
+        return null;
+    }
 
 }
