@@ -11,6 +11,10 @@
             "Saturday: 12:00 - 24:00",
             "Sunday: 12:00 - 22:00"
         ],
+        "closedDates": [
+            "24/12/2024",
+            "25/12/2024"
+          ],
         "location": "Wijhaven 107, 3011 WN Rotterdam",
         "phoneNumber": "06 74825483",
         "emailAddress": "HotSeat@info.nl",
