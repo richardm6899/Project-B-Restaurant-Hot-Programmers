@@ -200,7 +200,6 @@ public class ReservationLogic
 
                 return reservation;
             }
-
         }
 
         return null;

@@ -67,20 +67,28 @@ static class Reservation
                         // can be more personalised in terms of what the user filled in wrong by making returns numbers
                         if (reservationlogic.IsValidDate(Date))
                         {
+                            if (RestaurantLogic.closed_Day(Date))
+                            {
+                                Console.WriteLine("Sorry, the restaurant is closed that day.");
+                                Console.WriteLine($"The next open day is: {RestaurantLogic.next_Open_Day(Date)}");
+                            }
+                            else
+                            {
+                                dateCheck = false;
+                            }
 
-                            dateCheck = false;
                         }
                         else
                         {
                             System.Console.WriteLine("Invalid date entered. Try again");
-                            System.Console.WriteLine("[enter]");
+                            System.Console.WriteLine("[enter] inside");
                             System.Console.ReadLine();
                         }
                     }
                     else
                     {
                         System.Console.WriteLine("Invalid date entered. Try again");
-                        System.Console.WriteLine("[enter]");
+                        System.Console.WriteLine("[enter] outside");
                         System.Console.ReadLine();
                     }
 
@@ -172,7 +180,7 @@ static class Reservation
                                 ReservationModel Reservation = reservationlogic.Create_reservation(TableID, name, clientID, HowMany, Date, typeofreservation);
                                 TableAccess.LoadAllTables();
                                 ReservationAccess.LoadAllReservations();
-                                ReceiptModel receipt = reservationlogic.CreateReceipt(Reservation, cost, number, email );
+                                ReceiptModel receipt = reservationlogic.CreateReceipt(Reservation, cost, number, email);
 
                                 System.Console.WriteLine(reservationlogic.DisplayReservation(Reservation.Id));
                                 System.Console.WriteLine();
