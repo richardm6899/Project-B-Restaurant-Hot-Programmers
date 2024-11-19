@@ -22,6 +22,7 @@ static class Reservation
                 bool howmanyCheck = true;
                 bool tableIDcheck = true;
                 DateTime Date = default;
+                string TimeSlot = "";
                 int HowMany = 0;
                 while (howmanyCheck)
                 {
@@ -72,6 +73,29 @@ static class Reservation
                         {
 
                             dateCheck = false;
+                            bool timeslotbool = true;
+                            while (timeslotbool)
+                            {
+                                System.Console.WriteLine("In what timeslot would you like to book your reservation: \n1. 12:00 - 14:00\n2. 17:00 - 19:00\n3. 19:00 - 21:00\n4. 21:00 - 23:00\nChoose id:");
+                                string timeslotIdcheck = Console.ReadLine();
+                                TimeSlot = ReservationLogic.TimSlotChooser(timeslotIdcheck);
+                                if (TimeSlot != null)
+                                {
+                                    //    check if valid time slot
+                                    System.Console.WriteLine($"Time slot {TimeSlot} chosen.");
+                                    System.Console.WriteLine("[enter]");
+                                    System.Console.ReadLine();
+                                    timeslotbool = false;
+
+                                }
+                                else
+                                {
+                                    System.Console.WriteLine("Invalid ID entered. Try again");
+                                    System.Console.WriteLine("[enter]");
+                                    System.Console.ReadLine();
+                                }
+                            }
+
                         }
                         else
                         {
@@ -91,7 +115,7 @@ static class Reservation
                 }
 
                 // check if not table is not already booked at same day/time
-                reservationlogic.CheckDate(Date);
+                reservationlogic.CheckDate(Date, TimeSlot);
                 // show available tables
                 if (reservationlogic.AvailableTables.Count == 0)
                 {
@@ -173,9 +197,9 @@ static class Reservation
                             if (confirmation == "Y")
                             {
 
-                                ReservationModel Reservation = reservationlogic.Create_reservation(TableID, name, clientID, HowMany, Date, typeofreservation);
-                                TableAccess.LoadAllTables();
-                                ReservationAccess.LoadAllReservations();
+
+                                ReservationModel Reservation = reservationlogic.Create_reservation(TableID, name, clientID, HowMany, Date, typeofreservation, TimeSlot);
+
                                 ReceiptModel receipt = reservationlogic.CreateReceipt(Reservation, cost, number, email);
 
                                 System.Console.WriteLine(reservationlogic.DisplayReservation(Reservation.Id));
@@ -264,8 +288,7 @@ static class Reservation
                                             ReservationModel reservation = reservationlogic.GetReservationById(reservationid);
                                             System.Console.WriteLine(reservationlogic.DisplayReservation(reservation.Id) + " has been canceled.\n");
                                             reservationlogic.RemoveReservationByID(reservationid);
-                                            TableAccess.LoadAllTables();
-                                            ReservationAccess.LoadAllReservations();
+                                            
                                             System.Console.WriteLine("[enter]");
                                             Console.ReadLine();
 

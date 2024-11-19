@@ -23,6 +23,9 @@ public class ReservationModel
     [JsonPropertyName("date")]
     public DateTime Date { get; set; }
 
+    [JsonPropertyName("timeslot")]
+    public string TimeSlot { get; set; }
+
     [JsonPropertyName("status")]
     public string Status { get; set; }
 
@@ -30,7 +33,8 @@ public class ReservationModel
     public string TypeOfReservation { get; set; }
 
 
-    public ReservationModel(int id, int tableID, string name, int clientID, int howMany, DateTime date, string typeofreservation)
+
+    public ReservationModel(int id, int tableID, string name, int clientID, int howMany, DateTime date, string typeofreservation, string timeslot)
     {
         Id = id;
 
@@ -41,6 +45,7 @@ public class ReservationModel
         HowMany = howMany;
 
         Date = Convert.ToDateTime(date);
+        TimeSlot = timeslot;
         Status = "Ongoing";
         TypeOfReservation = typeofreservation;
     }
