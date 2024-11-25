@@ -26,7 +26,7 @@ public class TestReservationLogic
 
         TableModel table = reservationlogic.Createtable(10, 9, 10, "Regular");
         // create reservation and assign to table
-        ReservationModel reservation = reservationlogic.Create_reservation(table.Id, "Yapper", 10, 10, DateTime.Today, "Regular");
+        ReservationModel reservation = reservationlogic.Create_reservation(table.Id, "Yapper", 10, 10, DateTime.Today, "Regular", null);
         Assert.AreEqual(reservationlogic._reservations.Last().Id, reservation.Id);
         Assert.AreEqual("Yapper", reservation.Name);
         Assert.AreEqual(10, reservation.ClientID);
@@ -50,7 +50,7 @@ public class TestReservationLogic
     public void TestGetReservationByID()
     {
         ReservationLogic reservationlogic = new();
-        ReservationModel reservation = reservationlogic.Create_reservation(10, "Yapper", 10, 10, DateTime.Today, "Regular");
+        ReservationModel reservation = reservationlogic.Create_reservation(10, "Yapper", 10, 10, DateTime.Today, "Regular", null);
         Assert.AreEqual(reservationlogic.GetReservationById(reservationlogic._reservations.Last().Id).Id, reservation.Id);
 
     }
@@ -88,7 +88,7 @@ public class TestReservationLogic
 
         TableModel table = reservationlogic.Createtable(10, 9, 10, "Regular");
         // create reservation and assign to table
-        ReservationModel reservation = reservationlogic.Create_reservation(table.Id, "Yapper", 10, 10, DateTime.Today, "Regular");
+        ReservationModel reservation = reservationlogic.Create_reservation(table.Id, "Yapper", 10, 10, DateTime.Today, "Regular", null);
 
         //act
         reservationlogic.RemoveReservationByID(reservation.Id);
@@ -105,7 +105,7 @@ public class TestReservationLogic
 
         TableModel table = reservationlogic.Createtable(10, 9, 10, "Regular");
         // create reservation and assign to table
-        ReservationModel reservation = reservationlogic.Create_reservation(table.Id, "Yapper", 10, 10, DateTime.Today, "Regular");
+        ReservationModel reservation = reservationlogic.Create_reservation(table.Id, "Yapper", 10, 10, DateTime.Today, "Regular", null);
 
         //act
         ReservationModel remove = reservationlogic.RemoveReservationByID(2000);

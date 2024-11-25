@@ -71,15 +71,15 @@ static class Reservation
                         // can be more personalised in terms of what the user filled in wrong by making returns numbers
                         if (reservationlogic.IsValidDate(Date))
                         {
-                            if (RestaurantLogic.closed_Day(Date))
-                            {
-                                Console.WriteLine("Sorry, the restaurant is closed that day.");
-                                Console.WriteLine($"The next open day is: {RestaurantLogic.next_Open_Day(Date)}");
-                            }
-                            else
-                            {
+                            // if (RestaurantLogic.closed_Day(Date))
+                            // {
+                            //     Console.WriteLine("Sorry, the restaurant is closed that day.");
+                            //     Console.WriteLine($"The next open day is: {RestaurantLogic.next_Open_Day(Date)}");
+                            // }
+                            // else
+                            // {
                                 dateCheck = false;
-                            }
+                            // }
                           
                             bool timeslotbool = true;
                             while (timeslotbool)
@@ -204,7 +204,7 @@ static class Reservation
 
                                 ReservationModel Reservation = reservationlogic.Create_reservation(TableID, name, clientID, HowMany, Date, typeofreservation, TimeSlot);
                                 ReceiptModel receipt = reservationlogic.CreateReceipt(Reservation, cost, number, email);
-                                System.Console.WriteLine(reservationlogic.DisplayReservation(Reservation.Id));
+                                System.Console.WriteLine(reservationlogic.DisplayReservationByID(Reservation.Id));
                                 System.Console.WriteLine();
                                 System.Console.WriteLine("This is your receipt for now: ");
 
@@ -272,7 +272,7 @@ static class Reservation
                             if (int.TryParse(str_id, out int reservationid))
                             {
                                 // can only choose id if in reserved by person
-                                if (reservationlogic.DisplayReservation(reservationid) != null && reservationlogic.IsReservationInAccount(clientID, reservationid).Contains(reservationid))
+                                if (reservationlogic.DisplayReservationByID(reservationid) != null && reservationlogic.IsReservationInAccount(clientID, reservationid).Contains(reservationid))
                                 {
 
                                     ReservationIDCheck = false;
@@ -280,7 +280,7 @@ static class Reservation
                                     while (confirmation)
                                     {
 
-                                        System.Console.WriteLine(reservationlogic.DisplayReservation(reservationid));
+                                        System.Console.WriteLine(reservationlogic.DisplayReservationByID(reservationid));
                                         System.Console.WriteLine("Are You sure you want to cancel this reservation? (Y/N)");
 
                                         string choice2 = Console.ReadLine().ToUpper();
@@ -288,7 +288,7 @@ static class Reservation
                                         {
                                             Console.Clear();
                                             ReservationModel reservation = reservationlogic.GetReservationById(reservationid);
-                                            System.Console.WriteLine(reservationlogic.DisplayReservation(reservation.Id) + " has been canceled.\n");
+                                            System.Console.WriteLine(reservationlogic.DisplayReservationByID(reservation.Id) + " has been canceled.\n");
                                             reservationlogic.RemoveReservationByID(reservationid);
                                             
                                             System.Console.WriteLine("[enter]");
