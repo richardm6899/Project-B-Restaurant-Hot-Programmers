@@ -60,7 +60,7 @@ class AdminMenu
                 //  see the food menu
                 case "4":
                     // add question with what allergies to look at if admin wants to look at allergies
-                    FoodMenuDisplay.StartFoodMenu(acc.Allergies);
+                    FoodMenuDisplay.Start();
 
                     break;
 

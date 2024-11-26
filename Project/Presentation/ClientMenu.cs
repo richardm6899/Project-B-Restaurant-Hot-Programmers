@@ -46,11 +46,12 @@ class ClientMenu
                     break;
                 //  see the food menu
                 case "4":
-                    FoodMenuDisplay.StartFoodMenu(acc.Allergies);
+                    FoodMenuDisplay.Start();
 
                     break;
                 // see restaurant info
                 case "5":
+
                     RestaurantInfo.Start();
 
                     break;
