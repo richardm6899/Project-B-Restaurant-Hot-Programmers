@@ -133,97 +133,103 @@ static class Reservation
                 while (tableIDcheck)
                 {
 
-                    System.Console.WriteLine("These are the available tables:");
-                    System.Console.WriteLine("---------------------------------------");
-                    System.Console.WriteLine(reservationlogic.PrintAvailableTables()); ;
+
+
                     // choose tables check
                     System.Console.WriteLine("Where would you like to sit.\nChoose the table id of the table.");
                     bool TableIdValid = false;
-                    string tableID = Console.ReadLine();
-                    if (int.TryParse(tableID, out int TableID))
+                    int TableID = reservationlogic.DisplayRestaurant();
+                    if (TableID == 0)
                     {
-                        typeofreservation = reservationlogic.TypeOfReservation(TableID);
+                        break;
+                    }
+                    typeofreservation = reservationlogic.TypeOfReservation(TableID);
 
-                        // check given id is one of available tables id
-                        foreach (var table in reservationlogic.AvailableTables)
+                    // check given id is one of available tables id
+                    foreach (var table in reservationlogic.AvailableTables)
+                    {
+                        if (table.Id == TableID)
                         {
-                            if (table.Id == TableID)
+
+                            bool hotSeatConfirmation = true;
+
+                            if (typeofreservation == "HotSeat")
                             {
-
-                                bool hotSeatConfirmation = true;
-
-                                if (typeofreservation == "HotSeat")
+                                while (hotSeatConfirmation)
                                 {
-                                    while (hotSeatConfirmation)
+                                    Console.WriteLine("Are you sure you want to sit a HotSeat? (Y/N)");
+                                    Console.WriteLine("It cost € 10 extra");
+                                    string choiceHotSeat = Console.ReadLine().ToUpper();
+                                    if (choiceHotSeat == "Y")
                                     {
-                                        Console.WriteLine("Are you sure you want to sit a HotSeat? (Y/N)");
-                                        Console.WriteLine("It cost € 10 extra");
-                                        string choiceHotSeat = Console.ReadLine().ToUpper();
-                                        if (choiceHotSeat == "Y")
-                                        {
-                                            hotSeatConfirmation = false;
-                                            TableIdValid = true;
-                                            cost = 60;
-                                            Console.WriteLine("HotSeat chosen");
-                                            Console.WriteLine("[enter]");
-                                            Console.ReadLine();
-                                        }
-                                        else if (choiceHotSeat == "N")
-                                        {
-                                            hotSeatConfirmation = false;
-                                            Console.WriteLine("going back.....");
-                                            Console.WriteLine("[enter]");
-                                            Console.ReadLine();
-                                        }
-                                        else
-                                        {
-                                            Console.WriteLine("Invalid Input");
-                                            Console.WriteLine("[enter]");
-                                            Console.ReadLine();
-                                        }
+                                        hotSeatConfirmation = false;
+                                        TableIdValid = true;
+                                        cost = 60;
+                                        Console.WriteLine("HotSeat chosen");
+                                        Console.WriteLine("[enter]");
+                                        Console.ReadLine();
+                                    }
+                                    else if (choiceHotSeat == "N")
+                                    {
+                                        hotSeatConfirmation = false;
+                                        Console.WriteLine("going back.....");
+                                        Console.WriteLine("[enter]");
+                                        Console.ReadLine();
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Invalid Input");
+                                        Console.WriteLine("[enter]");
+                                        Console.ReadLine();
                                     }
                                 }
-                                else
-                                {
-                                    TableIdValid = true;
-                                }
-                            }
-
-                        }
-
-
-                        if (TableIdValid)
-                        {
-                            System.Console.WriteLine("-----------------------------------------");
-                            System.Console.WriteLine("Do you want to sit a this table?(Y/N)\n");
-                            System.Console.WriteLine(reservationlogic.displayAvailableTable(TableID)); ;
-
-                            string confirmation = Console.ReadLine().ToUpper();
-                            if (confirmation == "Y")
-                            {
-
-                                ReservationModel Reservation = reservationlogic.Create_reservation(TableID, name, clientID, HowMany, Date, typeofreservation, TimeSlot);
-                                ReceiptModel receipt = reservationlogic.CreateReceipt(Reservation, cost, number, email);
-                                System.Console.WriteLine(reservationlogic.DisplayReservationByID(Reservation.Id));
-                                System.Console.WriteLine();
-                                System.Console.WriteLine("This is your receipt for now: ");
-
-                                System.Console.WriteLine(reservationlogic.DisplayReceipt(receipt));
-                                System.Console.WriteLine("reservation created");
-                                System.Console.WriteLine("[enter]");
-                                Console.ReadLine();
-                                reservation = false;
-                                tableIDcheck = false;
-                                reservationlogic.AvailableTables.Clear();
-
                             }
                             else
                             {
-                                cost = 50;
+                                TableIdValid = true;
                             }
                         }
 
                     }
+
+
+                    if (TableIdValid)
+                    {
+                        System.Console.WriteLine("-----------------------------------------");
+                        System.Console.WriteLine("Do you want to sit a this table?(Y/N)\n");
+                        System.Console.WriteLine(reservationlogic.displayTable(TableID)); ;
+
+                        string confirmation = Console.ReadLine().ToUpper();
+                        if (confirmation == "Y")
+                        {
+
+
+
+                            ReservationModel Reservation = reservationlogic.Create_reservation(TableID, name, clientID, HowMany, Date, typeofreservation, TimeSlot);
+
+                            ReceiptModel receipt = reservationlogic.CreateReceipt(Reservation, cost, number, email);
+
+
+                            System.Console.WriteLine();
+                            System.Console.WriteLine("This is your receipt for now: ");
+
+                            System.Console.WriteLine(reservationlogic.DisplayReceipt(receipt));
+                            System.Console.WriteLine("reservation created");
+                            System.Console.WriteLine("[enter]");
+                            Console.ReadLine();
+                            reservation = false;
+                            tableIDcheck = false;
+                            reservationlogic.AvailableTables.Clear();
+                          Console.Clear();
+
+                        }
+                        else
+                        {
+                            cost = 50;
+                        }
+                    }
+
+
                     else
                     {
                         System.Console.WriteLine("invalid input");
@@ -290,9 +296,10 @@ static class Reservation
                                             ReservationModel reservation = reservationlogic.GetReservationById(reservationid);
                                             System.Console.WriteLine(reservationlogic.DisplayReservationByID(reservation.Id) + " has been canceled.\n");
                                             reservationlogic.RemoveReservationByID(reservationid);
-                                            
+
                                             System.Console.WriteLine("[enter]");
                                             Console.ReadLine();
+                                            Console.Clear();
 
                                             confirmation = false;
                                         }

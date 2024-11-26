@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 // to fix: reservation id duplicates, reservation id and prob table id can be duplicate,
 //for now it chooses the first item in the list with the id
@@ -439,7 +440,7 @@ public class ReservationLogic
     public ReceiptModel CreateReceipt(ReservationModel reservation, int cost, string number, string email)
     {
         int id = _receipts.Count() + 1;
-        ReceiptModel receipt = new(id, reservation.Id, reservation.ClientID, cost, reservation.Date, reservation.Name, number, email);
+        ReceiptModel receipt = new(id, reservation.Id, reservation.ClientID, cost, reservation.Date, reservation.TimeSlot, reservation.Name, number, email, reservation.TypeOfReservation, reservation.TableID);
         _receipts.Add(receipt);
         ReceiptAccess.WriteAllReceipts(_receipts);
         return receipt;
@@ -448,22 +449,33 @@ public class ReservationLogic
     {
         string return_string = "";
 
-        return_string += $" -----------------------\n";
-        return_string += $"|     Hot Retaurant     |\n";
-        return_string += $"|~~~~~~~~~~~~~~~~~~~~~~~|\n";
-        return_string += $"|Status: {receipt.Status}        |\n";
-        return_string += $"|Date: {receipt.Date.ToShortDateString()}       |\n";
-        return_string += $"|Client Name: {receipt.Name}       |\n";
-        return_string += $"|Client Email: {receipt.Email}           |\n";
-        return_string += $"|Reservation no.{receipt.ReservationId}  |\n";
-        return_string += $"|Ordered:           |\n";
-        return_string += $"|                   |\n";
-        return_string += $"|total:             |\n";
-        return_string += $"|~~~~~~~~~~~~~~~~~~~|\n";
-        return_string += $"|{receipt.Cost}                 |\n";
-        return_string += $"|                   |\n";
-        return_string += $" -------------------\n";
+        return_string += $" -------------------------------------------- \n";
+        return_string += $"          Hot Restaurant                       \n";
+        return_string += $"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  \n";
+        return_string += $" Reservation No.: {receipt.ReservationId,-13}  \n";
+        return_string += $" Date:            {receipt.Date.ToShortDateString(),-13}\n";
+        return_string += $" TimeSlot:        {receipt.TimeSlot.Split()[0],-13}\n";
+        return_string += $"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
+        return_string += $" Name:            {receipt.Name,-13}\n";
+        return_string += $" Email:           {receipt.Email,-13}\n";
+        return_string += $"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
+        return_string += $" Table No.:       {receipt.TableID,-13}\n";
+        return_string += $" Type:            {receipt.TypeOfReservation,-13}\n";
+        return_string += $"---------------------------------------------\n";
+        return_string += $" Ordered:                             \n";
+        return_string += $"                                      \n";
+        return_string += $" Total:                               \n";
+        return_string += $"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
+        return_string += $" Cost:            {receipt.Cost,-13}\n";
+        return_string += $"                                     \n";
+        return_string += $" --------------------------------------------- \n";
+
         return return_string;
+
+
+
+
+
     }
     public ReceiptModel GetReceiptById(int id)
     {
@@ -512,4 +524,137 @@ public class ReservationLogic
         return null;
     }
 
+
+
+
+
+    public int DisplayRestaurant()
+    {
+        // Initialize restaurant layout using a List of Lists
+        var RestaurantLayout = new List<List<string>>
+    {
+        new() {"[K]","[K]","[K]","[K]","[K]","[H:16]", "[H:17]"},
+        new() { "[R:1]", "[R:2]", "[R:3]", "[R:4]", "[R:5]", "[R:6]" ,"[H:18]",},
+        new() { "[R:7]", "[R:8]", "[R:9]", "[R:10]", "[R:11]", "[R:12]",  "[H:19]" },
+        new() { "[R:13]", "[R:14]", "[R:15]", "[H:20]", "[H:21]", "[H:22]", "[H:23]" }
+    };
+
+        List<string> availableTableIDs = new List<string>() { };
+        foreach (var table in AvailableTables)
+        {
+            availableTableIDs.Add(Convert.ToString(table.Id));
+        }
+
+        int currentRow = 0;
+        int currentCol = 0;
+        bool running = true;
+        while (running)
+        {
+            Console.Clear();
+
+            // Render the layout
+            Console.ForegroundColor = ConsoleColor.Green;
+            System.Console.WriteLine("(R)egular seats have a 50€ deposist.");
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            System.Console.WriteLine("(H)otSeats Cost an extra 10 € on top of your 50 € deposit");
+            Console.ForegroundColor = ConsoleColor.Red;
+            System.Console.WriteLine("[X] These Tables are already booked for this timeslot");
+            Console.ForegroundColor = ConsoleColor.White;
+            System.Console.WriteLine("---------------------------------------------------------");
+            for (int row = 0; row < RestaurantLayout.Count; row++)
+            {
+                for (int col = 0; col < RestaurantLayout[row].Count; col++)
+                {
+                    string table = RestaurantLayout[row][col];
+                    bool isCursorPosition = row == currentRow && col == currentCol;
+
+
+                    if (isCursorPosition)
+                    {
+                        Console.ForegroundColor = ConsoleColor.DarkYellow;
+                        Console.Write("[X]");
+                    }
+                    else if (table.Contains("H"))
+                    {
+                        string id = table.Split(":")[1].Trim(']');
+                        if (availableTableIDs.Contains(id))
+                        {
+                            Console.ForegroundColor = ConsoleColor.DarkMagenta;
+                        }
+                        else
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            table = "[X]";
+                        }
+                        Console.Write(table);
+                    }
+                    else if (table.Contains("R"))
+                    {
+                        string id = table.Split(":")[1].Trim(']');
+                        if (availableTableIDs.Contains(id))
+                        {
+                            Console.ForegroundColor = ConsoleColor.Green;
+                        }
+                        else
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            table = "[X]";
+                        }
+                        Console.Write(table);
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.Write(table);
+                    }
+
+                    Console.ResetColor();
+                    Console.Write(" "); // Add spacing between items
+                }
+                Console.WriteLine(); // Move to the next row
+            }
+
+            // Instructions
+            Console.WriteLine("\n-------------------------------------------------------");
+            Console.WriteLine("\nUse arrow keys to move, Enter to book, and Esc to exit.");
+
+            // Read key input
+            var key = Console.ReadKey(true).Key;
+
+            if (key == ConsoleKey.UpArrow && currentRow > 0) currentRow--;
+            if (key == ConsoleKey.DownArrow && currentRow < RestaurantLayout.Count - 1) currentRow++;
+            if (key == ConsoleKey.LeftArrow && currentCol > 0) currentCol--;
+            if (key == ConsoleKey.RightArrow && currentCol < RestaurantLayout[currentRow].Count - 1) currentCol++;
+
+            // Booking a table
+            if (key == ConsoleKey.Enter)
+            {
+                string selectedTable = RestaurantLayout[currentRow][currentCol];
+
+                if (selectedTable.Contains("R") || selectedTable.Contains("H"))
+                {
+                    string id = selectedTable.Split(":")[1].Trim(']');
+                    if (availableTableIDs.Contains(id))
+                    {
+                        RestaurantLayout[currentRow][currentCol] = "[X]";
+                        availableTableIDs.Remove(id);
+                        return Convert.ToInt32(id);
+                    }
+                    else
+                    {
+                        Console.WriteLine("\nInvalid table chosen.");
+                        Console.ReadKey(true);
+                    }
+                }
+            }
+            // Exit on Esc
+            if (key == ConsoleKey.Escape)
+                return 0;
+
+        }
+        return 0;
+    }
+
 }
+
+

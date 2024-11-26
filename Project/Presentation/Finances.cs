@@ -19,18 +19,20 @@ static class Finances
             System.Console.WriteLine("Enter 1 to see profit information");
             System.Console.WriteLine("Enter 2 to see reservation information");
             System.Console.WriteLine("Enter 3 to Quit");
+            System.Console.WriteLine("----------------------------------------");
             string choice = Console.ReadLine();
-
+            Console.Clear();
             if (choice == "1")
             {
                 bool timeframe1 = true;
                 while (timeframe1)
                 {
-                    System.Console.WriteLine("In what timeframe would you like to see the profits made? (day/week/month/year/total)");
+                    System.Console.WriteLine("In what timeframe would you like to see the profits made? (day/week/month/year/total/(Q))");
+
                     string choice2 = Console.ReadLine().ToLower();
                     if (choice2 == "day")
                     {
-                        System.Console.WriteLine("enter date: ");
+                        System.Console.WriteLine("enter date: (mm/dd/yyyy)");
                         string date = Console.ReadLine();
                         if (DateTime.TryParse(date, out DateTime real_date))
                         {
@@ -50,7 +52,7 @@ static class Finances
                     }
                     else if (choice2 == "week")
                     {
-                        System.Console.WriteLine("enter date: ");
+                        System.Console.WriteLine("What is the date of the week you want to calculate? (mm/dd/yyyy)");
                         string date = Console.ReadLine();
                         if (DateTime.TryParse(date, out DateTime real_date))
                         {
@@ -72,8 +74,12 @@ static class Finances
                     }
                     else if (choice2 == "month")
                     {
-                        System.Console.WriteLine("enter date: ");
-                        string date = Console.ReadLine();
+                        System.Console.WriteLine("enter month: (e.g 1)");
+                        string Month = Console.ReadLine();
+                        System.Console.WriteLine("enter year: ");
+                        string Year = Console.ReadLine();
+                        string date = $"{Month}/01/{Year}";
+
                         if (DateTime.TryParse(date, out DateTime real_date))
                         {
                             System.Console.WriteLine($"Total profits made in the {real_date.Date.Month} Month of {real_date.Date.Year}: {financeLogic.ProfitsMonth(real_date)}");
@@ -94,8 +100,9 @@ static class Finances
                     else if (choice2 == "year")
                     {
 
-                        System.Console.WriteLine("enter date: ");
-                        string date = Console.ReadLine();
+                        System.Console.WriteLine("enter Year: ");
+                        string Year = Console.ReadLine();
+                        string date = $"01/01/{Year}";
                         if (DateTime.TryParse(date, out DateTime real_date))
                         {
                             System.Console.WriteLine($"Total profits made in the year {real_date.Date.Year}: {financeLogic.ProfitsYear(real_date)}");
@@ -117,9 +124,15 @@ static class Finances
                         System.Console.ReadLine();
                         timeframe1 = false;
                     }
+
+
+                    else if (choice == "q")
+                    {
+                        timeframe1 = false;
+                    }
                     else
                     {
-                        System.Console.WriteLine("Invalid input enter (day/week/month/year/total)");
+                        System.Console.WriteLine("Invalid input enter (day/week/month/year/total/(Q))");
                         System.Console.WriteLine("[enter]");
                         Console.ReadLine();
                     }
@@ -134,7 +147,7 @@ static class Finances
                     string choice2 = Console.ReadLine().ToLower();
                     if (choice2 == "day")
                     {
-                        System.Console.WriteLine("enter date: ");
+                        System.Console.WriteLine("enter date: (mm/dd/yyyy)");
                         string date = Console.ReadLine();
                         if (DateTime.TryParse(date, out DateTime real_date))
                         {
@@ -154,7 +167,7 @@ static class Finances
                     }
                     else if (choice2 == "week")
                     {
-                        System.Console.WriteLine("enter date: ");
+                        System.Console.WriteLine("What is the date of the week you want to calculate? (mm/dd/yyyy)");
                         string date = Console.ReadLine();
                         if (DateTime.TryParse(date, out DateTime real_date))
                         {
@@ -176,8 +189,11 @@ static class Finances
                     }
                     else if (choice2 == "month")
                     {
-                        System.Console.WriteLine("enter date: ");
-                        string date = Console.ReadLine();
+                        System.Console.WriteLine("enter month: (e.g 1)");
+                        string Month = Console.ReadLine();
+                        System.Console.WriteLine("enter year: ");
+                        string Year = Console.ReadLine();
+                        string date = $"{Month}/01/{Year}";
                         if (DateTime.TryParse(date, out DateTime real_date))
                         {
                             System.Console.WriteLine($"Total reservations made in the {real_date.Date.Month} Month of {real_date.Date.Year}: {financeLogic.TotalReservationsMonth(real_date)}");
@@ -198,8 +214,9 @@ static class Finances
                     else if (choice2 == "year")
                     {
 
-                        System.Console.WriteLine("enter date: ");
-                        string date = Console.ReadLine();
+                        System.Console.WriteLine("enter Year: ");
+                        string Year = Console.ReadLine();
+                        string date = $"01/01/{Year}";
                         if (DateTime.TryParse(date, out DateTime real_date))
                         {
                             System.Console.WriteLine($"Total reservations made in the year {real_date.Date.Year}: {financeLogic.TotalReservationsYear(real_date)}");

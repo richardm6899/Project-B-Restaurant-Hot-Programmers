@@ -19,6 +19,10 @@ public class ReceiptModel
     [JsonPropertyName("date")]
     public DateTime Date { get; set; }
 
+    [JsonPropertyName("timeslot")]
+    public string TimeSlot { get; set; }
+
+
     [JsonPropertyName("name")]
     public string Name { get; set; }
 
@@ -31,8 +35,15 @@ public class ReceiptModel
     [JsonPropertyName("status")]
     public string Status { get; set; }
 
+    [JsonPropertyName("typeofreservation")]
+    public string TypeOfReservation { get; set; }
 
-    public ReceiptModel(int id, int reservationId, int clientId, int cost, DateTime date, string name, string phoneNumber, string email)
+    [JsonPropertyName("tableid")]
+    public int TableID { get; set; }
+
+
+
+    public ReceiptModel(int id, int reservationId, int clientId, int cost, DateTime date,string timeslot, string name, string phoneNumber, string email,string typeofreservation,int tableID)
 
     {
         Id = id;
@@ -40,10 +51,15 @@ public class ReceiptModel
         ClientId = clientId;
         Cost = cost;
         Date = date;
+        TimeSlot = timeslot;
         Name = name;
         Email = email;
         PhoneNumber = phoneNumber;
         Status = "Ongoing";
+        TypeOfReservation = typeofreservation;
+        TableID = tableID;
+        
+
     }
 }
 
