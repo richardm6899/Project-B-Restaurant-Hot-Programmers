@@ -56,27 +56,46 @@ public class TestReservationLogic
     }
 
     [TestMethod]
-    [DataRow("29/11/2024")]
-    [DataRow("01/01/2025")]
+    // today
     // you can only book 3 months ahead
-
-    // date of test: 12/11/2024
-    public void TestIsValidDateTrue(string str_Date)
+    // "==" 3 months
+    // DateTime.Today()  <
+    // :)
+    public void TestIsValidDateTrue()
     {
+        DateTime today = DateTime.Today;
+        DateTime oneday = DateTime.Today.AddDays(1);
+        DateTime twoday = DateTime.Today.AddDays(2);
+        DateTime threemonth = DateTime.Today.AddMonths(3);
+
         ReservationLogic reservationLogic = new();
-        DateTime date = Convert.ToDateTime(str_Date);
-        Assert.AreEqual(true, reservationLogic.IsValidDate(date));
+
+        Assert.AreEqual(true, reservationLogic.IsValidDate(today));
+        Assert.AreEqual(true, reservationLogic.IsValidDate(oneday));
+        Assert.AreEqual(true, reservationLogic.IsValidDate(twoday));
+        Assert.AreEqual(true, reservationLogic.IsValidDate(threemonth));
     }
 
     [TestMethod]
-    [DataRow("01/01/2022")]
-    [DataRow("05/05/2025")]
-
-    public void TestIsValidDateFalse(string str_Date)
+    // DateTime.Today( ) >
+    // -1
+    // -2
+    // > 3 months 1 day
+    // > 3 months 2 day
+    // :(
+    public void TestIsValidDateFalse()
     {
+        DateTime oneday = DateTime.Today.AddDays(-1);
+        DateTime twoday = DateTime.Today.AddDays(-2);
+        DateTime threemonthoneday = DateTime.Today.AddMonths(3).AddDays(1);
+        DateTime threemonthtwoday = DateTime.Today.AddMonths(3).AddDays(2);
         ReservationLogic reservationLogic = new();
-        DateTime date = Convert.ToDateTime(str_Date);
-        Assert.AreEqual(false, reservationLogic.IsValidDate(date));
+
+        Assert.AreEqual(false, reservationLogic.IsValidDate(oneday));
+        Assert.AreEqual(false, reservationLogic.IsValidDate(twoday));
+        Assert.AreEqual(false, reservationLogic.IsValidDate(threemonthoneday));
+        Assert.AreEqual(false, reservationLogic.IsValidDate(threemonthtwoday));
+
     }
 
     [TestMethod]
@@ -153,6 +172,44 @@ public class TestReservationLogic
         Assert.AreEqual(null, type);
     }
 
+    [TestMethod]
+    [DataRow("1")]
+    [DataRow("2")]
+    [DataRow("3")]
+    [DataRow("4")]
+
+    //:)
+    public void TimSlotChooser_ValidID_Timeslot(string id)
+    {
+        //arrange 
 
 
+        //act
+        string TimeSlot = ReservationLogic.TimSlotChooser(id);
+        //assert
+
+        Assert.AreNotEqual(null, TimeSlot); // timeslot would be null if input was different
+    }
+    [TestMethod]
+    [DataRow("0")]
+    [DataRow("5")]
+    [DataRow("0")]
+    [DataRow(null)]
+
+    //:(
+    public void TimSlotChooser_InValidID_Null(string id)
+    {
+        //arrange 
+
+
+        //act
+        string TimeSlot = ReservationLogic.TimSlotChooser(id);
+        //assert
+        Assert.AreEqual(null, TimeSlot);
+    }
 }
+
+
+
+
+

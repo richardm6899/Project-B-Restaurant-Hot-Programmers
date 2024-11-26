@@ -178,7 +178,7 @@ static class Reservation
                                     }
                                     else
                                     {
-                                        Console.WriteLine("Invalid Input");
+                                        Console.WriteLine("Invalid Input1");
                                         Console.WriteLine("[enter]");
                                         Console.ReadLine();
                                     }
@@ -230,13 +230,7 @@ static class Reservation
                     }
 
 
-                    else
-                    {
-                        System.Console.WriteLine("invalid input");
-                        System.Console.WriteLine("[enter]");
-                        System.Console.ReadLine();
-                    }
-
+                    
                 }
             }
             else if (Client_answer == false)
