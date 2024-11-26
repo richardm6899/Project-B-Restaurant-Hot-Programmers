@@ -56,7 +56,7 @@ class ClientMenu
                                 Console.ForegroundColor = ConsoleColor.Red;
                                 System.Console.WriteLine("---------------------------------------------------");
                                 Console.ResetColor();
-                                System.Console.WriteLine($"Name: {reservation.Name}\nTable Id: {reservation.TableID}\nAmount of people: {reservation.HowMany}\nDate: {reservation.Date.ToShortDateString()} {reservation.TimeSlot}\nStatus: {reservation.Status}");
+                                System.Console.WriteLine($"Name: {reservation.Name}\nTable Id: {reservation.TableID}\nAmount of people: {reservation.HowMany}\nDate: {reservation.Date.ToShortDateString()} {reservation.TimeSlot}\nStatus: {reservation.Status}\nType: {reservation.TypeOfReservation}");
                             }
                             Console.ReadKey();
                             break;
@@ -68,7 +68,7 @@ class ClientMenu
                                 Console.ForegroundColor = ConsoleColor.Blue;
                                 System.Console.WriteLine("---------------------------------------------------");
                                 Console.ResetColor();
-                                System.Console.WriteLine($"Name: {reservation.Name}\nTable Id: {reservation.TableID}\nAmount of people: {reservation.HowMany}\nDate: {reservation.Date.ToShortDateString()} {reservation.TimeSlot}");
+                                System.Console.WriteLine($"Name: {reservation.Name}\nTable Id: {reservation.TableID}\nAmount of people: {reservation.HowMany}\nDate: {reservation.Date.ToShortDateString()} {reservation.TimeSlot}\nType: {reservation.TypeOfReservation}");
                             }
                             Console.ReadKey();
                             break;
@@ -80,7 +80,7 @@ class ClientMenu
                                 Console.ForegroundColor = ConsoleColor.Green;
                                 System.Console.WriteLine("---------------------------------------------------");
                                 Console.ResetColor();
-                                System.Console.WriteLine($"Name: {reservation.Name}\nTable Id: {reservation.TableID}\nAmount of people: {reservation.HowMany}\nDate: {reservation.Date.ToShortDateString()} {reservation.TimeSlot}");
+                                System.Console.WriteLine($"Name: {reservation.Name}\nTable Id: {reservation.TableID}\nAmount of people: {reservation.HowMany}\nDate: {reservation.Date.ToShortDateString()} {reservation.TimeSlot}\nType: {reservation.TypeOfReservation}");
                             }
                             Console.ReadKey();
                             break;
@@ -92,26 +92,40 @@ class ClientMenu
                                 Console.ForegroundColor = ConsoleColor.DarkBlue;
                                 System.Console.WriteLine("---------------------------------------------------");
                                 Console.ResetColor();
-                                System.Console.WriteLine($"Name: {reservation.Name}\nTable Id: {reservation.TableID}\nAmount of people: {reservation.HowMany}\nDate: {reservation.Date.ToShortDateString()} {reservation.TimeSlot}");
+                                System.Console.WriteLine($"Name: {reservation.Name}\nTable Id: {reservation.TableID}\nAmount of people: {reservation.HowMany}\nDate: {reservation.Date.ToShortDateString()} {reservation.TimeSlot}\nType: {reservation.TypeOfReservation}");
                             }
                             Console.ReadKey();
                             break;
 
                         case "5":
-                            System.Console.WriteLine("Enter date to look up dd/mm/yyyy");
-                            string UncheckedDate = Console.ReadLine();
-                            if (DateTime.TryParse(UncheckedDate, out DateTime date))
+                            bool client_searchesDate = true;
+                            do
                             {
-                                List<ReservationModel> dateReservations = reservationLogic.DisplayAllReservationsByDateAndID(acc.Id, date);
-                                foreach (ReservationModel reservation in dateReservations)
+                                System.Console.WriteLine("Enter date to look up dd/mm/yyyy");
+                                string UncheckedDate = Console.ReadLine();
+
+                                if (DateTime.TryParse(UncheckedDate, out DateTime date))
                                 {
-                                    Console.ForegroundColor = ConsoleColor.DarkRed;
-                                    System.Console.WriteLine("---------------------------------------------------");
-                                    Console.ResetColor();
-                                    System.Console.WriteLine($"Name: {reservation.Name}\nTable Id: {reservation.TableID}\nAmount of people: {reservation.HowMany}\nDate: {reservation.Date.ToShortDateString()} {reservation.TimeSlot}");
+                                    List<ReservationModel> dateReservations = reservationLogic.DisplayAllReservationsByDateAndID(acc.Id, date);
+                                    foreach (ReservationModel reservation in dateReservations)
+                                    {
+                                        Console.ForegroundColor = ConsoleColor.DarkRed;
+                                        System.Console.WriteLine("---------------------------------------------------");
+                                        Console.ResetColor();
+                                        System.Console.WriteLine($"Name: {reservation.Name}\nTable Id: {reservation.TableID}\nAmount of people: {reservation.HowMany}\nDate: {reservation.Date.ToShortDateString()} {reservation.TimeSlot}\nType: {reservation.TypeOfReservation}");
+                                    }
+                                    if(dateReservations.Count() == 0)
+                                    {
+                                        System.Console.WriteLine("No reservations found on this day.");
+                                    }
+                                    Console.ReadKey();
+                                    client_searchesDate = false;
                                 }
-                                Console.ReadKey();
-                            }
+                                else
+                                {
+                                    System.Console.WriteLine("Invalid input, please try again");
+                                }
+                            } while (client_searchesDate);
                             break;
 
                         case "6":
