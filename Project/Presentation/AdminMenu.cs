@@ -16,11 +16,12 @@ class AdminMenu
             System.Console.WriteLine("Enter 3 to see all reservations.");
             System.Console.WriteLine("Enter 4 to see the food menu.");
             System.Console.WriteLine("Enter 5 to edit food menu.");
-            System.Console.WriteLine("Enter 6 to see the restaurant info.");
-            System.Console.WriteLine("Enter 7 to see your accounts data.");
-            System.Console.WriteLine("Enter 8 to look at finances.");
-            System.Console.WriteLine("Enter 9 to make en account");
-            System.Console.WriteLine("Enter 10 to log out");
+            System.Console.WriteLine("Enter 6 to see the drinks menu");
+            System.Console.WriteLine("Enter 7 to see the restaurant info.");
+            System.Console.WriteLine("Enter 8 to see your accounts data.");
+            System.Console.WriteLine("Enter 9 to look at finances.");
+            System.Console.WriteLine("Enter 10 to make en account");
+            System.Console.WriteLine("Enter 11 to log out");
 
 
             string user_logged_in_answer = System.Console.ReadLine();
@@ -72,14 +73,20 @@ class AdminMenu
 
                     break;
 
-                // see restaurant info
+                // see drinks
                 case "6":
+                    DrinkMenuDisplay.Start();
+
+                    break;
+
+                // see restaurant info
+                case "7":
                     RestaurantInfo.Start();
 
                     break;
 
                 //  show account data
-                case "7":
+                case "8":
                     System.Console.WriteLine("Your accounts data: ");
                     // full name
                     System.Console.WriteLine("Name: " + acc.FullName);
@@ -94,14 +101,14 @@ class AdminMenu
                     break;
 
                 // look at finances
-                case "8":
+                case "9":
                     System.Console.WriteLine("Look at restaurant finances.");
                     Finances.Finance();
 
                     break;
 
                 // make an account
-                case "9":
+                case "10":
                     System.Console.WriteLine("Create an account:");
                     System.Console.WriteLine("Not implemented yet.");
                     System.Console.WriteLine("[enter]");
@@ -111,7 +118,7 @@ class AdminMenu
                     break;
 
                 // log out
-                case "10":
+                case "11":
                     acc = null;
                     Menu.Start();
                     break;

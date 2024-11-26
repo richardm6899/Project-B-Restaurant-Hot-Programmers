@@ -4,11 +4,7 @@ using System.Text;
 static class UserLogin
 {
     static private AccountsLogic accountsLogic = new AccountsLogic();
-
     static private AccountModel acc = null;
-
-
-
 
     public static void Start()
     {

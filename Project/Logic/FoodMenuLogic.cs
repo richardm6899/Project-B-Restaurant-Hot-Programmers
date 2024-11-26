@@ -1,9 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Net;
-using System.Text.Json;
+
+using System.Security.Authentication;
 
 public class FoodMenuLogic
 {
@@ -21,16 +17,16 @@ public class FoodMenuLogic
         return _foodMenu;
     }
 
-        public List<string> GetAllAllergies()
+    public List<string> GetAllAllergies()
     {
         List<string> Allergies = [];
-        foreach(FoodMenuModel dish in _foodMenu)
+        foreach (FoodMenuModel dish in _foodMenu)
         {
-            foreach(string allergy in dish.Allergies)
+            foreach (string allergy in dish.Allergies)
             {
-                if(!Allergies.Contains(allergy))
+                if (!Allergies.Contains(allergy))
                 {
-                    if(allergy != "none")
+                    if (allergy != "none")
                     {
                         Allergies.Add(allergy);
                     }
@@ -43,18 +39,101 @@ public class FoodMenuLogic
         }
         return Allergies;
     }
+
+    public List<string> GetAllTypes()
+    {
+        List<string> Types = [];
+        foreach(FoodMenuModel dish in _foodMenu)
+        {
+            foreach(string type in dish.Type)
+            {
+                if(!Types.Contains(type))
+                {
+                    if(type != "none")
+                    {
+                        Types.Add(type);
+                    }
+                }
+                else
+                {
+                    continue;
+                }
+            }
+        }
+        return Types;
+    }
     // Method to return food menu item by name
     public FoodMenuModel GetMenuItemByName(string dishName)
     {
         return _foodMenu.FirstOrDefault(item => item.DishName == dishName);
     }
-    
+
     public List<FoodMenuModel> GetMenuExcludingAllergies(List<string> allergiesToAvoid)
+    {
+        return _foodMenu.Where(item =>
+            item.Allergies == null || !item.Allergies.Any(allergy => allergiesToAvoid.Contains(allergy))
+        ).ToList();
+    }
+
+    public List<FoodMenuModel> GetMenuExcludingTypes(List<string> typesToFilter)
+    {
+        // Create a list to store the filtered menu items
+        List<FoodMenuModel> filteredMenu = new List<FoodMenuModel>();
+
+        // Loop through each item in the food menu
+        foreach (var item in _foodMenu)
         {
-            return _foodMenu.Where(item =>
-                item.Allergies == null || !item.Allergies.Any(allergy => allergiesToAvoid.Contains(allergy))
-            ).ToList();
+            if (item.Type == null)
+            {
+                filteredMenu.Add(item);
+            }
+            else
+            {
+                // Check if the item's types contain any of the types to filter
+                bool hasTypeToFilter = false;
+
+                foreach (var type in item.Type)
+                {
+                    if (typesToFilter.Contains(type))
+                    {
+                        hasTypeToFilter = true;
+                        break; // Exit the loop if a type is found
+                    }
+                }
+
+                // If no type to filter is found, add the item to the filtered list
+                if (!hasTypeToFilter)
+                {
+                    filteredMenu.Add(item);
+                }
+            }
         }
+
+        // Return the filtered menu
+        return filteredMenu;
+    }
+
+    
+
+    public List<FoodMenuModel> FilterFoodPreferences(List<string> searchedTypes)
+    {
+        // Create a new list to store the filtered menu items
+        List<FoodMenuModel> filteredMenu = new List<FoodMenuModel>();
+
+        // Iterate over each menu item in the food menu
+        foreach (var menuItem in _foodMenu)
+        {
+            // Check if the item's types are null or if none of its types are in the typesToExclude list
+            if (menuItem.Type == null || !menuItem.Type.Any(type => searchedTypes.Contains(type)))
+            {
+                // Add the item to the filtered menu if it doesn't match any of the excluded types
+                filteredMenu.Add(menuItem);
+            }
+        }
+
+        // Return the filtered menu
+        return filteredMenu;
+    }
 
     public void AddDish(string dishName, float price, string description, List<string> type, List<string> allergies)
     {
@@ -73,25 +152,25 @@ public class FoodMenuLogic
 
 
     public string DeleteDishByName(string dishName)
+    {
+        // Find the dish by name (case-insensitive search)
+        var dishToRemove = _foodMenu.FirstOrDefault(d => d.DishName.Equals(dishName, StringComparison.OrdinalIgnoreCase));
+        if (dishToRemove != null)
         {
-            // Find the dish by name (case-insensitive search)
-            var dishToRemove = _foodMenu.FirstOrDefault(d => d.DishName.Equals(dishName, StringComparison.OrdinalIgnoreCase));
-            if (dishToRemove != null)
+            if (FoodMenuDisplay.ConfirmationForDeletion(dishName))
             {
-                if(FoodMenuDisplay.ConfirmationForDeletion(dishName))
-                {
-                    _foodMenu.Remove(dishToRemove);
-                    
-                    FoodMenuAccess.WriteAll(_foodMenu);
-                    return "Dish was succesfully deleted";   
-                }
-                else
-                {
-                    return "Deletion has stopped.";
-                }
+                _foodMenu.Remove(dishToRemove);
 
+                FoodMenuAccess.WriteAll(_foodMenu);
+                return "Dish was succesfully deleted";
             }
-            
-            return "Dish was not found.";
+            else
+            {
+                return "Deletion has stopped.";
+            }
+
+        }
+
+        return "Dish was not found.";
     }
 }

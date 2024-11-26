@@ -1,24 +1,5 @@
 class MainMenuLogic
 {
-    //  go up
-
-
-    public static void DisplayOptions(string[] options, int selectedIndex)
-    {
-        for (int i = 0; i < options.Length; i++)
-        {
-            if (i == selectedIndex)
-            {
-                Console.ForegroundColor = ConsoleColor.Green; // Highlight the selected option
-                Console.WriteLine($"> {options[i]}");
-                Console.ResetColor();
-            }
-            else
-            {
-                Console.WriteLine($"  {options[i]}");
-            }
-        }
-    }
 
     public static bool Selected(int selectedIndex)
     {

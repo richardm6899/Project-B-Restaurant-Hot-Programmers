@@ -206,7 +206,6 @@ public class ReservationLogic
 
                 return reservation;
             }
-
         }
 
         return null;
@@ -273,7 +272,7 @@ public class ReservationLogic
         }
         return ReturnString;
     }
-    public string DisplayReservation(int reservation_id)
+    public string DisplayReservationByID(int reservation_id)
     {
 
         foreach (var reservation in _reservations)
@@ -288,6 +287,83 @@ public class ReservationLogic
         }
         return null;
     }
+
+    public List<ReservationModel> DisplayAllReservationsByStatus(string status)
+    {
+        List<ReservationModel> reservations = new();
+        if (status == null)
+        {
+            foreach (ReservationModel reservation in _reservations)
+            {
+                reservations.Add(reservation);
+            }
+        }
+        foreach (ReservationModel reservation in _reservations)
+        {
+            if (reservation.Status == status)
+            {
+                reservations.Add(reservation);
+            }
+        }
+        return reservations;
+    }
+
+    public List<ReservationModel> DisplayAllReservationsByDate(DateTime date)
+    {
+        List<ReservationModel> reservations = new();
+        foreach (ReservationModel reservation in _reservations)
+        {
+            if (reservation.Date.Date == date.Date)
+            {
+                reservations.Add(reservation);
+            }
+        }
+        return reservations;
+    }
+
+    public List<ReservationModel> DisplayAllReservationsByStatusAndID(int id, string status)
+    {
+        List<ReservationModel> reservations = new();
+        foreach (ReservationModel reservation in _reservations)
+        {
+            if (status == null && reservation.ClientID == id)
+            {
+                reservations.Add(reservation);
+            }
+            else if (reservation.Status == status && reservation.ClientID == id)
+            {
+                reservations.Add(reservation);
+            }
+        }
+        return reservations;
+    }
+
+    public List<ReservationModel> DisplayAllReservationsByDateAndID(int id, DateTime date)
+    {
+        List<ReservationModel> reservations = new();
+        foreach (ReservationModel reservation in _reservations)
+        {
+            if (reservation.Date.Date == date.Date && reservation.ClientID == id)
+            {
+                reservations.Add(reservation);
+            }
+        }
+        return reservations;
+    }
+
+    public List<ReservationModel> DisplayAllReservationsByClientID(int id)
+    {
+        List<ReservationModel> reservations = new();
+        foreach (ReservationModel reservation in _reservations)
+        {
+            if (reservation.ClientID == id)
+            {
+                reservations.Add(reservation);
+            }
+        }
+        return reservations;
+    }
+    
     public string DisplayReservations(int clientID)
     {
         string ReturnString = "";

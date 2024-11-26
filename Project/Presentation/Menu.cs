@@ -39,7 +39,7 @@ static class Menu
             Console.WriteLine("Use the arrow keys to navigate and press Enter to select:");
 
             // Display Menu
-            MainMenuLogic.DisplayOptions(options, selectedIndex);
+            ChoicesLogic.DisplayOptions(options, selectedIndex);
 
             // Get user key press
             ConsoleKeyInfo keyInfo = Console.ReadKey(true);
