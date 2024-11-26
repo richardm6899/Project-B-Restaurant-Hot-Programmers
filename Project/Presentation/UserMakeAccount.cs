@@ -56,8 +56,7 @@ static class UserMakeAccount
             lastNameLower = Console.ReadLine();
         }
         string LastName = AccountsLogic.CapitalizeFirstLetter(lastNameLower);
-        System.Console.WriteLine(LastName);
-
+        
         // pass
         System.Console.WriteLine("What is you password: ");
         string password = Console.ReadLine();
