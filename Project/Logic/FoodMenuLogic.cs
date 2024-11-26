@@ -1,6 +1,3 @@
-
-using System.Security.Authentication;
-
 public class FoodMenuLogic
 {
     private List<FoodMenuModel> _foodMenu;
@@ -75,6 +72,157 @@ public class FoodMenuLogic
         ).ToList();
     }
 
+    public static void FoodOrDrinksOption(string[] options)
+    {
+        int selectedIndex = 0;
+        bool lookingAtFood = true;
+        while (lookingAtFood)
+        {
+            Console.Clear();
+            Console.ResetColor();
+            ChoicesLogic.DisplayOptions(options, selectedIndex);
+
+            ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+            ConsoleKey key = keyInfo.Key;
+
+            if (key == ConsoleKey.UpArrow)
+            {
+                selectedIndex = (selectedIndex == 0) ? options.Length - 1 : selectedIndex - 1;
+            }
+            // go down
+            else if (key == ConsoleKey.DownArrow)
+            {
+                selectedIndex = (selectedIndex == options.Length - 1) ? 0 : selectedIndex + 1;
+            }
+            // choose
+            else if (key == ConsoleKey.Enter)
+            {
+                // enter selected thing
+                lookingAtFood = FoodMenuLogic.SelectedMenu(selectedIndex);
+            }
+        }
+    }
+
+    private static bool SelectedMenu(int selectedIndex)
+    {
+        switch (selectedIndex)
+        {
+            // look at whole menu
+            case 0:
+                FoodMenuDisplay.StartFoodMenu();
+                break;
+            // filter by
+            case 1:
+                DrinkMenuDisplay.Start();
+                break;
+            // filter by
+            case 2:
+
+                Console.ReadLine();
+                return false; // Exit the loop
+        }
+        return true; // Keep running the menu
+    }
+    public static void GetOptionMain(string[] options)
+    {
+        int selectedIndex = 0;
+        bool lookingAtFood = true;
+        while (lookingAtFood)
+        {
+            Console.Clear();
+            Console.ResetColor();
+            System.Console.WriteLine("Welcome to the food menu.");
+            ChoicesLogic.DisplayOptions(options, selectedIndex);
+
+            ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+            ConsoleKey key = keyInfo.Key;
+
+            if (key == ConsoleKey.UpArrow)
+            {
+                selectedIndex = (selectedIndex == 0) ? options.Length - 1 : selectedIndex - 1;
+            }
+            // go down
+            else if (key == ConsoleKey.DownArrow)
+            {
+                selectedIndex = (selectedIndex == options.Length - 1) ? 0 : selectedIndex + 1;
+            }
+            // choose
+            else if (key == ConsoleKey.Enter)
+            {
+                // enter selected thing
+                lookingAtFood = FoodMenuLogic.MainSelected(selectedIndex);
+            }
+        }
+    }
+    private static bool MainSelected(int selectedIndex)
+    {
+
+        switch (selectedIndex)
+        {
+            // look at whole menu
+            case 0:
+                FoodMenuDisplay.DisplayWholeMenu();
+                break;
+            // filter by
+            case 1:
+               FoodMenuDisplay.TypesFilter();
+                break;
+            // filter by
+            case 2:
+                Console.WriteLine("Not inplemented yet");
+                //FoodMenuDisplay.DisplayByAllergy();
+                break;
+            // return to where the user came from
+            case 3:
+
+                Console.ReadLine();
+                return false; // Exit the loop
+        }
+        return true; // Keep running the menu
+    }
+
+    public static List<FoodMenuModel> GetOptionTypes(string[] options)
+    {
+        FoodMenuLogic foodMenuLogic = new();
+        int selectedIndex = 0;
+        bool lookingAtFood = true;
+        while (lookingAtFood)
+        {
+            Console.Clear();
+            Console.ResetColor();
+            System.Console.WriteLine("Welcome to the types menu.");
+            ChoicesLogic.DisplayOptions(options, selectedIndex);
+
+            ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+            ConsoleKey key = keyInfo.Key;
+
+            if (key == ConsoleKey.UpArrow)
+            {
+                selectedIndex = (selectedIndex == 0) ? options.Length - 1 : selectedIndex - 1;
+            }
+            else if (key == ConsoleKey.DownArrow)
+            {
+                selectedIndex = (selectedIndex == options.Length - 1) ? 0 : selectedIndex + 1;
+            }
+            else if (key == ConsoleKey.Enter)
+            {
+                // Call TypeSelected and exit the menu
+                return foodMenuLogic.TypeSelected(selectedIndex, options);
+            }
+        }
+
+        return null; // Default return in case the loop exits unexpectedly
+    }
+    
+    private List<FoodMenuModel> TypeSelected(int selectedIndex, string[] options)
+    {
+        FoodMenuLogic foodMenuLogic = new();
+
+        List<string>typeToFilter = [];
+        typeToFilter.Add(options[selectedIndex]);
+        
+        return GetMenuExcludingTypes(typeToFilter); // User wants to exit        
+    }
     public List<FoodMenuModel> GetMenuExcludingTypes(List<string> typesToFilter)
     {
         // Create a list to store the filtered menu items
@@ -102,7 +250,7 @@ public class FoodMenuLogic
                 }
 
                 // If no type to filter is found, add the item to the filtered list
-                if (!hasTypeToFilter)
+                if (hasTypeToFilter)
                 {
                     filteredMenu.Add(item);
                 }
@@ -162,7 +310,7 @@ public class FoodMenuLogic
                 _foodMenu.Remove(dishToRemove);
 
                 FoodMenuAccess.WriteAll(_foodMenu);
-                return "Dish was succesfully deleted";
+                return "Dish was successfully deleted";
             }
             else
             {

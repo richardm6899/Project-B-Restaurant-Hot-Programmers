@@ -14,7 +14,7 @@ class MainMenuLogic
                 UserMakeAccount.Start();
                 break;
             case 2: // Look at the Menu
-                FoodMenuDisplay.StartFoodMenu(default);
+                FoodMenuDisplay.Start();
                 break;
             case 3: // Look at Info
                 RestaurantInfo.Start();
