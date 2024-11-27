@@ -382,18 +382,22 @@ public class ReservationLogic
     public List<int> IsReservationInAccount(int clientID, int reservation_id)
     {
         List<int> valid_reservations = new();
+
         foreach (var client in accountsLogic._accounts)
         {
             if (clientID == client.Id)
+
             {
-                foreach (var reservationID in client.ReservationIDs)
-                {
-                    if (reservation_id == reservationID)
+               
+                    foreach (var reservationID in client.ReservationIDs)
                     {
-                        if (GetReservationById(reservation_id).Status != "Canceled")
-                        { valid_reservations.Add(reservation_id); }
+                        if (reservation_id == reservationID)
+                        {
+                            if (GetReservationById(reservation_id).Status != "Canceled")
+                            { valid_reservations.Add(reservation_id); }
+                        }
                     }
-                }
+                
             }
         }
         return valid_reservations;
@@ -418,7 +422,7 @@ public class ReservationLogic
         {
             if (reservation.Status == "Ongoing")
             {
-                Reservations.Add($"reservation details:\nReservation ID: {reservation.Id}\nTable number: {reservation.TableID}\nName: {reservation.Name}\nPersonal ID: {reservation.ClientID}\nPerson Amount: {reservation.HowMany}\nDate of Reservation: {reservation.Date.Date}\nStatus of reservation: {reservation.Status}\n");
+                Reservations.Add($"------------------------\nreservation details:\nReservation ID: {reservation.Id}\nTable number: {reservation.TableID}\nName: {reservation.Name}\nPersonal ID: {reservation.ClientID}\nPerson Amount: {reservation.HowMany}\nDate of Reservation: {reservation.Date.Date}\nStatus of reservation: {reservation.Status}\n");
             }
         }
         return Reservations;
@@ -524,9 +528,26 @@ public class ReservationLogic
         return null;
     }
 
+    public void RemoveReservationsByDate(DateTime date)
+    {
+        foreach (var reservation in _reservations)
+        {
+            if (reservation.Date.Date == date.Date)
+            {
 
+                reservation.Status = "Canceled";
+                UnassignTable(reservation.Id);
 
-
+                if (GetReceiptById(reservation.Id) != null)
+                {
+                    GetReceiptById(reservation.Id).Status = "Canceled";
+                }
+                ReservationAccess.WriteAllReservations(_reservations);
+                TableAccess.WriteAllTables(_tables);
+                ReceiptAccess.WriteAllReceipts(_receipts);
+            }
+        }
+    }
 
     public int DisplayRestaurant()
     {
@@ -656,5 +677,4 @@ public class ReservationLogic
     }
 
 }
-
 

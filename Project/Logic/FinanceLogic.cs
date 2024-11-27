@@ -109,6 +109,13 @@ public class FinanceLogic
     {
         Revenue += cost;
     }
+
+    public static void SubtractFromRevenue(int cost)
+    {
+        Revenue -= cost;
+        //  Users that had a reservation on that day get a refund. (paid out of financials)
+        
+    }
     public int ProfitsDay(DateTime date)
     {
         int total = 0;
@@ -306,4 +313,6 @@ public class FinanceLogic
 
 
     }
+
+
 }
