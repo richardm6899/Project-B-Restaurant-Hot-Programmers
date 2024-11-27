@@ -2,22 +2,24 @@
   {
     "id": 1,
     "tableID": 1,
-    "name": "oli",
+    "name": "richard",
     "clientID": 1,
     "howMany": 1,
     "date": "2024-04-04T00:00:00",
-    "status": "Past",
+    "timeslot": null,
+    "status": "Canceled",
     "typeofreservation": null
   },
   {
     "id": 2,
     "tableID": 11,
-    "name": "TEST",
+    "name": "Thomas Edison",
     "clientID": 2,
     "howMany": 4,
     "date": "2024-04-04T00:00:00",
+    "timeslot": null,
     "status": "Canceled",
-    "typeofreservation": null
+    "typeofreservation": "Regular"
   },
   {
     "id": 3,
@@ -26,6 +28,7 @@
     "clientID": 2,
     "howMany": 2,
     "date": "2025-01-01T00:00:00",
+    "timeslot": null,
     "status": "Ongoing",
     "typeofreservation": null
   },
@@ -36,7 +39,19 @@
     "clientID": 7,
     "howMany": 4,
     "date": "2024-11-15T00:00:00",
+    "timeslot": null,
     "status": "Ongoing",
     "typeofreservation": "Regular"
+  },
+  {
+    "id": 5,
+    "tableID": 13,
+    "name": "richard",
+    "clientID": 8,
+    "howMany": 5,
+    "date": "2024-12-12T00:00:00",
+    "timeslot": null,
+    "status": "Canceled",
+    "typeofreservation": "HotSeat"
   }
 ]

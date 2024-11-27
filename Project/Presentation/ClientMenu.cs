@@ -17,7 +17,8 @@ class ClientMenu
             System.Console.WriteLine("Enter 5 to see the restaurant info.");
             System.Console.WriteLine("Enter 6 to see your accounts data.");
             System.Console.WriteLine("Enter 7 to modify your data.");
-            System.Console.WriteLine("Enter 8 to log out");
+            System.Console.WriteLine("Enter 8 to check your messages."); // check messages if reservation is cancelled
+            System.Console.WriteLine("Enter 9 to log out");
 
             string user_logged_in_answer = System.Console.ReadLine();
             switch (user_logged_in_answer)
@@ -27,14 +28,14 @@ class ClientMenu
                 case "1":
                     System.Console.WriteLine("Make reservation:");
                     Reservation.MakeReservation(acc.FullName, acc.Id, acc.PhoneNumber, acc.EmailAddress);
-                    
+
 
                     break;
                 // cancel reservation
                 case "2":
                     System.Console.WriteLine("Cancel reservation");
                     Reservation.CancelReservation(acc.Id);
-                    
+
 
                     break;
                 // see accounts reservation
@@ -42,12 +43,10 @@ class ClientMenu
                     System.Console.WriteLine("Your reservations: ");
                     System.Console.WriteLine(reservationLogic.DisplayReservations(acc.Id));
                     Console.ReadLine();
-
                     break;
                 //  see the food menu
                 case "4":
                     FoodMenuDisplay.StartFoodMenu(acc.Allergies);
-
                     break;
                 // see restaurant info
                 case "5":
@@ -85,6 +84,29 @@ class ClientMenu
                     ModifyData.Start(acc, accountsLogic);
                     break;
                 case "8":
+                    System.Console.WriteLine("Messages:");
+                    if (MessageLogic.Inbox(acc.Id))
+                    {
+                        Console.WriteLine("You have 1 new message");
+                        Console.ReadLine();
+                        Console.WriteLine("[enter]");
+                        // foreach (var reservation in reservationLogic._reservations)
+                        // {
+                        Console.WriteLine($"Your reservation has been canceled");
+                        Console.ReadLine();
+                        Console.WriteLine("[enter]");
+                        Console.Clear();
+                        // }
+                    }
+                    else
+                    {
+                        Console.WriteLine("You have no new messages");
+                        Console.ReadLine();
+                        Console.WriteLine("[enter]");
+                        Console.Clear();
+                    }
+                    break;
+                case "9":
                     acc = null;
                     clientmenu = false;
                     break;

@@ -4,18 +4,7 @@
     "chairs": 2,
     "minCapacity": 1,
     "maxCapacity": 2,
-    "reservations": [
-      {
-        "id": 1,
-        "tableID": 1,
-        "name": "oli",
-        "clientID": 1,
-        "howMany": 1,
-        "date": "2024-04-04T00:00:00",
-        "status": "Ongoing",
-        "typeofreservation": null
-      }
-    ],
+    "reservations": [],
     "typeoftable": "Regular"
   },
   {
@@ -79,6 +68,7 @@
         "clientID": 2,
         "howMany": 2,
         "date": "2024-11-13T00:00:00",
+        "timeslot": null,
         "status": "Ongoing",
         "typeofreservation": null
       }
@@ -106,18 +96,7 @@
     "chairs": 4,
     "minCapacity": 3,
     "maxCapacity": 4,
-    "reservations": [
-      {
-        "id": 2,
-        "tableID": 11,
-        "name": "TEST",
-        "clientID": 2,
-        "howMany": 4,
-        "date": "2024-04-04T00:00:00",
-        "status": "Ongoing",
-        "typeofreservation": null
-      }
-    ],
+    "reservations": [],
     "typeoftable": "Regular"
   },
   {

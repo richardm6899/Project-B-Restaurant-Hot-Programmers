@@ -4,13 +4,32 @@
     "reservationid": 4,
     "clientid": 7,
     "cost": 60,
-    "date": "2024-11-11T00:00:00"
+    "date": "2024-11-11T00:00:00",
+    "name": null,
+    "phoneNumber": null,
+    "email": null,
+    "status": "Ongoing"
   },
   {
     "id": 2,
     "reservationid": 4,
     "clientid": 7,
     "cost": 50,
-    "date": "2024-11-15T00:00:00"
+    "date": "2024-11-15T00:00:00",
+    "name": null,
+    "phoneNumber": null,
+    "email": null,
+    "status": "Ongoing"
+  },
+  {
+    "id": 3,
+    "reservationid": 5,
+    "clientid": 10,
+    "cost": 50,
+    "date": "2024-11-26T00:00:00",
+    "name": "Richard Morris",
+    "phoneNumber": "31653243353",
+    "email": "richie@gmail.com",
+    "status": "Canceled"
   }
 ]
