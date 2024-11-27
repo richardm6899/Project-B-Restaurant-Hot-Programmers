@@ -26,10 +26,21 @@
     "reservationid": 5,
     "clientid": 10,
     "cost": 50,
-    "date": "2024-11-26T00:00:00",
-    "name": "Richard Morris",
-    "phoneNumber": "31653243353",
-    "email": "richie@gmail.com",
-    "status": "Canceled"
+    "date": "2024-12-12T00:00:00",
+    "name": "Clien Test",
+    "phoneNumber": "123456789",
+    "email": "client@test.nl",
+    "status": "Ongoing"
+  },
+  {
+    "id": 4,
+    "reservationid": 6,
+    "clientid": 10,
+    "cost": 50,
+    "date": "2024-12-23T00:00:00",
+    "name": "Clien Test",
+    "phoneNumber": "123456789",
+    "email": "client@test.nl",
+    "status": "Ongoing"
   }
 ]

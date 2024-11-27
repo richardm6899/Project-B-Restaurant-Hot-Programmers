@@ -4,7 +4,19 @@
     "chairs": 2,
     "minCapacity": 1,
     "maxCapacity": 2,
-    "reservations": [],
+    "reservations": [
+      {
+        "id": 1,
+        "tableID": 1,
+        "name": "oli",
+        "clientID": 1,
+        "howMany": 1,
+        "date": "2024-04-04T00:00:00",
+        "timeslot": null,
+        "status": "Ongoing",
+        "typeofreservation": null
+      }
+    ],
     "typeoftable": "Regular"
   },
   {
@@ -71,6 +83,17 @@
         "timeslot": null,
         "status": "Ongoing",
         "typeofreservation": null
+      },
+      {
+        "id": 6,
+        "tableID": 8,
+        "name": "Clien Test",
+        "clientID": 10,
+        "howMany": 2,
+        "date": "2024-12-23T00:00:00",
+        "timeslot": "Dinner 1 (17:00 - 19:00)",
+        "status": "Ongoing",
+        "typeofreservation": "Regular"
       }
     ],
     "typeoftable": "Regular"
@@ -96,7 +119,19 @@
     "chairs": 4,
     "minCapacity": 3,
     "maxCapacity": 4,
-    "reservations": [],
+    "reservations": [
+      {
+        "id": 2,
+        "tableID": 11,
+        "name": "TEST",
+        "clientID": 2,
+        "howMany": 4,
+        "date": "2024-04-04T00:00:00",
+        "timeslot": null,
+        "status": "Ongoing",
+        "typeofreservation": null
+      }
+    ],
     "typeoftable": "Regular"
   },
   {
@@ -112,7 +147,19 @@
     "chairs": 4,
     "minCapacity": 3,
     "maxCapacity": 4,
-    "reservations": [],
+    "reservations": [
+      {
+        "id": 5,
+        "tableID": 13,
+        "name": "Clien Test",
+        "clientID": 10,
+        "howMany": 4,
+        "date": "2024-12-12T00:00:00",
+        "timeslot": "Dinner 3 (21:00 - 23:00)",
+        "status": "Ongoing",
+        "typeofreservation": "Regular"
+      }
+    ],
     "typeoftable": "Regular"
   },
   {

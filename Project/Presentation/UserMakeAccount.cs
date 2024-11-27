@@ -56,10 +56,10 @@ static class UserMakeAccount
             lastNameLower = Console.ReadLine();
         }
         string LastName = AccountsLogic.CapitalizeFirstLetter(lastNameLower);
-        System.Console.WriteLine(LastName);
-
+        
         // pass
-        System.Console.WriteLine("What is you password: ");
+        System.Console.WriteLine("(Password must contain a capital letter, password must be 8 characters or longer\n and needs to contain a number or symbol)");
+        System.Console.WriteLine("What is your password: ");
         string password = Console.ReadLine();
         bool correct_password = false;
         do

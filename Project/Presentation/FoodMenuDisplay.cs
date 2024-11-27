@@ -2,7 +2,32 @@ public class FoodMenuDisplay
 {
     static private FoodMenuLogic foodMenuLogic = new FoodMenuLogic();
 
-    public static void StartFoodMenu(List<string> allergies)
+    public static void Start()
+    {
+        string[] options = {
+            "Food menu",
+            "Drink menu",
+            "Return"
+        };
+        FoodMenuLogic.FoodOrDrinksOption(options);
+        return;
+    }
+
+    public static void StartFoodMenu()
+    {
+        string[] options = {
+            "Show whole menu",
+            "Sort by type",
+            "Sort by allergies",
+            "Return"
+        };
+        FoodMenuLogic.GetOptionMain(options);
+        return;
+    }
+
+
+
+    public static void AllergiesQuestion(List<string> allergies)
     {
         bool wrong = true;
         List<FoodMenuModel> menuItems = new List<FoodMenuModel>();
@@ -23,7 +48,7 @@ public class FoodMenuDisplay
                     switch(filter)
                     {
                         case "allergies":
-                            AllergiesFilter(allergies);
+                           // AllergiesFilter(allergies);
                             wrong = false;
                             break;
                         case "types":
@@ -41,7 +66,7 @@ public class FoodMenuDisplay
             
                 case "no":
                     menuItems = foodMenuLogic.GetAllMenuItems();
-                    DisplayMenuItems(menuItems);
+                    DisplayWholeMenu();
                     wrong = false;
                     break;
                 default:
@@ -55,86 +80,82 @@ public class FoodMenuDisplay
 
         }
 
-    private static void TypesFilter()
+    public static void TypesFilter()
     {
+        Console.WriteLine("Types");
         List<string> allTypes = foodMenuLogic.GetAllTypes();
-        Console.WriteLine($"Allergies:");
-        foreach(string type in allTypes)
-        {
-            Console.WriteLine($"-{type}");
-        }
-        Console.WriteLine("Enter types to filter (comma-separated):");
-        string askedTypes = Console.ReadLine();
-        List<string> filteredTypes = askedTypes.Split(',').Select(askedTypes => askedTypes.Trim()).ToList();
-        foodMenuLogic.FilterFoodPreferences(filteredTypes);
+        string[] allTypesOptions = allTypes.ToArray();
+        List<FoodMenuModel> menuItems = FoodMenuLogic.GetOptionTypes(allTypesOptions);
+        FoodMenuDisplay.DisplayMenuWithFilter(menuItems);
 
     }
-    private static void AllergiesFilter(List<string> allergies)
-    {
-        bool wrong = false;
-        List<FoodMenuModel> menuItems = new List<FoodMenuModel>();
-        if (allergies != null)
-        {            
-            do
-            {
-                Console.WriteLine("Do you want to exclude your allergies? (Type 'yes' or 'no')");
-                string excludeChoice = Console.ReadLine().ToLower();
-                switch (excludeChoice)
-                {
-                    case "yes":
-                        // Get allergies from the account 
-                        List<string> allergiesToAvoid = allergies;
+    // private static void AllergiesFilter(List<string> allergies)
+    // {
+    //     bool wrong = false;
+    //     List<FoodMenuModel> menuItems = new List<FoodMenuModel>();
+    //     if (allergies != null)
+    //     {            
+    //         do
+    //         {
+    //             Console.WriteLine("Do you want to exclude your allergies? (Type 'yes' or 'no')");
+    //             string excludeChoice = Console.ReadLine().ToLower();
+    //             switch (excludeChoice)
+    //             {
+    //                 case "yes":
+    //                     // Get allergies from the account 
+    //                     List<string> allergiesToAvoid = allergies;
 
-                        // Get the filtered menu items
-                        menuItems = foodMenuLogic.GetMenuExcludingAllergies(allergiesToAvoid);
-                        wrong = false;
-                        break;
+    //                     // Get the filtered menu items
+    //                     menuItems = foodMenuLogic.GetMenuExcludingAllergies(allergiesToAvoid);
+    //                     wrong = false;
+    //                     break;
 
-                    case "no":
-                        menuItems = foodMenuLogic.GetAllMenuItems();
-                        wrong = false;
-                        break;
+    //                 case "no":
+    //                     menuItems = foodMenuLogic.GetAllMenuItems();
+    //                     wrong = false;
+    //                     break;
 
-                    default:
-                        Console.WriteLine("This is a wrong input, put in 'yes' or 'no'");
-                        wrong = true;
-                        break;
-                }
-            } while (wrong == true);
-        }
-        else
-        {
+    //                 default:
+    //                     Console.WriteLine("This is a wrong input, put in 'yes' or 'no'");
+    //                     wrong = true;
+    //                     break;
+    //             }
+    //         } while (wrong == true);
+    //     }
+    //     else
+    //     {
 
-            // Get allergies from the user 
-            allergies = foodMenuLogic.GetAllAllergies();
-            Console.WriteLine($"Allergies:");
-            foreach(string allergy in allergies)
-            {
-                Console.WriteLine($"-{allergy}");
-            }
+    //         // Get allergies from the user 
+    //         allergies = foodMenuLogic.GetAllAllergies();
+    //         Console.WriteLine($"Allergies:");
+    //         foreach(string allergy in allergies)
+    //         {
+    //             Console.WriteLine($"-{allergy}");
+    //         }
             
-            Console.WriteLine("Enter allergies to avoid (comma-separated):");
-            string input = Console.ReadLine();
-            if(input != null)
-            {
-                char.ToUpper(input[0]);
-            }
-            List<string> allergiesToAvoid = input.Split(',').Select(allergy => allergy.Trim()).ToList();
+    //         Console.WriteLine("Enter allergies to avoid (comma-separated):");
+    //         string input = Console.ReadLine();
+    //         if(input != null)
+    //         {
+    //             char.ToUpper(input[0]);
+    //         }
+    //         List<string> allergiesToAvoid = input.Split(',').Select(allergy => allergy.Trim()).ToList();
 
-            // Get the filtered menu items
-            menuItems = foodMenuLogic.GetMenuExcludingAllergies(allergiesToAvoid);                
-        }
+    //         // Get the filtered menu items
+    //         menuItems = foodMenuLogic.GetMenuExcludingAllergies(allergiesToAvoid);                
+    //     }
 
 
 
-        // Display the menu
-        DisplayMenuItems(menuItems);
-    }
+    //     // Display the menu
+    //     foodMenuLogic.DisplayWholeMenu();
+    // }
 
-    private static void DisplayMenuItems(List<FoodMenuModel> menuItems)
+        public static void DisplayMenuWithFilter(List<FoodMenuModel> menuItems)
     {
         if (menuItems.Any())
         {
+            
             // Define the desired display order
             var displayOrder = new List<string> { "Appetizer", "Main Course", "Side", "Dessert" };
 
@@ -146,14 +167,62 @@ public class FoodMenuDisplay
             foreach (var group in orderedMenu)
             {
                 Console.WriteLine(new string('=', 40));
-                Console.WriteLine($"Category: {group.Key}");
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($"\x1b[1m\x1b[4m{group.Key}\x1b[0m");
+                Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine(new string('=', 40));
 
                 foreach (var item in group)
                 {
                     // Print each menu item's details
-                    Console.WriteLine($"Dish Name: {item.DishName}");
-                    Console.WriteLine($"Price: {item.Price}$");
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"\x1b[1m{item.DishName}\x1b[0m");
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.WriteLine($"Price: {item.Price:F2}$");
+                    Console.WriteLine($"Description: {item.Description}");
+                    Console.WriteLine($"Type: {string.Join(", ", item.Type ?? new List<string>())}");
+                    Console.WriteLine($"Allergies: {string.Join(", ", item.Allergies ?? new List<string>())}");
+                    Console.WriteLine(new string('-', 40)); // Separator for better readability
+                }
+            }
+        }
+        else
+        {
+            Console.WriteLine("No menu items available based on the selected filters.");
+        }
+
+        Console.WriteLine("[Press enter to go back]");
+        Console.ReadLine();
+    }
+    public static void DisplayWholeMenu()
+    {
+        List<FoodMenuModel> menuItems = foodMenuLogic.GetAllMenuItems();
+        if (menuItems.Any())
+        {
+            
+            // Define the desired display order
+            var displayOrder = new List<string> { "Appetizer", "Main Course", "Side", "Dessert" };
+
+            // Group and order menu items based on the display order
+            var orderedMenu = menuItems
+                .OrderBy(item => displayOrder.IndexOf(item.Type.FirstOrDefault() ?? ""))
+                .GroupBy(item => item.Type.FirstOrDefault() ?? "Other");
+
+            foreach (var group in orderedMenu)
+            {
+                Console.WriteLine(new string('=', 40));
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($"\x1b[1m\x1b[4m{group.Key}\x1b[0m");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine(new string('=', 40));
+
+                foreach (var item in group)
+                {
+                    // Print each menu item's details
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"\x1b[1m{item.DishName}\x1b[0m");
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.WriteLine($"Price: {item.Price:F2}$");
                     Console.WriteLine($"Description: {item.Description}");
                     Console.WriteLine($"Type: {string.Join(", ", item.Type ?? new List<string>())}");
                     Console.WriteLine($"Allergies: {string.Join(", ", item.Allergies ?? new List<string>())}");

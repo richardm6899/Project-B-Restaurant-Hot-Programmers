@@ -47,9 +47,111 @@ class ClientMenu
                 //  see the food menu
                 case "4":
                     FoodMenuDisplay.StartFoodMenu(acc.Allergies);
+                    System.Console.WriteLine("1. All reservations.");
+                    System.Console.WriteLine("2. All ongoing reservations.");
+                    System.Console.WriteLine("3. All past reservations");
+                    System.Console.WriteLine("4. All canceled reservations");
+                    System.Console.WriteLine("5. Search reservation by date.");
+                    System.Console.WriteLine("6. Return.");
+                    string user_reservation_answer = Console.ReadLine();
+                    switch (user_reservation_answer)
+                    {
+                        case "1":
+                            List<ReservationModel> Reservations = reservationLogic.DisplayAllReservationsByClientID(acc.Id);
+                            foreach (ReservationModel reservation in Reservations)
+                            {
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                System.Console.WriteLine("---------------------------------------------------");
+                                Console.ResetColor();
+                                System.Console.WriteLine($"Name: {reservation.Name}\nTable Id: {reservation.TableID}\nAmount of people: {reservation.HowMany}\nDate: {reservation.Date.ToShortDateString()} {reservation.TimeSlot}\nStatus: {reservation.Status}\nType: {reservation.TypeOfReservation}");
+                            }
+                            Console.ReadKey();
+                            break;
+
+                        case "2":
+                            List<ReservationModel> ongoingReservations = reservationLogic.DisplayAllReservationsByStatusAndID(acc.Id, "Ongoing");
+                            foreach (ReservationModel reservation in ongoingReservations)
+                            {
+                                Console.ForegroundColor = ConsoleColor.Blue;
+                                System.Console.WriteLine("---------------------------------------------------");
+                                Console.ResetColor();
+                                System.Console.WriteLine($"Name: {reservation.Name}\nTable Id: {reservation.TableID}\nAmount of people: {reservation.HowMany}\nDate: {reservation.Date.ToShortDateString()} {reservation.TimeSlot}\nType: {reservation.TypeOfReservation}");
+                            }
+                            Console.ReadKey();
+                            break;
+
+                        case "3":
+                            List<ReservationModel> pastReservations = reservationLogic.DisplayAllReservationsByStatusAndID(acc.Id, "Past");
+                            foreach (ReservationModel reservation in pastReservations)
+                            {
+                                Console.ForegroundColor = ConsoleColor.Green;
+                                System.Console.WriteLine("---------------------------------------------------");
+                                Console.ResetColor();
+                                System.Console.WriteLine($"Name: {reservation.Name}\nTable Id: {reservation.TableID}\nAmount of people: {reservation.HowMany}\nDate: {reservation.Date.ToShortDateString()} {reservation.TimeSlot}\nType: {reservation.TypeOfReservation}");
+                            }
+                            Console.ReadKey();
+                            break;
+
+                        case "4":
+                            List<ReservationModel> canceledReservations = reservationLogic.DisplayAllReservationsByStatusAndID(acc.Id, "Canceled");
+                            foreach (ReservationModel reservation in canceledReservations)
+                            {
+                                Console.ForegroundColor = ConsoleColor.DarkBlue;
+                                System.Console.WriteLine("---------------------------------------------------");
+                                Console.ResetColor();
+                                System.Console.WriteLine($"Name: {reservation.Name}\nTable Id: {reservation.TableID}\nAmount of people: {reservation.HowMany}\nDate: {reservation.Date.ToShortDateString()} {reservation.TimeSlot}\nType: {reservation.TypeOfReservation}");
+                            }
+                            Console.ReadKey();
+                            break;
+
+                        case "5":
+                            bool client_searchesDate = true;
+                            do
+                            {
+                                System.Console.WriteLine("Enter date to look up dd/mm/yyyy");
+                                string UncheckedDate = Console.ReadLine();
+
+                                if (DateTime.TryParse(UncheckedDate, out DateTime date))
+                                {
+                                    List<ReservationModel> dateReservations = reservationLogic.DisplayAllReservationsByDateAndID(acc.Id, date);
+                                    foreach (ReservationModel reservation in dateReservations)
+                                    {
+                                        Console.ForegroundColor = ConsoleColor.DarkRed;
+                                        System.Console.WriteLine("---------------------------------------------------");
+                                        Console.ResetColor();
+                                        System.Console.WriteLine($"Name: {reservation.Name}\nTable Id: {reservation.TableID}\nAmount of people: {reservation.HowMany}\nDate: {reservation.Date.ToShortDateString()} {reservation.TimeSlot}\nType: {reservation.TypeOfReservation}");
+                                    }
+                                    if(dateReservations.Count() == 0)
+                                    {
+                                        System.Console.WriteLine("No reservations found on this day.");
+                                    }
+                                    Console.ReadKey();
+                                    client_searchesDate = false;
+                                }
+                                else
+                                {
+                                    System.Console.WriteLine("Invalid input, please try again");
+                                }
+                            } while (client_searchesDate);
+                            break;
+
+                        case "6":
+                            break;
+
+                        default:
+                            System.Console.WriteLine("Invalid input");
+                            Start(acc, accountsLogic);
+                            break;
+
+                    }
+                    break;
+                //  see the food menu
+                case "4":
+                    FoodMenuDisplay.Start();
                     break;
                 // see restaurant info
                 case "5":
+
                     RestaurantInfo.Start();
 
                     break;
@@ -109,6 +211,7 @@ class ClientMenu
                 case "9":
                     acc = null;
                     clientmenu = false;
+                    Menu.Start();
                     break;
                 default:
                     System.Console.WriteLine("Invalid input");

@@ -28,8 +28,6 @@ public class RestaurantLogic
             // restaurant is open, so it should return the new date (next_open_day)
             return false;
         }
-        // if empty
-        // return null;
     }
 
     // if restaurant is closed return the next open day

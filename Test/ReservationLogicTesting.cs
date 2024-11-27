@@ -26,7 +26,7 @@ public class TestReservationLogic
 
         TableModel table = reservationlogic.Createtable(10, 9, 10, "Regular");
         // create reservation and assign to table
-        ReservationModel reservation = reservationlogic.Create_reservation(table.Id, "Yapper", 10, 10, DateTime.Today, "Regular");
+        ReservationModel reservation = reservationlogic.Create_reservation(table.Id, "Yapper", 10, 10, DateTime.Today, "Regular", null);
         Assert.AreEqual(reservationlogic._reservations.Last().Id, reservation.Id);
         Assert.AreEqual("Yapper", reservation.Name);
         Assert.AreEqual(10, reservation.ClientID);
@@ -50,33 +50,52 @@ public class TestReservationLogic
     public void TestGetReservationByID()
     {
         ReservationLogic reservationlogic = new();
-        ReservationModel reservation = reservationlogic.Create_reservation(10, "Yapper", 10, 10, DateTime.Today, "Regular");
+        ReservationModel reservation = reservationlogic.Create_reservation(10, "Yapper", 10, 10, DateTime.Today, "Regular", null);
         Assert.AreEqual(reservationlogic.GetReservationById(reservationlogic._reservations.Last().Id).Id, reservation.Id);
 
     }
 
     [TestMethod]
-    [DataRow("29/11/2024")]
-    [DataRow("01/01/2025")]
+    // today
     // you can only book 3 months ahead
-
-    // date of test: 12/11/2024
-    public void TestIsValidDateTrue(string str_Date)
+    // "==" 3 months
+    // DateTime.Today()  <
+    // :)
+    public void TestIsValidDateTrue()
     {
+        DateTime today = DateTime.Today;
+        DateTime oneday = DateTime.Today.AddDays(1);
+        DateTime twoday = DateTime.Today.AddDays(2);
+        DateTime threemonth = DateTime.Today.AddMonths(3);
+
         ReservationLogic reservationLogic = new();
-        DateTime date = Convert.ToDateTime(str_Date);
-        Assert.AreEqual(true, reservationLogic.IsValidDate(date));
+
+        Assert.AreEqual(true, reservationLogic.IsValidDate(today));
+        Assert.AreEqual(true, reservationLogic.IsValidDate(oneday));
+        Assert.AreEqual(true, reservationLogic.IsValidDate(twoday));
+        Assert.AreEqual(true, reservationLogic.IsValidDate(threemonth));
     }
 
     [TestMethod]
-    [DataRow("01/01/2022")]
-    [DataRow("05/05/2025")]
-
-    public void TestIsValidDateFalse(string str_Date)
+    // DateTime.Today( ) >
+    // -1
+    // -2
+    // > 3 months 1 day
+    // > 3 months 2 day
+    // :(
+    public void TestIsValidDateFalse()
     {
+        DateTime oneday = DateTime.Today.AddDays(-1);
+        DateTime twoday = DateTime.Today.AddDays(-2);
+        DateTime threemonthoneday = DateTime.Today.AddMonths(3).AddDays(1);
+        DateTime threemonthtwoday = DateTime.Today.AddMonths(3).AddDays(2);
         ReservationLogic reservationLogic = new();
-        DateTime date = Convert.ToDateTime(str_Date);
-        Assert.AreEqual(false, reservationLogic.IsValidDate(date));
+
+        Assert.AreEqual(false, reservationLogic.IsValidDate(oneday));
+        Assert.AreEqual(false, reservationLogic.IsValidDate(twoday));
+        Assert.AreEqual(false, reservationLogic.IsValidDate(threemonthoneday));
+        Assert.AreEqual(false, reservationLogic.IsValidDate(threemonthtwoday));
+
     }
 
     [TestMethod]
@@ -88,7 +107,7 @@ public class TestReservationLogic
 
         TableModel table = reservationlogic.Createtable(10, 9, 10, "Regular");
         // create reservation and assign to table
-        ReservationModel reservation = reservationlogic.Create_reservation(table.Id, "Yapper", 10, 10, DateTime.Today, "Regular");
+        ReservationModel reservation = reservationlogic.Create_reservation(table.Id, "Yapper", 10, 10, DateTime.Today, "Regular", null);
 
         //act
         reservationlogic.RemoveReservationByID(reservation.Id);
@@ -105,7 +124,7 @@ public class TestReservationLogic
 
         TableModel table = reservationlogic.Createtable(10, 9, 10, "Regular");
         // create reservation and assign to table
-        ReservationModel reservation = reservationlogic.Create_reservation(table.Id, "Yapper", 10, 10, DateTime.Today, "Regular");
+        ReservationModel reservation = reservationlogic.Create_reservation(table.Id, "Yapper", 10, 10, DateTime.Today, "Regular", null);
 
         //act
         ReservationModel remove = reservationlogic.RemoveReservationByID(2000);
@@ -153,6 +172,44 @@ public class TestReservationLogic
         Assert.AreEqual(null, type);
     }
 
+    [TestMethod]
+    [DataRow("1")]
+    [DataRow("2")]
+    [DataRow("3")]
+    [DataRow("4")]
+
+    //:)
+    public void TimSlotChooser_ValidID_Timeslot(string id)
+    {
+        //arrange 
 
 
+        //act
+        string TimeSlot = ReservationLogic.TimSlotChooser(id);
+        //assert
+
+        Assert.AreNotEqual(null, TimeSlot); // timeslot would be null if input was different
+    }
+    [TestMethod]
+    [DataRow("0")]
+    [DataRow("5")]
+    [DataRow("0")]
+    [DataRow(null)]
+
+    //:(
+    public void TimSlotChooser_InValidID_Null(string id)
+    {
+        //arrange 
+
+
+        //act
+        string TimeSlot = ReservationLogic.TimSlotChooser(id);
+        //assert
+        Assert.AreEqual(null, TimeSlot);
+    }
 }
+
+
+
+
+

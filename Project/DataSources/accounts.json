@@ -103,7 +103,7 @@
     "type": "staff"
   },
   {
-    "clientId": 8,
+    "clientId": 9,
     "emailAddress": "finance@test.nl",
     "password": "TestFinance1",
     "fullName": "Alex Barnes",
@@ -123,6 +123,15 @@
     "allergies": [],
     "reservationId": [
       5
+    "emailAddress": "client@test.nl",
+    "password": "ClientTest123",
+    "fullName": "Clien Test",
+    "age": 53,
+    "phoneNumber": "123456789",
+    "allergies": [],
+    "reservationId": [
+      5,
+      6
     ],
     "type": "client"
   }
