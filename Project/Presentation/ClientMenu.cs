@@ -35,18 +35,9 @@ class ClientMenu
                 case "2":
                     System.Console.WriteLine("Cancel reservation");
                     Reservation.CancelReservation(acc.Id);
-
-
                     break;
                 // see accounts reservation
                 case "3":
-                    System.Console.WriteLine("Your reservations: ");
-                    System.Console.WriteLine(reservationLogic.DisplayReservations(acc.Id));
-                    Console.ReadLine();
-                    break;
-                //  see the food menu
-                case "4":
-                    FoodMenuDisplay.StartFoodMenu(acc.Allergies);
                     System.Console.WriteLine("1. All reservations.");
                     System.Console.WriteLine("2. All ongoing reservations.");
                     System.Console.WriteLine("3. All past reservations");
@@ -79,7 +70,6 @@ class ClientMenu
                             }
                             Console.ReadKey();
                             break;
-
                         case "3":
                             List<ReservationModel> pastReservations = reservationLogic.DisplayAllReservationsByStatusAndID(acc.Id, "Past");
                             foreach (ReservationModel reservation in pastReservations)
@@ -147,13 +137,11 @@ class ClientMenu
                     break;
                 //  see the food menu
                 case "4":
-                    FoodMenuDisplay.Start();
+                    FoodMenuDisplay.StartFoodMenu();
                     break;
                 // see restaurant info
                 case "5":
-
                     RestaurantInfo.Start();
-
                     break;
                 //  show account data
                 case "6":

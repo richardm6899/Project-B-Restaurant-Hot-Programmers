@@ -123,6 +123,12 @@
     "allergies": [],
     "reservationId": [
       5
+    ],
+    "type": "client"
+  },
+  {
+
+    "clientId": 11,
     "emailAddress": "client@test.nl",
     "password": "ClientTest123",
     "fullName": "Clien Test",
