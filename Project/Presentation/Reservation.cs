@@ -83,32 +83,23 @@ static class Reservation
                             bool timeslotbool = true;
                             while (timeslotbool)
                             {
-                                if (RestaurantLogic.closed_Day(Date))
+                                System.Console.WriteLine("In what timeslot would you like to book your reservation: \n1. 12:00 - 14:00\n2. 17:00 - 19:00\n3. 19:00 - 21:00\n4. 21:00 - 23:00\nChoose id:");
+                                string timeslotIdcheck = Console.ReadLine();
+                                TimeSlot = ReservationLogic.TimSlotChooser(timeslotIdcheck);
+                                if (TimeSlot != null)
                                 {
-                                    Console.WriteLine("[enter]:");
-                                    Console.ReadLine();
+                                    //    check if valid time slot
+                                    System.Console.WriteLine($"Time slot {TimeSlot} chosen.");
+                                    System.Console.WriteLine("[enter]");
+                                    System.Console.ReadLine();
                                     timeslotbool = false;
+
                                 }
                                 else
                                 {
-                                    System.Console.WriteLine("In what timeslot would you like to book your reservation: \n1. 12:00 - 14:00\n2. 17:00 - 19:00\n3. 19:00 - 21:00\n4. 21:00 - 23:00\nChoose id:");
-                                    string timeslotIdcheck = Console.ReadLine();
-                                    TimeSlot = ReservationLogic.TimSlotChooser(timeslotIdcheck);
-                                    if (TimeSlot != null)
-                                    {
-                                        //    check if valid time slot
-                                        System.Console.WriteLine($"Time slot {TimeSlot} chosen.");
-                                        System.Console.WriteLine("[enter]");
-                                        System.Console.ReadLine();
-                                        timeslotbool = false;
-
-                                    }
-                                    else
-                                    {
-                                        System.Console.WriteLine("Invalid ID entered. Try again");
-                                        System.Console.WriteLine("[enter]");
-                                        System.Console.ReadLine();
-                                    }
+                                    System.Console.WriteLine("Invalid ID entered. Try again");
+                                    System.Console.WriteLine("[enter]");
+                                    System.Console.ReadLine();
                                 }
                             }
                         }
@@ -393,8 +384,6 @@ static class Reservation
             else System.Console.WriteLine("Incorrect input");
         }
     }
-
-
 
     public static string AdminShowReservations()
     {

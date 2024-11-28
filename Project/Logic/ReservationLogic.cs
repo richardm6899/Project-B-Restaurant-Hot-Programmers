@@ -382,11 +382,9 @@ public class ReservationLogic
     public List<int> IsReservationInAccount(int clientID, int reservation_id)
     {
         List<int> valid_reservations = new();
-
         foreach (var client in accountsLogic._accounts)
         {
             if (clientID == client.Id)
-
             {
 
                 foreach (var reservationID in client.ReservationIDs)
@@ -422,7 +420,7 @@ public class ReservationLogic
         {
             if (reservation.Status == "Ongoing")
             {
-                Reservations.Add($"------------------------\nreservation details:\nReservation ID: {reservation.Id}\nTable number: {reservation.TableID}\nName: {reservation.Name}\nPersonal ID: {reservation.ClientID}\nPerson Amount: {reservation.HowMany}\nDate of Reservation: {reservation.Date.Date}\nStatus of reservation: {reservation.Status}\n");
+                Reservations.Add($"reservation details:\nReservation ID: {reservation.Id}\nTable number: {reservation.TableID}\nName: {reservation.Name}\nPersonal ID: {reservation.ClientID}\nPerson Amount: {reservation.HowMany}\nDate of Reservation: {reservation.Date.Date}\nStatus of reservation: {reservation.Status}\n");
             }
         }
         return Reservations;
@@ -678,4 +676,5 @@ public class ReservationLogic
     }
 
 }
+
 

@@ -13,7 +13,7 @@ class AdminMenu
             System.Console.WriteLine("-----------------------------------------");
             System.Console.WriteLine("Enter 1 to make a reservation.");
             System.Console.WriteLine("Enter 2 to cancel a reservation.");
-            System.Console.WriteLine("Enter 3 to see all reservations and to close day.");
+            System.Console.WriteLine("Enter 3 to see all reservations and close day.");
             System.Console.WriteLine("Enter 4 to see the food menu.");
             System.Console.WriteLine("Enter 5 to edit food menu.");
             System.Console.WriteLine("Enter 6 to see the drinks menu");
@@ -151,6 +151,7 @@ class AdminMenu
                     acc = null;
                     Menu.Start();
                     break;
+
                 default:
                     System.Console.WriteLine("Invalid input");
                     System.Console.WriteLine("[enter]");
