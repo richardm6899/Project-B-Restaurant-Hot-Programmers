@@ -2,7 +2,7 @@
   {
     "id": 1,
     "tableID": 1,
-    "name": "richard",
+    "name": "oli",
     "clientID": 1,
     "howMany": 1,
     "date": "2024-04-04T00:00:00",
@@ -13,13 +13,13 @@
   {
     "id": 2,
     "tableID": 11,
-    "name": "Thomas Edison",
+    "name": "TEST",
     "clientID": 2,
     "howMany": 4,
     "date": "2024-04-04T00:00:00",
     "timeslot": null,
     "status": "Canceled",
-    "typeofreservation": "Regular"
+    "typeofreservation": null
   },
   {
     "id": 3,
@@ -64,16 +64,5 @@
     "timeslot": "Dinner 1 (17:00 - 19:00)",
     "status": "Ongoing",
     "typeofreservation": "Regular"
-  },
-  {
-    "id": 5,
-    "tableID": 13,
-    "name": "richard",
-    "clientID": 8,
-    "howMany": 5,
-    "date": "2024-12-12T00:00:00",
-    "timeslot": null,
-    "status": "Canceled",
-    "typeofreservation": "HotSeat"
   }
 ]
