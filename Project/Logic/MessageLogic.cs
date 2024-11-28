@@ -9,6 +9,7 @@ public static class MessageLogic
         _receipts = ReceiptAccess.LoadAllReceipts();
     }
 
+    // Returns true if client(ID) has a reservation that has been canceled
     public static bool Inbox(int clientID)
     {
         bool hasMessage = false;
@@ -25,11 +26,11 @@ public static class MessageLogic
         return hasMessage;
     }
 }
-    // public ReceiptModel CreateReceipt(ReservationModel reservation, int cost, string number, string email)
-    // {
-    //     int id = _receipts.Count() + 1;
-    //     ReceiptModel receipt = new(id, reservation.Id, reservation.ClientID, cost, reservation.Date, reservation.Name, number, email);
-    //     _receipts.Add(receipt);
-    //     ReceiptAccess.WriteAllReceipts(_receipts);
-    //     return receipt;
-    // }
+// public ReceiptModel CreateReceipt(ReservationModel reservation, int cost, string number, string email)
+// {
+//     int id = _receipts.Count() + 1;
+//     ReceiptModel receipt = new(id, reservation.Id, reservation.ClientID, cost, reservation.Date, reservation.Name, number, email);
+//     _receipts.Add(receipt);
+//     ReceiptAccess.WriteAllReceipts(_receipts);
+//     return receipt;
+// }

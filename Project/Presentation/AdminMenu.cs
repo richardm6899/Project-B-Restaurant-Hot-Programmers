@@ -52,7 +52,6 @@ class AdminMenu
                 // see all reservations
                 case "3":
                     string reservationsForDay = Reservation.AdminShowReservations();
-                    Console.WriteLine(Reservation.AdminShowReservations());
                     System.Console.WriteLine("[enter]");
                     if (reservationsForDay != "")
                     {
@@ -92,7 +91,6 @@ class AdminMenu
                 case "4":
                     // add question with what allergies to look at if admin wants to look at allergies
                     FoodMenuDisplay.Start();
-
                     break;
 
                 // edit food menu

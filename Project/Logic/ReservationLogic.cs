@@ -388,16 +388,16 @@ public class ReservationLogic
             if (clientID == client.Id)
 
             {
-               
-                    foreach (var reservationID in client.ReservationIDs)
+
+                foreach (var reservationID in client.ReservationIDs)
+                {
+                    if (reservation_id == reservationID)
                     {
-                        if (reservation_id == reservationID)
-                        {
-                            if (GetReservationById(reservation_id).Status != "Canceled")
-                            { valid_reservations.Add(reservation_id); }
-                        }
+                        if (GetReservationById(reservation_id).Status != "Canceled")
+                        { valid_reservations.Add(reservation_id); }
                     }
-                
+                }
+
             }
         }
         return valid_reservations;
@@ -528,6 +528,7 @@ public class ReservationLogic
         return null;
     }
 
+    // Remove Reservation by choosing date
     public void RemoveReservationsByDate(DateTime date)
     {
         foreach (var reservation in _reservations)
@@ -560,7 +561,7 @@ public class ReservationLogic
         new() { "[R:13 ]", "[R:14 ]", "[R:15 ]", "[H:20 ]", "[H:21 ]","[H:22 ]", "[H:23 ]" }
     };
 
-        List<string> availableTableIDs = new List<string>() {  };
+        List<string> availableTableIDs = new List<string>() { };
         foreach (var table in AvailableTables)
         {
             availableTableIDs.Add(Convert.ToString(table.Id));
@@ -611,7 +612,7 @@ public class ReservationLogic
                     }
                     else if (table.Contains("R"))
                     {
-                        string id = table.Split(":")[1].Trim(']').Trim();;
+                        string id = table.Split(":")[1].Trim(']').Trim(); ;
                         if (availableTableIDs.Contains(id))
                         {
                             Console.ForegroundColor = ConsoleColor.Green;

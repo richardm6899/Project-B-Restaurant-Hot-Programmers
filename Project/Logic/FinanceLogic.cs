@@ -12,7 +12,7 @@ public class FinanceLogic
         _receipts = ReceiptAccess.LoadAllReceipts();
         _reservations = ReservationAccess.LoadAllReservations();
     }
-    
+
     // public static DateTime DisplayCalendar()
     // {
     //     DateTime currentDate = DateTime.Now;
@@ -61,7 +61,7 @@ public class FinanceLogic
     //             }
     //             selectedDay = 1;
     //         }
-            
+
     //     }
     //     return default;
     // }
@@ -104,17 +104,18 @@ public class FinanceLogic
     //     }
     //     Console.WriteLine();
     // }
-  
+
     public void AddToRevenue(int cost)
     {
         Revenue += cost;
     }
 
+    // Substracts from Revenue
     public static void SubtractFromRevenue(int cost)
     {
         Revenue -= cost;
         //  Users that had a reservation on that day get a refund. (paid out of financials)
-        
+
     }
     public int ProfitsDay(DateTime date)
     {
