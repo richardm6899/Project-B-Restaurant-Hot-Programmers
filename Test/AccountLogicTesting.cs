@@ -111,6 +111,7 @@ public class TestAccountLogic
 
         // Act
         _accountsLogic.UpdateList(updatedAccount);
+
         // Assert
         var updatedAccountInList = _accountsLogic.GetById(1);
         Assert.AreEqual(updatedAccount, updatedAccountInList);
