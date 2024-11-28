@@ -13,7 +13,7 @@ class AdminMenu
             System.Console.WriteLine("-----------------------------------------");
             System.Console.WriteLine("Enter 1 to make a reservation.");
             System.Console.WriteLine("Enter 2 to cancel a reservation.");
-            System.Console.WriteLine("Enter 3 to see all reservations and to close day.");
+            System.Console.WriteLine("Enter 3 to see all reservations.");
             System.Console.WriteLine("Enter 4 to see the food menu.");
             System.Console.WriteLine("Enter 5 to edit food menu.");
             System.Console.WriteLine("Enter 6 to see the drinks menu");
@@ -51,43 +51,11 @@ class AdminMenu
 
                 // see all reservations
                 case "3":
-                    string reservationsForDay = Reservation.AdminShowReservations();
-                    Console.WriteLine(Reservation.AdminShowReservations());
+                    System.Console.WriteLine("All reservations: ");
+                    reservationLogic.DisplayAllReservations();
                     System.Console.WriteLine("[enter]");
-                    if (reservationsForDay != "")
-                    {
-                        System.Console.WriteLine("The following reservations are scheduled:");
-                        System.Console.WriteLine(reservationsForDay);
-                        System.Console.WriteLine("Are you sure you want to close the restaurant for a day and cancel one of the reservations? (Y/N)");
-                    }
-                    else
-                    {
-                        System.Console.WriteLine("There are no reservations scheduled for this day.");
-                        System.Console.WriteLine("Are you sure you want to close the restaurant for the day? (Y/N)");
-                    }
-                    string confirmation = Console.ReadLine().ToUpper();
-                    if (confirmation == "Y")
-                    {
-                        // Cancel all reservations for the day
-                        Reservation.AdminCloseDay();
-                        // Refund users
-                        // foreach (var reservation in reservationLogic._reservations)
-                        // {
-                        //      if (reservation.Date.Date == date.Date)
-                        //     {
-                        //         // Refund logic here
-                        //         // FinanceLogic.AddToRevenue(reservation.Cost);
-                        //         // FinanceLogic.Refund(reservation.ClientID, reservation.Cost);
-                        //     }
-                        // }
-                        System.Console.WriteLine("Restaurant closed for the day. Reservations canceled and users refunded.");
-                    }
-                    else
-                    {
-                        System.Console.WriteLine("Closure cancelled.");
-                    }
-                System.Console.ReadLine();
-                break;
+                    System.Console.ReadLine();
+                    break;
 
                 //  see the food menu
                 case "4":
@@ -154,6 +122,7 @@ class AdminMenu
                     acc = null;
                     Menu.Start();
                     break;
+
                 default:
                     System.Console.WriteLine("Invalid input");
                     System.Console.WriteLine("[enter]");

@@ -71,44 +71,36 @@ static class Reservation
                         // can be more personalised in terms of what the user filled in wrong by making returns numbers
                         if (reservationlogic.IsValidDate(Date))
                         {
-                             if (RestaurantLogic.closed_Day(Date))
-                             {
-                                 Console.WriteLine("Sorry, the restaurant is closed that day.");
-                                 Console.WriteLine($"The next open day is: {RestaurantLogic.next_Open_Day(Date)}");
-                             }
-                             else
-                             {
+                            // if (RestaurantLogic.closed_Day(Date))
+                            // {
+                            //     Console.WriteLine("Sorry, the restaurant is closed that day.");
+                            //     Console.WriteLine($"The next open day is: {RestaurantLogic.next_Open_Day(Date)}");
+                            // }
+                            // else
+                            // {
                                 dateCheck = false;
-                              }
+                            // }
+                          
                             bool timeslotbool = true;
                             while (timeslotbool)
                             {
-                                if (RestaurantLogic.closed_Day(Date))
+                                System.Console.WriteLine("In what timeslot would you like to book your reservation: \n1. 12:00 - 14:00\n2. 17:00 - 19:00\n3. 19:00 - 21:00\n4. 21:00 - 23:00\nChoose id:");
+                                string timeslotIdcheck = Console.ReadLine();
+                                TimeSlot = ReservationLogic.TimSlotChooser(timeslotIdcheck);
+                                if (TimeSlot != null)
                                 {
-                                    Console.WriteLine("[enter]:");
-                                    Console.ReadLine();
+                                    //    check if valid time slot
+                                    System.Console.WriteLine($"Time slot {TimeSlot} chosen.");
+                                    System.Console.WriteLine("[enter]");
+                                    System.Console.ReadLine();
                                     timeslotbool = false;
+
                                 }
                                 else
                                 {
-                                    System.Console.WriteLine("In what timeslot would you like to book your reservation: \n1. 12:00 - 14:00\n2. 17:00 - 19:00\n3. 19:00 - 21:00\n4. 21:00 - 23:00\nChoose id:");
-                                    string timeslotIdcheck = Console.ReadLine();
-                                    TimeSlot = ReservationLogic.TimSlotChooser(timeslotIdcheck);
-                                    if (TimeSlot != null)
-                                    {
-                                        //    check if valid time slot
-                                        System.Console.WriteLine($"Time slot {TimeSlot} chosen.");
-                                        System.Console.WriteLine("[enter]");
-                                        System.Console.ReadLine();
-                                        timeslotbool = false;
-
-                                    }
-                                    else
-                                    {
-                                        System.Console.WriteLine("Invalid ID entered. Try again");
-                                        System.Console.WriteLine("[enter]");
-                                        System.Console.ReadLine();
-                                    }
+                                    System.Console.WriteLine("Invalid ID entered. Try again");
+                                    System.Console.WriteLine("[enter]");
+                                    System.Console.ReadLine();
                                 }
                             }
                         }
@@ -391,57 +383,6 @@ static class Reservation
                 cancelreservation = false;
             }
             else System.Console.WriteLine("Incorrect input");
-        }
-    }
-
-
-
-    public static string AdminShowReservations()
-    {
-        List<string> ongoingReservations = reservationlogic.DisplayAllOngoingReservations();
-        string reservation_string = "";
-        foreach (string reservation in ongoingReservations)
-        {
-            reservation_string += reservation;
-        }
-        return reservation_string;
-    }
-
-    public static void AdminCloseDay()
-    {
-        System.Console.Write("Enter date (mm/dd/yyyy): ");
-        string dateInput = Console.ReadLine();
-        DateTime date;
-        // System.Console.Write("Enter table ID:");
-        // int tableID = Convert.ToInt32(Console.ReadLine());
-        // string typeofreservation = reservationlogic.TypeOfReservation(tableID);
-        if (DateTime.TryParse(dateInput, out date))
-        {
-            reservationlogic.RemoveReservationsByDate(date);
-            System.Console.WriteLine("Reservations for the specified date have been canceled.");
-            // Users that had a reservation on that day get a refund. (paid out of financials)
-            foreach (var reservation in reservationlogic._reservations)
-            {
-
-                if (reservation.TypeOfReservation == "HotSeat")
-                {
-                    FinanceLogic.SubtractFromRevenue(60);
-                    Console.WriteLine($"{reservation.TypeOfReservation} seat refunded:\nSubtracted from Revenue: 60$)");
-                }
-                else if (reservation.TypeOfReservation == "Regular")
-                {
-                    FinanceLogic.SubtractFromRevenue(50);
-                    Console.WriteLine($"{reservation.TypeOfReservation} seat refunded:\nSubtracted from Revenue: 50$");
-                }
-                else if (reservation.TypeOfReservation is null)
-                {
-                    Console.WriteLine("No reservation to be funded");
-                }
-            }
-        }
-        else
-        {
-            System.Console.WriteLine("Invalid date format. Please try again.");
         }
     }
 }
