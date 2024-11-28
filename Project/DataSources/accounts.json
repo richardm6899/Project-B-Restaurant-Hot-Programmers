@@ -10,9 +10,7 @@
       "peanut",
       "apple"
     ],
-    "reservationId": [
-      1
-    ],
+    "reservationId": null,
     "type": "client"
   },
   {
@@ -23,9 +21,7 @@
     "age": 35,
     "phoneNumber": "47830247",
     "allergies": [],
-    "reservationId": [
-      2
-    ],
+    "reservationId": null,
     "type": "client"
   },
   {
@@ -62,9 +58,7 @@
     "age": 2,
     "phoneNumber": "12345678",
     "allergies": [],
-    "reservationId": [
-      1
-    ],
+    "reservationId": null,
     "type": "client"
   },
   {
@@ -115,14 +109,6 @@
   },
   {
     "clientId": 10,
-    "emailAddress": "richie@gmail.com",
-    "password": "Test123!",
-    "fullName": "Richard Morris",
-    "age": 19,
-    "phoneNumber": "31653243353",
-    "allergies": [],
-    "reservationId": [
-      5
     "emailAddress": "client@test.nl",
     "password": "ClientTest123",
     "fullName": "Clien Test",
