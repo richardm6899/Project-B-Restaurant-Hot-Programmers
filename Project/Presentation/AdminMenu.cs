@@ -86,9 +86,8 @@ class AdminMenu
                     {
                         System.Console.WriteLine("Closure cancelled.");
                     }
-                System.Console.ReadLine();
-                break;
-
+                    System.Console.ReadLine();
+                    break;
                 //  see the food menu
                 case "4":
                     // add question with what allergies to look at if admin wants to look at allergies

@@ -71,15 +71,15 @@ static class Reservation
                         // can be more personalised in terms of what the user filled in wrong by making returns numbers
                         if (reservationlogic.IsValidDate(Date))
                         {
-                             if (RestaurantLogic.closed_Day(Date))
-                             {
-                                 Console.WriteLine("Sorry, the restaurant is closed that day.");
-                                 Console.WriteLine($"The next open day is: {RestaurantLogic.next_Open_Day(Date)}");
-                             }
-                             else
-                             {
+                            if (RestaurantLogic.closed_Day(Date))
+                            {
+                                Console.WriteLine("Sorry, the restaurant is closed that day.");
+                                Console.WriteLine($"The next open day is: {RestaurantLogic.next_Open_Day(Date)}");
+                            }
+                            else
+                            {
                                 dateCheck = false;
-                              }
+                            }
                             bool timeslotbool = true;
                             while (timeslotbool)
                             {
@@ -228,7 +228,7 @@ static class Reservation
                             reservation = false;
                             tableIDcheck = false;
                             reservationlogic.AvailableTables.Clear();
-                          Console.Clear();
+                            Console.Clear();
 
                         }
                         else
@@ -238,7 +238,7 @@ static class Reservation
                     }
 
 
-                    
+
                 }
             }
             else if (Client_answer == false)
@@ -407,6 +407,8 @@ static class Reservation
         return reservation_string;
     }
 
+
+    // Admin closes restaurant, removes reservation by date from user and refunds them
     public static void AdminCloseDay()
     {
         System.Console.Write("Enter date (mm/dd/yyyy): ");

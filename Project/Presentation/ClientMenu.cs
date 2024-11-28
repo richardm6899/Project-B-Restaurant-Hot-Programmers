@@ -45,6 +45,7 @@ class ClientMenu
                     System.Console.WriteLine("5. Search reservation by date.");
                     System.Console.WriteLine("6. Return.");
                     string user_reservation_answer = Console.ReadLine();
+
                     switch (user_reservation_answer)
                     {
                         case "1":
@@ -111,7 +112,7 @@ class ClientMenu
                                         Console.ResetColor();
                                         System.Console.WriteLine($"Name: {reservation.Name}\nTable Id: {reservation.TableID}\nAmount of people: {reservation.HowMany}\nDate: {reservation.Date.ToShortDateString()} {reservation.TimeSlot}\nType: {reservation.TypeOfReservation}");
                                     }
-                                    if(dateReservations.Count() == 0)
+                                    if (dateReservations.Count() == 0)
                                     {
                                         System.Console.WriteLine("No reservations found on this day.");
                                     }
