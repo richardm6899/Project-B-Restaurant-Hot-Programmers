@@ -34,8 +34,6 @@ class ClientMenu
                 case "2":
                     System.Console.WriteLine("Cancel reservation");
                     Reservation.CancelReservation(acc.Id);
-
-
                     break;
                 // see accounts reservation
                 case "3":
@@ -47,6 +45,7 @@ class ClientMenu
                     System.Console.WriteLine("5. Search reservation by date.");
                     System.Console.WriteLine("6. Return.");
                     string user_reservation_answer = Console.ReadLine();
+
                     switch (user_reservation_answer)
                     {
                         case "1":
@@ -72,7 +71,6 @@ class ClientMenu
                             }
                             Console.ReadKey();
                             break;
-
                         case "3":
                             List<ReservationModel> pastReservations = reservationLogic.DisplayAllReservationsByStatusAndID(acc.Id, "Past");
                             foreach (ReservationModel reservation in pastReservations)
@@ -114,7 +112,7 @@ class ClientMenu
                                         Console.ResetColor();
                                         System.Console.WriteLine($"Name: {reservation.Name}\nTable Id: {reservation.TableID}\nAmount of people: {reservation.HowMany}\nDate: {reservation.Date.ToShortDateString()} {reservation.TimeSlot}\nType: {reservation.TypeOfReservation}");
                                     }
-                                    if(dateReservations.Count() == 0)
+                                    if (dateReservations.Count() == 0)
                                     {
                                         System.Console.WriteLine("No reservations found on this day.");
                                     }
@@ -140,14 +138,11 @@ class ClientMenu
                     break;
                 //  see the food menu
                 case "4":
-                    FoodMenuDisplay.Start();
-
+                    FoodMenuDisplay.StartFoodMenu();
                     break;
                 // see restaurant info
                 case "5":
-
                     RestaurantInfo.Start();
-
                     break;
                 //  show account data
                 case "6":
