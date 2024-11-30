@@ -5,6 +5,7 @@ using System.Runtime.Intrinsics.Arm;
 static class Reservation
 {
     static private ReservationLogic reservationlogic = new();
+    static private RestaurantLogic restaurantLogic = new();
     // displays table restaurant
 
     public static void MakeReservation(string name, int clientID, string number, string email)
@@ -71,10 +72,10 @@ static class Reservation
                         // can be more personalised in terms of what the user filled in wrong by making returns numbers
                         if (reservationlogic.IsValidDate(Date))
                         {
-                            if (RestaurantLogic.closed_Day(Date))
+                            if (restaurantLogic.closed_Day(Date))
                             {
                                 Console.WriteLine("Sorry, the restaurant is closed that day.");
-                                Console.WriteLine($"The next open day is: {RestaurantLogic.next_Open_Day(Date)}");
+                                Console.WriteLine($"The next open day is: {restaurantLogic.next_Open_Day(Date)}");
                             }
                             else
                             {

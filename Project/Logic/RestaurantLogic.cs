@@ -1,8 +1,7 @@
 using System.Runtime.CompilerServices;
 public class RestaurantLogic
 {
-    private static List<RestaurantModel> _restaurant;
-
+    private List<RestaurantModel> _restaurant { get; set; }
     public RestaurantLogic()
     {
         _restaurant = RestaurantAccess.LoadAll();
@@ -14,8 +13,9 @@ public class RestaurantLogic
     }
 
     // create method that checks if given date is not in the closed dates list.
-    public static bool closed_Day(DateTime date)
+    public  bool closed_Day(DateTime date)
     {
+
         // if closed date is chosen client/admin cant make a reservation.
         if (_restaurant[0].closed_dates.Contains(date.ToString("dd/MM/yyyy")))
         {
@@ -27,11 +27,11 @@ public class RestaurantLogic
             // restaurant is open, so it should return the new date (next_open_day)
             return false;
         }
-    
+
     }
 
     // if restaurant is closed return the next open day
-    public static DateTime? next_Open_Day(DateTime date)
+    public  DateTime? next_Open_Day(DateTime date)
     {
         List<string> closed_date_list = _restaurant[0].closed_dates;
         DateTime next_date = date;
