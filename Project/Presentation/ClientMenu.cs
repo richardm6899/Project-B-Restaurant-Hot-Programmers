@@ -18,7 +18,8 @@ class ClientMenu
             System.Console.WriteLine("Enter 6 to see your accounts data.");
             System.Console.WriteLine("Enter 7 to modify your data.");
             System.Console.WriteLine("Enter 8 to check your messages."); // check messages if reservation is cancelled
-            System.Console.WriteLine("Enter 9 to log out");
+            System.Console.WriteLine("Enter 9 to deactivate or delete account.");
+            System.Console.WriteLine("Enter 10 to log out");
 
             string user_logged_in_answer = System.Console.ReadLine();
             switch (user_logged_in_answer)
@@ -196,7 +197,67 @@ class ClientMenu
                         Console.Clear();
                     }
                     break;
+
                 case "9":
+                    bool deactivateDeletingAccount = true;
+                    while (deactivateDeletingAccount)
+                    {
+                        System.Console.WriteLine("Enter 1 to deactivate account.");
+                        System.Console.WriteLine("Enter 2 to delete account.");
+                        System.Console.WriteLine("Enter 3 to return.");
+                        string userDeleteDeactivate = Console.ReadLine();
+                        switch (userDeleteDeactivate)
+                        {
+                            case "1":
+                                bool userDeactivate = ChoicesLogic.YesOrNo("Are you sure you want to deactivate your account?");
+                                if (userDeactivate)
+                                {
+                                    System.Console.WriteLine("Please re-enter your password.");
+                                    string passToCheck = Console.ReadLine();
+                                    if (accountsLogic.CheckPassWord(acc, passToCheck))
+                                    {
+                                        accountsLogic.deactivateAccount(acc.Id);
+                                        acc = null;
+                                        clientmenu = false;
+                                        Menu.Start();
+                                    }
+                                    System.Console.WriteLine("Incorrect password.");
+                                    deactivateDeletingAccount = false;
+
+                                };
+                                break;
+
+                            case "2":
+                                bool userDelete = ChoicesLogic.YesOrNo("Are you sure you want to delete your account?");
+                                if (userDelete)
+                                {
+                                    System.Console.WriteLine("Please re-enter your password.");
+                                    string passToCheck = Console.ReadLine();
+                                    if (accountsLogic.CheckPassWord(acc, passToCheck))
+                                    {
+                                        accountsLogic.deleteAccount(acc.Id);
+                                        acc = null;
+                                        clientmenu = false;
+                                        Menu.Start();
+                                    }
+                                    System.Console.WriteLine("Incorrect password.");
+                                    deactivateDeletingAccount = false;
+                                };
+                                break;
+
+                            case "3":
+                                deactivateDeletingAccount = false;
+                                break;
+
+                            default:
+                                System.Console.WriteLine("Invalid input.");
+                                break;
+                        }
+                    }
+                    break;
+
+
+                case "10":
                     acc = null;
                     clientmenu = false;
                     Menu.Start();
