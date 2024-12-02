@@ -50,7 +50,7 @@ public class AccountsLogic
         {
             return null;
         }
-        CurrentAccount = _accounts.Find(i => i.EmailAddress == email && i.Password == password);
+        CurrentAccount = _accounts.Find(i => i.EmailAddress == email && i.Password == password && i.Status =="Activated");
         return CurrentAccount;
     }
 
@@ -257,6 +257,41 @@ public class AccountsLogic
         if (account.Status == "Deactivated") { return true; }
 
 
+        return false;
+    }
+
+    public bool deleteAccount(int clientid)
+    {
+        AccountModel account = GetById(clientid);
+        if (account == null)
+        {
+            return false;
+        }
+        // changing
+        account.EmailAddress = null;
+        account.Password = null;
+        account.FullName = null;
+        account.Age = default;
+        account.PhoneNumber = null;
+        account.Allergies = null;
+        account.ReservationIDs = null;
+        account.Type = null;
+        account.Status = "Deleted";
+
+        UpdateList(account);
+
+        if (account.Status == "Deleted")
+        { return true; }
+
+        return false;
+    }
+
+    public bool CheckPassWord(AccountModel acc, string passToCheck)
+    {
+        if (acc.Password == passToCheck)
+        {
+            return true;
+        }
         return false;
     }
 }
