@@ -3,6 +3,21 @@
 
 public class AccountModel
 {
+    /*{
+    "clientId": 10,
+    "emailAddress": "client@test.nl",
+    "password": "ClientTest123",
+    "fullName": "Client Test",
+    "age": 53,
+    "phoneNumber": "123456789",
+    "allergies": [],
+    "reservationId": [
+      5,
+      6
+    ],
+    "type": "client",
+    "status" : "Activated"
+  }*/
     [JsonPropertyName("clientId")]
     public int Id { get; set; }
 
@@ -29,8 +44,10 @@ public class AccountModel
     public List<int> ReservationIDs { get; set; }
 
     [JsonPropertyName("type")]
-
     public string Type { get; set; }
+
+    [JsonPropertyName("status")]
+    public string Status { get; set; }
 
     // tbh idk why this needs to be here, but it does. it doesnt work without.
     public AccountModel() { }
@@ -47,6 +64,7 @@ public class AccountModel
         this.Allergies = allergies ?? new List<string>();
         this.ReservationIDs = reservationsIDs ?? new List<int>();
         this.Type = type;
+        this.Status = "Activated";
     }
 
 }

@@ -18,7 +18,8 @@ class ClientMenu
             System.Console.WriteLine("Enter 6 to see your accounts data.");
             System.Console.WriteLine("Enter 7 to modify your data.");
             System.Console.WriteLine("Enter 8 to check your messages."); // check messages if reservation is cancelled
-            System.Console.WriteLine("Enter 9 to log out");
+            System.Console.WriteLine("Enter 9 to deactivate account.");
+            System.Console.WriteLine("Enter 10 to log out");
 
             string user_logged_in_answer = System.Console.ReadLine();
             switch (user_logged_in_answer)
@@ -196,7 +197,20 @@ class ClientMenu
                         Console.Clear();
                     }
                     break;
+
                 case "9":
+                    bool userDeactivate = ChoicesLogic.YesOrNo("Are you sure you want to deactivate your account?");
+                    if (userDeactivate)
+                    {
+                        accountsLogic.deactivateAccount(acc.Id);
+                        acc = null;
+                        clientmenu = false;
+                        Menu.Start();
+                    };
+
+                    break;
+
+                case "10":
                     acc = null;
                     clientmenu = false;
                     Menu.Start();

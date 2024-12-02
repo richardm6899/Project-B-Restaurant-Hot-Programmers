@@ -27,7 +27,7 @@
     "clientid": 10,
     "cost": 50,
     "date": "2024-12-12T00:00:00",
-    "name": "Clien Test",
+    "name": "Client Test",
     "phoneNumber": "123456789",
     "email": "client@test.nl",
     "status": "Ongoing"
@@ -38,7 +38,7 @@
     "clientid": 10,
     "cost": 50,
     "date": "2024-12-23T00:00:00",
-    "name": "Clien Test",
+    "name": "Client Test",
     "phoneNumber": "123456789",
     "email": "client@test.nl",
     "status": "Ongoing"

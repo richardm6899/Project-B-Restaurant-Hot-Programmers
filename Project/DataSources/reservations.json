@@ -46,7 +46,7 @@
   {
     "id": 5,
     "tableID": 13,
-    "name": "Clien Test",
+    "name": "Client Test",
     "clientID": 10,
     "howMany": 4,
     "date": "2024-12-12T00:00:00",
@@ -57,7 +57,7 @@
   {
     "id": 6,
     "tableID": 8,
-    "name": "Clien Test",
+    "name": "Client Test",
     "clientID": 10,
     "howMany": 2,
     "date": "2024-12-23T00:00:00",
