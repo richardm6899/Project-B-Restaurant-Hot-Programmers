@@ -34,7 +34,7 @@ public class ReservationLogic
     public ReservationModel Create_reservation(int tableID, string name, int clientID, int howMany, DateTime date, string typeofreservation, string timeslot)//tested
     {
         int new_id = _reservations.Count + 1;
-        ReservationModel reservation = new(new_id, tableID, name, clientID, howMany, date, typeofreservation, timeslot);
+        ReservationModel reservation = new(new_id, tableID, name, clientID, howMany, date, typeofreservation, timeslot, false);
         // add reservation to table.reservation list
         AssignTable(tableID, reservation);
         _reservations.Add(reservation);
@@ -442,7 +442,7 @@ public class ReservationLogic
     public ReceiptModel CreateReceipt(ReservationModel reservation, int cost, string number, string email)
     {
         int id = _receipts.Count() + 1;
-        ReceiptModel receipt = new(id, reservation.Id, reservation.ClientID, cost, reservation.Date, reservation.TimeSlot, reservation.Name, number, email, reservation.TypeOfReservation, reservation.TableID);
+        ReceiptModel receipt = new(id, reservation.Id, reservation.ClientID, cost, reservation.Date, reservation.TimeSlot, reservation.Name, number, email, reservation.TypeOfReservation, reservation.TableID, []);
         _receipts.Add(receipt);
         ReceiptAccess.WriteAllReceipts(_receipts);
         return receipt;
