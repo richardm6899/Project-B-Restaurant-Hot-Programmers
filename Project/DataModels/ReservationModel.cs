@@ -32,9 +32,12 @@ public class ReservationModel
     [JsonPropertyName("typeofreservation")]
     public string TypeOfReservation { get; set; }
 
+    [JsonPropertyName("foodOrdered")]
+    public bool FoodOrdered { get; set; }
 
 
-    public ReservationModel(int id, int tableID, string name, int clientID, int howMany, DateTime date, string typeofreservation, string timeslot)
+
+    public ReservationModel(int id, int tableID, string name, int clientID, int howMany, DateTime date, string typeofreservation, string timeslot, bool foodOrdered)
     {
         Id = id;
 
@@ -48,6 +51,8 @@ public class ReservationModel
         TimeSlot = timeslot;
         Status = "Ongoing";
         TypeOfReservation = typeofreservation;
+        FoodOrdered = foodOrdered;
+
     }
 
 
