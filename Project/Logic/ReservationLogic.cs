@@ -1,5 +1,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Globalization;
+using System.Reflection.Metadata;
 // to fix: reservation id duplicates, reservation id and prob table id can be duplicate,
 //for now it chooses the first item in the list with the id
 public class ReservationLogic
@@ -9,6 +11,7 @@ public class ReservationLogic
     public List<TableModel> _tables { get; set; }
     public List<TableModel> AvailableTables { get; set; } //for available table check
     private AccountsLogic accountsLogic = new AccountsLogic();
+    static private RestaurantLogic restaurantLogic = new();
 
     // load tables into properties
     public ReservationLogic()
@@ -673,6 +676,218 @@ public class ReservationLogic
 
         }
         return 0;
+    }
+
+    // check for days that are at restaurant max capacity and make them red
+    public List<DateTime> MaxCapDays()
+    {
+        List<DateTime> MaxCapDays = new() { };
+        Dictionary<DateTime, int> datecount = new();
+        // check if date already in datecout
+        foreach (var table in _tables)
+        {
+            foreach (var res in table.Reservations)
+            {
+                if (!datecount.Keys.Contains(res.Date))
+                {
+                    datecount[res.Date] = 1;
+                }
+                else
+                {
+                    datecount[res.Date]++;
+                }
+            }
+        }
+        // if date is has equal amount of reservations as cap then add to max capacity days
+        foreach (var item in datecount)
+        {
+            if (!MaxCapDays.Contains(item.Key) && item.Value == 92)
+            {
+                MaxCapDays.Add(item.Key);
+            }
+        }
+        return MaxCapDays;
+    }
+
+    // check if there are available tables for each reservation date to check if date is fully booked
+    public List<DateTime> MaxTimeSlot(string timeslotid, int amount)
+    {
+
+        List<DateTime> MaxTimeSlotDays = new();
+
+        foreach (var table in _tables)
+        {
+            foreach (var res in table.Reservations)
+            {
+                CheckMin_MaxCapacity(amount);
+                CheckDate(Convert.ToDateTime(res.Date), timeslotid);
+
+                if (AvailableTables.Count() == 0)
+                {
+
+                    MaxTimeSlotDays.Add(res.Date);
+                }
+
+            }
+        }
+
+
+        return MaxTimeSlotDays;
+    }
+
+    // displays calender for make reservation
+    private void PrintCalendar(int year, int month, int selectedDay, List<DateTime> maxCapDays, List<DateTime> maxTimeSlot)
+    {
+
+        DateTime firstDayOfMonth = new DateTime(year, month, 1);
+        int daysInMonth = DateTime.DaysInMonth(year, month);
+
+        System.Console.WriteLine("------------------------------------------------------");
+
+        System.Console.Write("On what day would you like to reserve a table? ");
+        Console.ForegroundColor = ConsoleColor.Green;
+
+        System.Console.WriteLine(@"'You can only book 3 months in advanced'");
+
+        Console.ForegroundColor = ConsoleColor.Red;
+        System.Console.WriteLine("Red: no availability for combination of amount of people and timeslot.");
+
+
+        Console.ForegroundColor = ConsoleColor.DarkGray;
+        System.Console.WriteLine("Gray: Restaurant is closed for the day");
+
+        Console.ResetColor();
+        System.Console.WriteLine("--------------------------------------------------");
+        // Print month and year
+        Console.WriteLine($"{CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month)} {year}");
+        Console.WriteLine("Su Mo Tu We Th Fr Sa");
+
+        // Print leading spaces for the first week
+        int startDayOfWeek = (int)firstDayOfMonth.DayOfWeek;
+        for (int i = 0; i < startDayOfWeek; i++)
+        {
+            Console.Write("   ");
+        }
+
+        // Print days of the month
+        for (int day = 1; day <= daysInMonth; day++)
+        {
+            // if day is on max capacity or day is closed then makes it red
+            if (day == selectedDay)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
+                Console.Write($"{day,2} ");
+                Console.ResetColor();
+            }
+
+            else if (maxTimeSlot.Contains(Convert.ToDateTime($"{year}/{month}/{day}")) || maxCapDays.Contains(Convert.ToDateTime($"{year}/{month}/{day}")))
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.Write($"{day,2} ");
+                Console.ResetColor();
+            }
+
+
+            else if (restaurantLogic.closed_Day(Convert.ToDateTime($"{year}/{month}/{day}")))
+            {
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                Console.Write($"{day,2} ");
+                Console.ResetColor();
+            }
+
+
+            else
+            {
+                Console.Write($"{day,2} ");
+            }
+
+            // Break line at the end of the week
+            if ((startDayOfWeek + day) % 7 == 0)
+            {
+                Console.WriteLine();
+            }
+        }
+        Console.WriteLine();
+    }
+    public string DisplayCalendarReservation(string timeslotid, int amount)
+    {
+
+        List<DateTime> maxCapDays = MaxCapDays();
+        // also days where timeslot and the amount of people chosen are same make darkgrey
+        List<DateTime> maxTimeslot = MaxTimeSlot(timeslotid, amount);
+        // date init
+        DateTime currentDate = DateTime.Now;
+        int selectedDay = currentDate.Day;
+        int selectedMonth = currentDate.Month;
+        int selectedYear = currentDate.Year;
+        bool running = true;
+
+        while (running)
+        {
+            // days where it should display red
+            Console.Clear();
+            PrintCalendar(selectedYear, selectedMonth, selectedDay, maxCapDays, maxTimeslot);
+
+            Console.WriteLine("\nUse Arrow Keys to navigate. Press Enter to select a date. Press Esc to exit.");
+            ConsoleKey key = Console.ReadKey(true).Key;
+
+            // Handle navigation
+            if (key == ConsoleKey.LeftArrow) selectedDay--;
+            if (key == ConsoleKey.RightArrow) selectedDay++;
+            if (key == ConsoleKey.UpArrow) selectedDay -= 7;
+            if (key == ConsoleKey.DownArrow) selectedDay += 7;
+
+            // Handle Enter and Esc keys
+            if (key == ConsoleKey.Enter)
+            {
+                //if date is fully booked return default // might want to expand further // think i want to return string so that it doens't get changed much
+                string returnDate = $"{selectedYear}, {selectedMonth}, {selectedDay}";
+
+
+                // if date is in max capacity days, or timeslot is fully booked return that date is fully booked
+                if (maxCapDays.Contains(Convert.ToDateTime(returnDate)) || maxTimeslot.Contains(Convert.ToDateTime(returnDate)))
+                {
+                    return $"{returnDate} is fully booked.";
+                }
+                else if (restaurantLogic.closed_Day(Convert.ToDateTime(returnDate)))
+                {
+                    return "Sorry, We are closed on this day";
+                }
+
+
+                else
+                {
+                    return returnDate;
+                }
+
+            } // Return selected date
+            // Return a default value to indicate cancellation
+
+            // Adjust month and year if out of range
+            int daysInMonth = DateTime.DaysInMonth(selectedYear, selectedMonth);
+            if (selectedDay < 1)
+            {
+                selectedMonth--;
+                if (selectedMonth < 1)
+                {
+                    selectedMonth = 12;
+                    selectedYear--;
+                }
+                selectedDay = DateTime.DaysInMonth(selectedYear, selectedMonth);
+            }
+            else if (selectedDay > daysInMonth)
+            {
+                selectedMonth++;
+                if (selectedMonth > 12)
+                {
+                    selectedMonth = 1;
+                    selectedYear++;
+                }
+                selectedDay = 1;
+            }
+
+        }
+        return "";
     }
 
 }
