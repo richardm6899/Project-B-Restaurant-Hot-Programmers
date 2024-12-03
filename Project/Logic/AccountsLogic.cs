@@ -320,7 +320,7 @@ public class AccountsLogic
         return false;
     }
 
-    public bool CheckPassWord(AccountModel acc, string passToCheck)
+    public bool ReCheckPassWord(AccountModel acc, string passToCheck)
     {
         if (acc.Password == passToCheck)
         {

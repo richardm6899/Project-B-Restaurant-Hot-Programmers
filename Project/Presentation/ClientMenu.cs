@@ -214,7 +214,7 @@ class ClientMenu
                                 {
                                     System.Console.WriteLine("Please re-enter your password.");
                                     string passToCheck = Console.ReadLine();
-                                    if (accountsLogic.CheckPassWord(acc, passToCheck))
+                                    if (accountsLogic.ReCheckPassWord(acc, passToCheck))
                                     {
                                         accountsLogic.deactivateAccount(acc.Id);
                                         System.Console.WriteLine("Account has been deactivated. You will be returned to the main menu.");
@@ -235,7 +235,7 @@ class ClientMenu
                                 {
                                     System.Console.WriteLine("Please re-enter your password.");
                                     string passToCheck = Console.ReadLine();
-                                    if (accountsLogic.CheckPassWord(acc, passToCheck))
+                                    if (accountsLogic.ReCheckPassWord(acc, passToCheck))
                                     {
                                         accountsLogic.deleteAccount(acc.Id);
                                         System.Console.WriteLine("Account has been deleted. You will be returned to the main menu.");

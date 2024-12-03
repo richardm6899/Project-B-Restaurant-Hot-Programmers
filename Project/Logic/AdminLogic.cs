@@ -38,12 +38,12 @@ public class AdminLogic : AccountsLogic
         return base.GetById(ID);
     }
 
-    public List<AccountModel> GetAccounts(string type)
+    public List<AccountModel> GetAccountsByType(string type)
     {
         List<AccountModel> accounts = base.GetAccounts();
         List<AccountModel> returnAccounts = new();
 
-        foreach(AccountModel account in accounts)
+        foreach (AccountModel account in accounts)
         {
             if (account.Type == type)
             {
@@ -51,7 +51,21 @@ public class AdminLogic : AccountsLogic
             }
         }
         return returnAccounts;
-        
+
     }
-    
+
+    public List<AccountModel> GetActivatedAccounts()
+    {
+        List<AccountModel> activatedAccounts = new();
+        List<AccountModel> allAccounts = base.GetAccounts();
+        foreach (AccountModel account in allAccounts)
+        {
+            if (account.Status == "Activated")
+            {
+                activatedAccounts.Add(account);
+            }
+        }
+        return activatedAccounts;
+    }
+
 }
