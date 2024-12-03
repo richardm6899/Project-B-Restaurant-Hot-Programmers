@@ -35,7 +35,12 @@ class ClientMenu
                 // cancel reservation
                 case "2":
                     System.Console.WriteLine("Cancel reservation");
-                    Reservation.CancelReservation(acc.Id);
+                    List<ReservationModel> toCheckOngoingReservations = reservationLogic.AllOngoingReservationsByID(acc.Id);
+                    if (toCheckOngoingReservations.Count() >= 0)
+                    {
+                        Reservation.CancelReservation(acc.Id);
+                    }
+                    else System.Console.WriteLine("You have no reservations on this account.");
                     break;
                 // see accounts reservation
                 case "3":
