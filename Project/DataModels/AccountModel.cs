@@ -30,8 +30,8 @@ public class AccountModel
     [JsonPropertyName("fullName")]
     public string FullName { get; set; }
 
-    [JsonPropertyName("age")]
-    public int Age { get; set; }
+    [JsonPropertyName("birthdate")]
+    public DateTime Birthdate { get; set; }
 
     [JsonPropertyName("phoneNumber")]
     public string PhoneNumber { get; set; }
@@ -53,13 +53,13 @@ public class AccountModel
     public AccountModel() { }
 
 
-    public AccountModel(int id, string emailAddress, string password, string fullName, int age, string phoneNumber, List<string> allergies, List<int> reservationsIDs, string type)
+    public AccountModel(int id, string emailAddress, string password, string fullName, DateTime birthdate, string phoneNumber, List<string> allergies, List<int> reservationsIDs, string type)
     {
         this.Id = id;
         this.EmailAddress = emailAddress;
         this.Password = password;
         this.FullName = fullName;
-        this.Age = age;
+        this.Birthdate = birthdate;
         this.PhoneNumber = phoneNumber;
         this.Allergies = allergies ?? new List<string>();
         this.ReservationIDs = reservationsIDs ?? new List<int>();

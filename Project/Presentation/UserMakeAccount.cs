@@ -56,7 +56,7 @@ static class UserMakeAccount
             lastNameLower = Console.ReadLine();
         }
         string LastName = AccountsLogic.CapitalizeFirstLetter(lastNameLower);
-        
+
         // pass
         System.Console.WriteLine("(Password must contain a capital letter, password must be 8 characters or longer\n and needs to contain a number or symbol)");
         System.Console.WriteLine("What is your password: ");
@@ -85,31 +85,41 @@ static class UserMakeAccount
         }
 
         // age
+        DateTime birthday = default;
         bool correct_age = false;
-        System.Console.WriteLine("What is your age: ");
-        int age = Convert.ToInt32(Console.ReadLine());
         do
         {
-            try
+            System.Console.WriteLine("What is your Birthdate: ");
+            birthday = accountsLogic.GetBirthday();
+            if (ChoicesLogic.YesOrNo($"Is this correct? {birthday.ToShortDateString()}"))
             {
-                if (age <= 0 || age > 150)
-                {
-                    System.Console.WriteLine("Invalid age, please re-enter Age: ");
-                    age = Convert.ToInt32(Console.ReadLine());
-                }
-                else if (age < 18)
-                {
-                    System.Console.WriteLine("You are too young to make an account.");
-                    Menu.Start();
-                }
-                else correct_age = true;
+                correct_age = true;
+            }
+        } while (correct_age == false);
 
-            }
-            catch (FormatException)
-            {
-                System.Console.WriteLine("Please enter a number.");
-            }
-        } while (correct_age != true);
+        // int age = Convert.ToInt32(Console.ReadLine());
+        // do
+        // {
+        //     try
+        //     {
+        //         if (age <= 0 || age > 150)
+        //         {
+        //             System.Console.WriteLine("Invalid age, please re-enter Age: ");
+        //             age = Convert.ToInt32(Console.ReadLine());
+        //         }
+        //         else if (age < 18)
+        //         {
+        //             System.Console.WriteLine("You are too young to make an account.");
+        //             Menu.Start();
+        //         }
+        //         else correct_age = true;
+
+        //     }
+        //     catch (FormatException)
+        //     {
+        //         System.Console.WriteLine("Please enter a number.");
+        //     }
+        // } while (correct_age != true);
 
         // allergies
         List<string> allergies = [];
@@ -157,6 +167,6 @@ static class UserMakeAccount
         // make full name
         string fullName = $"{FirstName} {LastName}";
         // make an account with all given info
-        System.Console.WriteLine(AccountsLogic.CreateAccount(fullName, email, password, phoneNumber, age, allergies, "client"));
+        System.Console.WriteLine(AccountsLogic.CreateAccount(fullName, email, password, phoneNumber, birthday, allergies, "client"));
     }
 }

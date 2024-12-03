@@ -7,7 +7,7 @@ public class ModifyData
     public static void Start(AccountModel account, AccountsLogic accountsLogic)
     {
         Console.WriteLine("Enter 1 to change name");
-        Console.WriteLine("Enter 2 to change age");
+        // Console.WriteLine("Enter 2 to change age");
         Console.WriteLine("Enter 3 to change allergies");
         Console.WriteLine("Enter 4 to change password");
         Console.WriteLine("Enter 5 to change email");
@@ -35,31 +35,31 @@ public class ModifyData
                     }
                 }
                 break;
-            case "2":
-                bool valid_age = false;
-                while (valid_age == false)
-                {
-                    Console.Write("Enter new age: ");
-                    string input = Console.ReadLine();
-                    if (int.TryParse(input, out int newAge))
-                    {
-                        string ageChange = accountsLogic.ChangeAge(account.Id, newAge);
-                        if (newAge >= 18 && newAge < 151)
-                        {
-                            Console.WriteLine(ageChange);
-                            valid_age = true;
-                        }
-                        else
-                        {
-                            Console.WriteLine("Age must be between 18 and 150");
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine("Age must be a number");
-                    }
-                }
-                break;
+            // case "2":
+            //     bool valid_age = false;
+            //     while (valid_age == false)
+            //     {
+            //         Console.Write("Enter new age: ");
+            //         string input = Console.ReadLine();
+            //         if (int.TryParse(input, out int newAge))
+            //         {
+            //             string ageChange = accountsLogic.ChangeAge(account.Id, newAge);
+            //             if (newAge >= 18 && newAge < 151)
+            //             {
+            //                 Console.WriteLine(ageChange);
+            //                 valid_age = true;
+            //             }
+            //             else
+            //             {
+            //                 Console.WriteLine("Age must be between 18 and 150");
+            //             }
+            //         }
+            //         else
+            //         {
+            //             Console.WriteLine("Age must be a number");
+            //         }
+            //     }
+            //     break;
             case "3":
                 bool valid_allergies = false;
                 while (valid_allergies == false)

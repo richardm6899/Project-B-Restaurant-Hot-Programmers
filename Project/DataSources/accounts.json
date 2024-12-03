@@ -4,7 +4,7 @@
     "emailAddress": "0",
     "password": "xyz",
     "fullName": "richard",
-    "age": 25,
+    "birthdate": "0001-01-01T00:00:00",
     "phoneNumber": "36849255",
     "allergies": [
       "peanut",
@@ -12,116 +12,116 @@
     ],
     "reservationId": null,
     "type": "client",
-    "status" : "Activated"
+    "status": "Activated"
   },
   {
     "clientId": 2,
     "emailAddress": "t@b.nl",
     "password": "xyz",
     "fullName": "Thomas Edison",
-    "age": 35,
+    "birthdate": "0001-01-01T00:00:00",
     "phoneNumber": "47830247",
     "allergies": [],
     "reservationId": null,
     "type": "client",
-    "status" : "Activated"
+    "status": "Activated"
   },
   {
     "clientId": 3,
     "emailAddress": null,
     "password": "123",
     "fullName": "John Smith",
-    "age": 17,
+    "birthdate": "0001-01-01T00:00:00",
     "phoneNumber": "42074284",
     "allergies": [
       "fish"
     ],
     "reservationId": null,
     "type": "client",
-    "status" : "Activated"
+    "status": "Activated"
   },
   {
     "clientId": 4,
     "emailAddress": "gyfege@feb.com",
     "password": "RTYUrtyu5",
     "fullName": "Flor Brefe",
-    "age": 20,
+    "birthdate": "0001-01-01T00:00:00",
     "phoneNumber": "64738573",
     "allergies": [
       "fish"
     ],
     "reservationId": null,
     "type": "client",
-    "status" : "Activated"
+    "status": "Activated"
   },
   {
     "clientId": 5,
     "emailAddress": "lalala@lolo.com",
     "password": "RTYuirtyui567",
     "fullName": "Blalal Lololo",
-    "age": 2,
+    "birthdate": "0001-01-01T00:00:00",
     "phoneNumber": "12345678",
     "allergies": [],
     "reservationId": null,
     "type": "client",
-    "status" : "Activated"
+    "status": "Activated"
   },
   {
     "clientId": 6,
     "emailAddress": "brederodef@gmail.com",
     "password": "ABCabc123",
     "fullName": "Floor Brederode",
-    "age": 151,
+    "birthdate": "0001-01-01T00:00:00",
     "phoneNumber": "19407399",
     "allergies": [],
     "reservationId": null,
     "type": "client",
-    "status" : "Activated"
+    "status": "Activated"
   },
   {
     "clientId": 7,
     "emailAddress": "admin@test.nl",
     "password": "Test123!",
     "fullName": "Test Test",
-    "age": 0,
+    "birthdate": "0001-01-01T00:00:00",
     "phoneNumber": "19407399",
     "allergies": [],
     "reservationId": [
       4
     ],
     "type": "admin",
-    "status" : "Activated"
+    "status": "Activated"
   },
   {
     "clientId": 8,
     "emailAddress": "staff@test.nl",
     "password": "TestStaff1",
     "fullName": "Jane Doe",
-    "age": 0,
+    "birthdate": "0001-01-01T00:00:00",
     "phoneNumber": "123456789",
     "allergies": [],
     "reservationId": [],
     "type": "staff",
-    "status" : "Activated"
+    "status": "Activated"
   },
   {
     "clientId": 9,
     "emailAddress": "finance@test.nl",
     "password": "TestFinance1",
     "fullName": "Alex Barnes",
-    "age": 0,
+    "birthdate": "0001-01-01T00:00:00",
     "phoneNumber": "123456789",
     "allergies": [],
     "reservationId": [],
     "type": "finance",
-    "status" : "Activated"
+    "status": "Activated"
   },
   {
     "clientId": 10,
     "emailAddress": "client@test.nl",
     "password": "ClientTest123",
     "fullName": "Client Test",
-    "age": 53,
+    "birthdate": "0001-01-01T00:00:00",
     "phoneNumber": "123456789",
     "allergies": [],
     "reservationId": [
@@ -129,6 +129,6 @@
       6
     ],
     "type": "client",
-    "status" : "Activated"
+    "status": "Activated"
   }
 ]
