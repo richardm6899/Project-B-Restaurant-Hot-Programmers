@@ -15,22 +15,22 @@ public class AdminLogic : AccountsLogic
     private string Password;
     private string PhoneNumber;
     private string Type = "admin";
-    private int Age;
+    private DateTime Birthdate;
 
-    public AdminLogic(string name, string email, string password, string phoneNumber, int age)
+    public AdminLogic(string name, string email, string password, string phoneNumber, DateTime birthdate)
     {
         this.Name = name;
         this.Email = email;
         this.Password = password;
         this.PhoneNumber = phoneNumber;
-        this.Age = age;
+        this.Birthdate = birthdate;
     }
 
 
     // public static string CreateAccount(string fullName, string email, string password, string phoneNumber, int age, List<string> allergies, string type)
     public void CreateAdmin()
     {
-        AccountsLogic.CreateAccount(this.Name, this.Email, this.Password, this.PhoneNumber, this.Age, default, this.Type);
+        AccountsLogic.CreateAccount(this.Name, this.Email, this.Password, this.PhoneNumber, this.Birthdate, default, this.Type);
     }
 
     public override AccountModel GetById(int ID)

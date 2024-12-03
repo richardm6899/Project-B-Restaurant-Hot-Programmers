@@ -44,14 +44,32 @@ public class AccountsLogic
         return _accounts.Find(i => i.Id == id);
     }
 
+    public virtual AccountModel GetByEmail(string email)
+    {
+        return _accounts.Find(i => i.EmailAddress == email);
+    }
+
     public AccountModel CheckLogin(string email, string password)
     {
         if (email == null || password == null)
         {
             return null;
         }
-        CurrentAccount = _accounts.Find(i => i.EmailAddress == email && i.Password == password && i.Status =="Activated");
+        CurrentAccount = _accounts.Find(i => i.EmailAddress == email && i.Password == password && i.Status == "Activated");
         return CurrentAccount;
+    }
+
+    // check if given email is connected to a deactivated account, return true if found
+    public bool CheckAccountDeactivated(string email)
+    {
+        foreach (AccountModel account in _accounts)
+        {
+            if (account.EmailAddress == email && account.Status == "Deactivated")
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     public List<AccountModel> GetAccounts()
@@ -71,10 +89,10 @@ public class AccountsLogic
         return false;
     }
 
-    public static string CreateAccount(string fullName, string email, string password, string phoneNumber, int age, List<string> allergies, string type)
+    public static string CreateAccount(string fullName, string email, string password, string phoneNumber, DateTime birthdate, List<string> allergies, string type)
     {
         int newID = AccountsAccess.LoadAll().Count + 1;
-        AccountModel account = new(newID, email, password, fullName, age, phoneNumber, allergies, default, type);
+        AccountModel account = new(newID, email, password, fullName, birthdate, phoneNumber, allergies, default, type);
         AccountsLogic ac = new AccountsLogic();
         ac.UpdateList(account);
         if (ac.GetById(newID) == null)
@@ -136,25 +154,25 @@ public class AccountsLogic
         }
     }
 
-    public string ChangeAge(int id, int age)
-    {
-        if (age < 18 || age > 150)
-        {
-            return "Age must be between 18 and 150";
-        }
+    // public string ChangeAge(int id, int age)
+    // {
+    //     if (age < 18 || age > 150)
+    //     {
+    //         return "Age must be between 18 and 150";
+    //     }
 
-        AccountModel account = GetById(id);
-        if (account != null)
-        {
-            account.Age = age;
-            UpdateList(account);
-            return "Age changed successfully";
-        }
-        else
-        {
-            return "Account not found";
-        }
-    }
+    //     AccountModel account = GetById(id);
+    //     if (account != null)
+    //     {
+    //         account.Age = age;
+    //         UpdateList(account);
+    //         return "Age changed successfully";
+    //     }
+    //     else
+    //     {
+    //         return "Account not found";
+    //     }
+    // }
 
     public string ChangeAllergies(int id, List<string> newAllergies)
     {
@@ -260,6 +278,22 @@ public class AccountsLogic
         return false;
     }
 
+    public bool ActivateAccount(string email)
+    {
+        AccountModel account = GetByEmail(email);
+        if (account == null)
+        {
+            return false;
+        }
+
+        account.Status = "Activated";
+        UpdateList(account);
+        if (account.Status == "Activated") { return true; }
+
+
+        return false;
+    }
+
     public bool deleteAccount(int clientid)
     {
         AccountModel account = GetById(clientid);
@@ -271,7 +305,7 @@ public class AccountsLogic
         account.EmailAddress = null;
         account.Password = null;
         account.FullName = null;
-        account.Age = default;
+        account.Birthdate = default;
         account.PhoneNumber = null;
         account.Allergies = null;
         account.ReservationIDs = null;
@@ -294,4 +328,119 @@ public class AccountsLogic
         }
         return false;
     }
+
+
+    public DateTime GetBirthday()
+    {
+        // Array of months
+        string[] months = {
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    };
+
+        // Years between 1900 and 2023
+        int startYear = 1900;
+        int endYear = 2007;
+        int[] years = new int[endYear - startYear + 1];
+        for (int i = 0; i < years.Length; i++)
+        {
+            years[i] = startYear + i;
+        }
+
+        // Days array
+        int[] days = new int[31];
+        for (int i = 0; i < days.Length; i++)
+        {
+            days[i] = i + 1;
+        }
+
+        // Year selection (10 columns)
+        int selectedYear = years[NavigateGrid(years, 10, "Select your birth year:")];
+
+        // Month selection (4 columns)
+        int selectedMonth = NavigateGrid(months, 4, $"{selectedYear} \nSelect your birth month:") + 1;
+
+        // Day selection (7 columns)
+        int maxDays = GetDaysInMonth(selectedMonth);
+        int selectedDay = days[NavigateGrid(days, 7, $"{selectedYear} {months[selectedMonth - 1]}\nSelect your birth day:", maxDays)];
+
+        return new DateTime(selectedYear, selectedMonth, selectedDay);
+    }
+
+
+    private static int NavigateGrid<T>(T[] options, int columns, string prompt, int limit = 0)
+    {
+        int currentIndex = 0;
+        limit = (limit == 0 || limit > options.Length) ? options.Length : limit; // Limit the options
+        int rows = (limit + columns - 1) / columns; // Calculate number of rows
+
+        while (true)
+        {
+            Console.Clear();
+            System.Console.WriteLine(prompt);
+            // Print grid
+            for (int r = 0; r < rows; r++)
+            {
+                for (int c = 0; c < columns; c++)
+                {
+                    int index = r * columns + c;
+                    if (index < limit)
+                    {
+                        if (index == currentIndex)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.Write($"{options[index],-10}"); // Adjust width for alignment
+                            Console.ResetColor();
+                        }
+                        else
+                        {
+                            Console.Write($"{options[index],-10}");
+                        }
+                    }
+                }
+                Console.WriteLine();
+            }
+
+            var key = Console.ReadKey(true).Key;
+            switch (key)
+            {
+                case ConsoleKey.UpArrow:
+                    currentIndex = (currentIndex - columns + limit) % limit;
+                    break;
+                case ConsoleKey.DownArrow:
+                    currentIndex = (currentIndex + columns) % limit;
+                    break;
+                case ConsoleKey.LeftArrow:
+                    currentIndex = (currentIndex - 1 + limit) % limit;
+                    break;
+                case ConsoleKey.RightArrow:
+                    currentIndex = (currentIndex + 1) % limit;
+                    break;
+                case ConsoleKey.Enter:
+                    return currentIndex;
+            }
+        }
+    }
+
+    // Function to get the maximum number of days in a month
+    private static int GetDaysInMonth(int month)
+    {
+        return month switch
+        {
+            1 => 31,
+            2 => 28, // Simplified: No leap year handling for now
+            3 => 31,
+            4 => 30,
+            5 => 31,
+            6 => 30,
+            7 => 31,
+            8 => 31,
+            9 => 30,
+            10 => 31,
+            11 => 30,
+            12 => 31,
+            _ => 31,
+        };
+    }
+
 }

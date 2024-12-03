@@ -150,7 +150,7 @@ class ClientMenu
                     // full name
                     System.Console.WriteLine("Name: " + acc.FullName);
                     // age
-                    System.Console.WriteLine("Age:" + acc.Age);
+                    System.Console.WriteLine("Birthdate:" + acc.Birthdate.ToShortDateString());
                     // email
                     System.Console.WriteLine("Email: " + acc.EmailAddress);
                     // phone numb
@@ -217,6 +217,8 @@ class ClientMenu
                                     if (accountsLogic.CheckPassWord(acc, passToCheck))
                                     {
                                         accountsLogic.deactivateAccount(acc.Id);
+                                        System.Console.WriteLine("Account has been deactivated. You will be returned to the main menu.");
+                                        Console.ReadKey();
                                         acc = null;
                                         clientmenu = false;
                                         Menu.Start();
@@ -236,6 +238,8 @@ class ClientMenu
                                     if (accountsLogic.CheckPassWord(acc, passToCheck))
                                     {
                                         accountsLogic.deleteAccount(acc.Id);
+                                        System.Console.WriteLine("Account has been deleted. You will be returned to the main menu.");
+                                        Console.ReadKey();
                                         acc = null;
                                         clientmenu = false;
                                         Menu.Start();
