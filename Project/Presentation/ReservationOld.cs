@@ -2,21 +2,10 @@
 using System.Diagnostics;
 using System.Runtime.Intrinsics.Arm;
 
-
-// order of working
-// user gets asked for how many people user wants to reserve
-// user gets asked if they want hotseats or regular seats
-// how do you check if tables are next to each other
-// 
-// user gets asked timeslot
-//user gets shown  calender
-// if not hot seat: user gets option to choose table.
-// If there are no available hot seats, user gets notified that there are no available hot seats for the amount of people and can choose again.
-// user gets asked confirmation
-static class Reservation
+static class ReservationOld
 {
     static private ReservationLogic reservationlogic = new();
-
+    static private RestaurantLogic restaurantLogic = new();
     // displays table restaurant
 
     public static void MakeReservation(string name, int clientID, string number, string email)
@@ -26,7 +15,6 @@ static class Reservation
         bool reservation = true;
         while (reservation)
         {
-            // user has to enter yes or no to go further
             bool Client_answer = ChoicesLogic.YesOrNo("Hello would you like to make a reservation?");
 
             if (Client_answer)
@@ -37,8 +25,6 @@ static class Reservation
                 DateTime Date = default;
                 string TimeSlot = "";
                 int HowMany = 0;
-
-                // user gets asked with how many people are and check is done
                 while (howmanyCheck)
                 {
                     System.Console.WriteLine("\nFor how many people? We can seat a maximum of 6 people at one table");
@@ -49,10 +35,9 @@ static class Reservation
                         if (HowManycheck >= 1 && HowManycheck <= 6)
                         {
                             HowMany += HowManycheck;
-
-
+                            // available tables check
+                            reservationlogic.CheckMin_MaxCapacity(HowMany);
                             howmanyCheck = false;
-
                         }
                         else if (HowManycheck < 1 || HowManycheck > 6)
                         {
@@ -70,52 +55,54 @@ static class Reservation
                     }
 
                 }
-                bool timeslotbool = true;
-                // user gets to choose timeslot of reservation
-                while (timeslotbool)
-                {
-                    System.Console.WriteLine("In what timeslot would you like to book your reservation: \n1. 12:00 - 14:00\n2. 17:00 - 19:00\n3. 19:00 - 21:00\n4. 21:00 - 23:00\nChoose id:");
-                    string timeslotIdcheck = Console.ReadLine();
-                    TimeSlot = ReservationLogic.TimSlotChooser(timeslotIdcheck);
-                    if (TimeSlot != null)
-                    {
-                        //    check if valid time slot
-                        System.Console.WriteLine($"Time slot {TimeSlot} chosen.");
-                        System.Console.WriteLine("[enter]");
-                        System.Console.ReadLine();
-                        timeslotbool = false;
-
-                    }
-                    else
-                    {
-                        System.Console.WriteLine("Invalid ID entered. Try again");
-                        System.Console.WriteLine("[enter]");
-                        System.Console.ReadLine();
-                    }
-                }
-
 
                 while (dateCheck)
                 {
-                    // calender gets shown with all available dates 
+                    System.Console.WriteLine("------------------------------------------------------");
+                    System.Console.Write("On what day would you like to reserve a table? ");
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    System.Console.WriteLine("(mm/dd/yyyy))");
+                    Console.ResetColor();
                     System.Console.WriteLine(@"'You can only book 3 months in advanced'");
                     // check if valid date
-                    string UncheckedDate = reservationlogic.DisplayCalendarReservation(TimeSlot, HowMany);
+                    string UncheckedDate = reservationlogic.DisplayCalendarReservation("1",2);
                     if (DateTime.TryParse(UncheckedDate, out Date))
                     {
                         //checks if user filled in date not before today and not farther than 3 months in the future
                         // can be more personalised in terms of what the user filled in wrong by making returns numbers
                         if (reservationlogic.IsValidDate(Date))
                         {
-                            // if (restaurantLogic.closed_Day(Date))
-                            // {
-                            //     Console.WriteLine("Sorry, the restaurant is closed that day.");
-                            //     Console.WriteLine($"The next open day is: {restaurantLogic.next_Open_Day(Date)}");
-                            // }
-                            // else
-                            // {
-                            dateCheck = false;
-                            // }
+                            if (restaurantLogic.closed_Day(Date))
+                            {
+                                Console.WriteLine("Sorry, the restaurant is closed that day.");
+                                Console.WriteLine($"The next open day is: {restaurantLogic.next_Open_Day(Date)}");
+                            }
+                            else
+                            {
+                                dateCheck = false;
+                            }
+                            bool timeslotbool = true;
+                            while (timeslotbool)
+                            {
+                                System.Console.WriteLine("In what timeslot would you like to book your reservation: \n1. 12:00 - 14:00\n2. 17:00 - 19:00\n3. 19:00 - 21:00\n4. 21:00 - 23:00\nChoose id:");
+                                string timeslotIdcheck = Console.ReadLine();
+                                TimeSlot = ReservationLogic.TimSlotChooser(timeslotIdcheck);
+                                if (TimeSlot != null)
+                                {
+                                    //    check if valid time slot
+                                    System.Console.WriteLine($"Time slot {TimeSlot} chosen.");
+                                    System.Console.WriteLine("[enter]");
+                                    System.Console.ReadLine();
+                                    timeslotbool = false;
+
+                                }
+                                else
+                                {
+                                    System.Console.WriteLine("Invalid ID entered. Try again");
+                                    System.Console.WriteLine("[enter]");
+                                    System.Console.ReadLine();
+                                }
+                            }
                         }
                         else
                         {
@@ -126,20 +113,29 @@ static class Reservation
                     }
                     else
                     {
-                        System.Console.WriteLine(UncheckedDate);
+                        System.Console.WriteLine("Invalid date entered. Try again");
                         System.Console.WriteLine("[enter]");
                         System.Console.ReadLine();
                     }
                 }
 
-                // available table check
-                // happens down here to not override other methods (DisplayCalendarReservation)
-                reservationlogic.CheckMin_MaxCapacity(HowMany);
+                // check if not table is not already booked at same day/time
                 reservationlogic.CheckDate(Date, TimeSlot);
+                // show available tables
+                if (reservationlogic.AvailableTables.Count == 0)
+                {
+                    System.Console.WriteLine("There are no available tables for your preferences.");
+                    System.Console.WriteLine("[enter]");
+                    Console.ReadLine();
+                    break;
+                }
 
                 while (tableIDcheck)
                 {
-                    // User gets shown restaurant and is shown what tables 
+
+
+
+                    // choose tables check
                     System.Console.WriteLine("Where would you like to sit.\nChoose the table id of the table.");
                     bool TableIdValid = false;
                     int TableID = reservationlogic.DisplayRestaurant();
@@ -147,7 +143,6 @@ static class Reservation
                     {
                         break;
                     }
-
                     typeofreservation = reservationlogic.TypeOfReservation(TableID);
 
                     // check given id is one of available tables id

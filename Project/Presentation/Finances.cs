@@ -33,44 +33,31 @@ static class Finances
                     if (choice2 == "day")
                     {
                         System.Console.WriteLine("enter date: (mm/dd/yyyy)");
-                        string date = Console.ReadLine();
-                        if (DateTime.TryParse(date, out DateTime real_date))
-                        {
-                            System.Console.WriteLine($"Total profits made on {real_date.ToShortDateString()}: {financeLogic.ProfitsDay(real_date)}");
-                            System.Console.WriteLine("[enter]");
-                            Console.ReadLine();
-                            timeframe1 = false;
-                        }
-                        else
-                        {
-                            System.Console.WriteLine("Invalid input enter valid date");
-                            System.Console.WriteLine("[enter]");
-                            Console.ReadLine();
-                        }
+                        DateTime date = FinanceLogic.DisplayCalendarFinance();
+
+
+                        System.Console.WriteLine($"Total profits made on {date.ToShortDateString()}: {financeLogic.ProfitsDay(date)}");
+                        System.Console.WriteLine("[enter]");
+                        Console.ReadLine();
+                        timeframe1 = false;
+
 
 
                     }
                     else if (choice2 == "week")
                     {
                         System.Console.WriteLine("What is the date of the week you want to calculate? (mm/dd/yyyy)");
-                        string date = Console.ReadLine();
-                        if (DateTime.TryParse(date, out DateTime real_date))
-                        {
-                            DateTime startOfWeek = real_date.AddDays(-(int)real_date.DayOfWeek + (int)DayOfWeek.Monday);
+                        DateTime date = FinanceLogic.DisplayCalendarFinance();
 
-                            // Calculate end of the week (Sunday)
-                            DateTime endOfWeek = startOfWeek.AddDays(6);
-                            System.Console.WriteLine($"Total profits from {startOfWeek.ToShortDateString()} to {endOfWeek.ToShortDateString()}: {financeLogic.ProfitsWeek(startOfWeek, endOfWeek)}");
-                            System.Console.WriteLine("[enter]");
-                            Console.ReadLine();
-                            timeframe1 = false;
-                        }
-                        else
-                        {
-                            System.Console.WriteLine("Invalid input enter valid date");
-                            System.Console.WriteLine("[enter]");
-                            Console.ReadLine();
-                        }
+
+                        DateTime startOfWeek = date.AddDays(-(int)date.DayOfWeek + (int)DayOfWeek.Monday);
+
+                        // Calculate end of the week (Sunday)
+                        DateTime endOfWeek = startOfWeek.AddDays(6);
+                        System.Console.WriteLine($"Total profits from {startOfWeek.ToShortDateString()} to {endOfWeek.ToShortDateString()}: {financeLogic.ProfitsWeek(startOfWeek, endOfWeek)}");
+                        System.Console.WriteLine("[enter]");
+                        Console.ReadLine();
+                        timeframe1 = false;
                     }
                     else if (choice2 == "month")
                     {
@@ -126,13 +113,13 @@ static class Finances
                     }
 
 
-                    else if (choice == "q")
+                    else if (choice2 == "q")
                     {
                         timeframe1 = false;
                     }
                     else
                     {
-                        System.Console.WriteLine("Invalid input enter (day/week/month/year/total/(Q))");
+                        System.Console.WriteLine("Invalid input enter (day/week/month/year/total/ Q )");
                         System.Console.WriteLine("[enter]");
                         Console.ReadLine();
                     }
@@ -143,49 +130,36 @@ static class Finances
                 bool timeframe2 = true;
                 while (timeframe2)
                 {
-                    System.Console.WriteLine("In what timeframe would you like to see the reservations made? (day/week/month/year/total)");
+                    System.Console.WriteLine("In what timeframe would you like to see the reservations made? (day/week/month/year/total/ Q )");
                     string choice2 = Console.ReadLine().ToLower();
                     if (choice2 == "day")
                     {
                         System.Console.WriteLine("enter date: (mm/dd/yyyy)");
-                        string date = Console.ReadLine();
-                        if (DateTime.TryParse(date, out DateTime real_date))
-                        {
-                            System.Console.WriteLine($"Total reservations made on {real_date.ToShortDateString()}: {financeLogic.TotalReservationsDay(real_date)}");
-                            System.Console.WriteLine("[enter]");
-                            Console.ReadLine();
-                            timeframe2 = false;
-                        }
-                        else
-                        {
-                            System.Console.WriteLine("Invalid input enter valid date");
-                            System.Console.WriteLine("[enter]");
-                            Console.ReadLine();
-                        }
+                        DateTime date = FinanceLogic.DisplayCalendarFinance();
+
+                        System.Console.WriteLine($"Total reservations made on {date.ToShortDateString()}: {financeLogic.TotalReservationsDay(date)}");
+                        System.Console.WriteLine("[enter]");
+                        Console.ReadLine();
+                        timeframe2 = false;
+
 
 
                     }
                     else if (choice2 == "week")
                     {
                         System.Console.WriteLine("What is the date of the week you want to calculate? (mm/dd/yyyy)");
-                        string date = Console.ReadLine();
-                        if (DateTime.TryParse(date, out DateTime real_date))
-                        {
-                            DateTime startOfWeek = real_date.AddDays(-(int)real_date.DayOfWeek + (int)DayOfWeek.Monday);
+                        DateTime date = FinanceLogic.DisplayCalendarFinance();
 
-                            // Calculate end of the week (Sunday)
-                            DateTime endOfWeek = startOfWeek.AddDays(6);
-                            System.Console.WriteLine($"Total reservations from {startOfWeek.ToShortDateString()} to {endOfWeek.ToShortDateString()}: {financeLogic.ReservationsWeek(startOfWeek, endOfWeek)}");
-                            System.Console.WriteLine("[enter]");
-                            Console.ReadLine();
-                            timeframe2 = false;
-                        }
-                        else
-                        {
-                            System.Console.WriteLine("Invalid input enter valid date");
-                            System.Console.WriteLine("[enter]");
-                            Console.ReadLine();
-                        }
+
+                        DateTime startOfWeek = date.AddDays(-(int)date.DayOfWeek + (int)DayOfWeek.Monday);
+
+                        // Calculate end of the week (Sunday)
+                        DateTime endOfWeek = startOfWeek.AddDays(6);
+                        System.Console.WriteLine($"Total reservations from {startOfWeek.ToShortDateString()} to {endOfWeek.ToShortDateString()}: {financeLogic.ReservationsWeek(startOfWeek, endOfWeek)}");
+                        System.Console.WriteLine("[enter]");
+                        Console.ReadLine();
+                        timeframe2 = false;
+
                     }
                     else if (choice2 == "month")
                     {
@@ -238,12 +212,16 @@ static class Finances
                         System.Console.ReadLine();
                         timeframe2 = false;
                     }
-                    else
+                    else if (choice2 == "q")
                     {
-                        System.Console.WriteLine("Invalid input enter (day/week/month/year/total)");
-                        System.Console.WriteLine("[enter]");
-                        Console.ReadLine();
+                        timeframe2 = false;
                     }
+                    else
+                            {
+                                System.Console.WriteLine("Invalid input enter (day/week/month/year/total)");
+                                System.Console.WriteLine("[enter]");
+                                Console.ReadLine();
+                            }
                 }
             }
             else if (choice == "3")
