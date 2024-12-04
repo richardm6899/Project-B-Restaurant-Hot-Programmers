@@ -54,7 +54,8 @@ class ClientMenu
                     switch (user_reservation_answer)
                     {
                         case "1":
-                            List<ReservationModel> Reservations = reservationLogic.DisplayAllReservationsByClientID(acc.Id);
+
+                            List<ReservationModel> Reservations = reservationLogic.DisplayAllReservationsByStatusAndID(acc.Id, null);
                             foreach (ReservationModel reservation in Reservations)
                             {
                                 Console.ForegroundColor = ConsoleColor.Red;
@@ -67,35 +68,57 @@ class ClientMenu
 
                         case "2":
                             List<ReservationModel> ongoingReservations = reservationLogic.DisplayAllReservationsByStatusAndID(acc.Id, "Ongoing");
-                            foreach (ReservationModel reservation in ongoingReservations)
+                            if (ongoingReservations.Count() <= 0)
                             {
-                                Console.ForegroundColor = ConsoleColor.Blue;
-                                System.Console.WriteLine("---------------------------------------------------");
-                                Console.ResetColor();
-                                System.Console.WriteLine($"Name: {reservation.Name}\nTable Id: {reservation.TableID}\nAmount of people: {reservation.HowMany}\nDate: {reservation.Date.ToShortDateString()} {reservation.TimeSlot}\nType: {reservation.TypeOfReservation}");
+                                System.Console.WriteLine("You have no ongoing reservations.");
+                            }
+                            else
+                            {
+                                foreach (ReservationModel reservation in ongoingReservations)
+                                {
+                                    Console.ForegroundColor = ConsoleColor.Blue;
+                                    System.Console.WriteLine("---------------------------------------------------");
+                                    Console.ResetColor();
+                                    System.Console.WriteLine($"Name: {reservation.Name}\nTable Id: {reservation.TableID}\nAmount of people: {reservation.HowMany}\nDate: {reservation.Date.ToShortDateString()} {reservation.TimeSlot}\nType: {reservation.TypeOfReservation}");
+                                }
                             }
                             Console.ReadKey();
                             break;
+
                         case "3":
                             List<ReservationModel> pastReservations = reservationLogic.DisplayAllReservationsByStatusAndID(acc.Id, "Past");
-                            foreach (ReservationModel reservation in pastReservations)
+                            if (pastReservations.Count() <= 0)
                             {
-                                Console.ForegroundColor = ConsoleColor.Green;
-                                System.Console.WriteLine("---------------------------------------------------");
-                                Console.ResetColor();
-                                System.Console.WriteLine($"Name: {reservation.Name}\nTable Id: {reservation.TableID}\nAmount of people: {reservation.HowMany}\nDate: {reservation.Date.ToShortDateString()} {reservation.TimeSlot}\nType: {reservation.TypeOfReservation}");
+                                System.Console.WriteLine("You have no past reservations.");
+                            }
+                            else
+                            {
+                                foreach (ReservationModel reservation in pastReservations)
+                                {
+                                    Console.ForegroundColor = ConsoleColor.Green;
+                                    System.Console.WriteLine("---------------------------------------------------");
+                                    Console.ResetColor();
+                                    System.Console.WriteLine($"Name: {reservation.Name}\nTable Id: {reservation.TableID}\nAmount of people: {reservation.HowMany}\nDate: {reservation.Date.ToShortDateString()} {reservation.TimeSlot}\nType: {reservation.TypeOfReservation}");
+                                }
                             }
                             Console.ReadKey();
                             break;
 
                         case "4":
                             List<ReservationModel> canceledReservations = reservationLogic.DisplayAllReservationsByStatusAndID(acc.Id, "Canceled");
-                            foreach (ReservationModel reservation in canceledReservations)
+                            if (canceledReservations.Count() <= 0)
                             {
-                                Console.ForegroundColor = ConsoleColor.DarkBlue;
-                                System.Console.WriteLine("---------------------------------------------------");
-                                Console.ResetColor();
-                                System.Console.WriteLine($"Name: {reservation.Name}\nTable Id: {reservation.TableID}\nAmount of people: {reservation.HowMany}\nDate: {reservation.Date.ToShortDateString()} {reservation.TimeSlot}\nType: {reservation.TypeOfReservation}");
+                                System.Console.WriteLine("You have no canceled reservations.");
+                            }
+                            else
+                            {
+                                foreach (ReservationModel reservation in canceledReservations)
+                                {
+                                    Console.ForegroundColor = ConsoleColor.DarkBlue;
+                                    System.Console.WriteLine("---------------------------------------------------");
+                                    Console.ResetColor();
+                                    System.Console.WriteLine($"Name: {reservation.Name}\nTable Id: {reservation.TableID}\nAmount of people: {reservation.HowMany}\nDate: {reservation.Date.ToShortDateString()} {reservation.TimeSlot}\nType: {reservation.TypeOfReservation}");
+                                }
                             }
                             Console.ReadKey();
                             break;
