@@ -33,6 +33,25 @@ public class ReservationLogic
         return table;
     }
 
+    public void UpdateReservationsList(ReservationModel res)
+    {
+        //Find if there is already an model with the same id
+        int index = _reservations.FindIndex(s => s.Id == res.Id);
+
+        if (index != -1)
+        {
+            //update existing model
+            _reservations[index] = res;
+        }
+        else
+        {
+            //add new model
+            _reservations.Add(res);
+        }
+        ReservationAccess.WriteAllReservations(_reservations);
+
+    }
+
     // create reservation with given checks
     public ReservationModel Create_reservation(int tableID, string name, int clientID, int howMany, DateTime date, string typeofreservation, string timeslot)//tested
     {
@@ -203,10 +222,9 @@ public class ReservationLogic
                 {
                     GetReceiptById(reservation_id).Status = "Canceled";
                 }
-                ReservationAccess.WriteAllReservations(_reservations);
                 TableAccess.WriteAllTables(_tables);
                 ReceiptAccess.WriteAllReceipts(_receipts);
-
+                UpdateReservationsList(reservation);
                 return reservation;
             }
         }
@@ -326,6 +344,8 @@ public class ReservationLogic
 
     public List<ReservationModel> DisplayAllReservationsByStatusAndID(int id, string status)
     {
+        //  if _reservations doesn't update add this to the method. :)
+        _reservations = ReservationAccess.LoadAllReservations();
         List<ReservationModel> reservations = new();
         foreach (ReservationModel reservation in _reservations)
         {
@@ -382,6 +402,20 @@ public class ReservationLogic
         }
         return ReturnString;
     }
+
+    public List<ReservationModel> AllOngoingReservationsByID(int id)
+    {
+        List<ReservationModel> reservations = new();
+        foreach (ReservationModel reservation in _reservations)
+        {
+            if (reservation.ClientID == id && reservation.Status == "Ongoing")
+            {
+                reservations.Add(reservation);
+            }
+        }
+        return reservations;
+    }
+
     public List<int> IsReservationInAccount(int clientID, int reservation_id)
     {
         List<int> valid_reservations = new();
@@ -547,6 +581,7 @@ public class ReservationLogic
                 ReservationAccess.WriteAllReservations(_reservations);
                 TableAccess.WriteAllTables(_tables);
                 ReceiptAccess.WriteAllReceipts(_receipts);
+                UpdateReservationsList(reservation);
             }
         }
     }
