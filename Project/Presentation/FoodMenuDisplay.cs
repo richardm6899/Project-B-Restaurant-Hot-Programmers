@@ -17,8 +17,8 @@ public class FoodMenuDisplay
     {
         string[] options = {
             "Show whole menu",
-            "Sort by type",
-            "Sort by allergies",
+            "Filter by type",
+            "Filter by allergies",
             "Return"
         };
         FoodMenuLogic.GetOptionMain(options);
