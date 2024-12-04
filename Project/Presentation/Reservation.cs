@@ -227,6 +227,7 @@ static class Reservation
                             reservationlogic.AvailableTables.Clear();
                             Console.Clear();
 
+
                         }
                         else
                         {
@@ -238,18 +239,12 @@ static class Reservation
 
                 }
             }
-            else if (Client_answer == false)
+            else
             {
                 System.Console.WriteLine("Goodbye....");
                 System.Console.WriteLine("[enter]");
                 System.Console.ReadLine();
                 reservation = false;
-            }
-            else
-            {
-                System.Console.WriteLine("invalid choice please choose (Y/N).");
-                System.Console.WriteLine("[enter]");
-                System.Console.ReadLine();
             }
         }
     }
