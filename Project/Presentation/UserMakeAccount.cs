@@ -58,7 +58,7 @@ static class UserMakeAccount
         string LastName = AccountsLogic.CapitalizeFirstLetter(lastNameLower);
 
         // pass
-        System.Console.WriteLine("(Password must contain a capital letter, password must be 8 characters or longer\n and needs to contain a number or symbol)");
+        System.Console.WriteLine("(Password must contain a capital letter, a lowercase letter, must be 8 characters or longer\n and needs to contain a number or symbol)");
         System.Console.WriteLine("What is your password: ");
         string password = Console.ReadLine();
         bool correct_password = false;
@@ -66,7 +66,7 @@ static class UserMakeAccount
         {
             string pass_massage = AccountsLogic.CheckCreatePassword(password);
             Console.WriteLine(pass_massage);
-            if (pass_massage == "Password has been set") { correct_password = true; break; }
+            if (pass_massage == "Password has been set.") { correct_password = true; break; }
             System.Console.WriteLine("New Password:");
             password = Console.ReadLine();
 

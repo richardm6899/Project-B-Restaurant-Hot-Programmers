@@ -120,21 +120,39 @@ public class AccountsLogic
     // must contain number or symbol
     public static string CheckCreatePassword(string password)
     {
-        if (password.Count() < 8)
+        string passMessage = "Password ";
+        bool isValid = true;
+
+        if (password.Length < 8)
         {
-            return "Password not long enough, must contain 8 characters";
+            passMessage += "is not long enough, must contain at least 8 characters. ";
+            isValid = false;
         }
         if (!password.Any(char.IsUpper))
         {
-            return "Password must contain an Uppercase Letter.";
+            passMessage += "must contain at least one uppercase letter. ";
+            isValid = false;
         }
-        if (!password.Any(char.IsSymbol) && !password.Any(char.IsNumber))
+        if (!password.Any(char.IsLower))
         {
-            return "Password must contain a Number or Symbol";
+            passMessage += "must contain at least one lowercase letter. ";
+            isValid = false;
         }
-        else return "Password has been set";
+        // a lambda is used so that both classifications are checked. ch => .....
+        if (!password.Any(char.IsDigit) && !password.Any(ch => char.IsSymbol(ch) || char.IsPunctuation(ch)))
+        {
+            passMessage += "must contain at least one number or symbol. ";
+            isValid = false;
+        }
 
+        if (isValid)
+        {
+            passMessage = "Password has been set.";
+        }
+
+        return passMessage;
     }
+
 
     public static string CapitalizeFirstLetter(string toCapitalize) => char.ToUpper(toCapitalize[0]) + toCapitalize.Substring(1);
 
