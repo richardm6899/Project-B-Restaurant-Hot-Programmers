@@ -202,25 +202,48 @@ static class Reservation
                         string confirmation = Console.ReadLine().ToUpper();
                         if (confirmation == "Y")
                         {
+                            string foodorder = "Would you like to order food in advanced?";
+                            System.Console.WriteLine("-----------------------------------------");
+                            System.Console.WriteLine($"{foodorder}\n");
+                            bool orderfood = ChoicesLogic.YesOrNo(foodorder);
 
+                            if(orderfood)
+                            {                                
+                                List<(FoodMenuModel, int)> foodCart = FoodOrderMenu.OrderFood();
+                                ReservationModel Reservation = reservationlogic.Create_reservation(TableID, name, clientID, HowMany, Date, typeofreservation, TimeSlot, true);
+                                ReceiptModel receipt = reservationlogic.CreateReceipt(Reservation, cost, number, email, foodCart);
+                                System.Console.WriteLine();
+                                System.Console.WriteLine("This is your receipt for now: ");
 
+                                System.Console.WriteLine(reservationlogic.DisplayReceipt(receipt));
+                                System.Console.WriteLine("reservation created");
+                                System.Console.WriteLine("[enter]");
+                                Console.ReadLine();
+                                reservation = false;
+                                tableIDcheck = false;
+                                reservationlogic.AvailableTables.Clear();
+                                Console.Clear();                         
+                            }
+                            else
+                            {
+                                ReservationModel Reservation = reservationlogic.Create_reservation(TableID, name, clientID, HowMany, Date, typeofreservation, TimeSlot, false);
 
-                            ReservationModel Reservation = reservationlogic.Create_reservation(TableID, name, clientID, HowMany, Date, typeofreservation, TimeSlot);
+                                ReceiptModel receipt = reservationlogic.CreateReceipt(Reservation, cost, number, email, []);
+                                System.Console.WriteLine();
+                                System.Console.WriteLine("This is your receipt for now: ");
 
-                            ReceiptModel receipt = reservationlogic.CreateReceipt(Reservation, cost, number, email);
+                                System.Console.WriteLine(reservationlogic.DisplayReceipt(receipt));
+                                System.Console.WriteLine("reservation created");
+                                System.Console.WriteLine("[enter]");
+                                Console.ReadLine();
+                                reservation = false;
+                                tableIDcheck = false;
+                                reservationlogic.AvailableTables.Clear();
+                                Console.Clear();
 
+                            }
 
-                            System.Console.WriteLine();
-                            System.Console.WriteLine("This is your receipt for now: ");
-
-                            System.Console.WriteLine(reservationlogic.DisplayReceipt(receipt));
-                            System.Console.WriteLine("reservation created");
-                            System.Console.WriteLine("[enter]");
-                            Console.ReadLine();
-                            reservation = false;
-                            tableIDcheck = false;
-                            reservationlogic.AvailableTables.Clear();
-                            Console.Clear();
+                            
 
                         }
                         else
