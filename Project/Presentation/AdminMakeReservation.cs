@@ -1,5 +1,6 @@
 class AdminMakeReservation
 {
+    private static AccountsLogic accountsLogic = new();
 
     public static void Start(AccountModel acc)
     {
@@ -31,6 +32,21 @@ class AdminMakeReservation
                 System.Console.WriteLine("Incorrect email, please re-enter an email: ");
                 Email = Console.ReadLine();
                 emailCheck = AccountsLogic.CheckCreateEmail(Email);
+            }
+        }
+
+        List<AccountModel> allAccounts = accountsLogic._accounts;
+        foreach (AccountModel account in allAccounts)
+        {
+            if (account.EmailAddress == Email)
+            {
+                System.Console.WriteLine("Email found in system.");
+                bool linkAccount = ChoicesLogic.YesOrNo("Would you like to link the reservation to this email.");
+                if (linkAccount)
+                {
+                    Reservation.MakeReservation(account.FullName, account.Id, account.PhoneNumber, account.EmailAddress);
+                    break;
+                }
             }
         }
         Reservation.MakeReservation(Name, acc.Id, Number, Email);
