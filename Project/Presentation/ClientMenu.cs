@@ -54,7 +54,7 @@ class ClientMenu
                                 Console.ForegroundColor = ConsoleColor.Red;
                                 System.Console.WriteLine("---------------------------------------------------");
                                 Console.ResetColor();
-                                System.Console.WriteLine($"Name: {reservation.Name}\nTable Id: {reservation.TableID}\nAmount of people: {reservation.HowMany}\nDate: {reservation.Date.ToShortDateString()} {reservation.TimeSlot}\nStatus: {reservation.Status}\nType: {reservation.TypeOfReservation}");
+                                System.Console.WriteLine($"Name: {reservation.Name}\nTable Id: {reservation.TableID[0]}\nAmount of people: {reservation.HowMany}\nDate: {reservation.Date.ToShortDateString()} {reservation.TimeSlot}\nStatus: {reservation.Status}\nType: {reservation.TypeOfReservation}");
                             }
                             Console.ReadKey();
                             break;
@@ -66,7 +66,7 @@ class ClientMenu
                                 Console.ForegroundColor = ConsoleColor.Blue;
                                 System.Console.WriteLine("---------------------------------------------------");
                                 Console.ResetColor();
-                                System.Console.WriteLine($"Name: {reservation.Name}\nTable Id: {reservation.TableID}\nAmount of people: {reservation.HowMany}\nDate: {reservation.Date.ToShortDateString()} {reservation.TimeSlot}\nType: {reservation.TypeOfReservation}");
+                                System.Console.WriteLine($"Name: {reservation.Name}\nTable Id: {reservation.TableID[0]}\nAmount of people: {reservation.HowMany}\nDate: {reservation.Date.ToShortDateString()} {reservation.TimeSlot}\nType: {reservation.TypeOfReservation}");
                             }
                             Console.ReadKey();
                             break;
@@ -77,7 +77,7 @@ class ClientMenu
                                 Console.ForegroundColor = ConsoleColor.Green;
                                 System.Console.WriteLine("---------------------------------------------------");
                                 Console.ResetColor();
-                                System.Console.WriteLine($"Name: {reservation.Name}\nTable Id: {reservation.TableID}\nAmount of people: {reservation.HowMany}\nDate: {reservation.Date.ToShortDateString()} {reservation.TimeSlot}\nType: {reservation.TypeOfReservation}");
+                                System.Console.WriteLine($"Name: {reservation.Name}\nTable Id: {reservation.TableID[0]}\nAmount of people: {reservation.HowMany}\nDate: {reservation.Date.ToShortDateString()} {reservation.TimeSlot}\nType: {reservation.TypeOfReservation}");
                             }
                             Console.ReadKey();
                             break;
@@ -89,7 +89,7 @@ class ClientMenu
                                 Console.ForegroundColor = ConsoleColor.DarkBlue;
                                 System.Console.WriteLine("---------------------------------------------------");
                                 Console.ResetColor();
-                                System.Console.WriteLine($"Name: {reservation.Name}\nTable Id: {reservation.TableID}\nAmount of people: {reservation.HowMany}\nDate: {reservation.Date.ToShortDateString()} {reservation.TimeSlot}\nType: {reservation.TypeOfReservation}");
+                                System.Console.WriteLine($"Name: {reservation.Name}\nTable Id: {reservation.TableID[0]}\nAmount of people: {reservation.HowMany}\nDate: {reservation.Date.ToShortDateString()} {reservation.TimeSlot}\nType: {reservation.TypeOfReservation}");
                             }
                             Console.ReadKey();
                             break;
@@ -109,7 +109,7 @@ class ClientMenu
                                         Console.ForegroundColor = ConsoleColor.DarkRed;
                                         System.Console.WriteLine("---------------------------------------------------");
                                         Console.ResetColor();
-                                        System.Console.WriteLine($"Name: {reservation.Name}\nTable Id: {reservation.TableID}\nAmount of people: {reservation.HowMany}\nDate: {reservation.Date.ToShortDateString()} {reservation.TimeSlot}\nType: {reservation.TypeOfReservation}");
+                                        System.Console.WriteLine($"Name: {reservation.Name}\nTable Id: {reservation.TableID[0]}\nAmount of people: {reservation.HowMany}\nDate: {reservation.Date.ToShortDateString()} {reservation.TimeSlot}\nType: {reservation.TypeOfReservation}");
                                     }
                                     if (dateReservations.Count() == 0)
                                     {

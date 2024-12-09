@@ -1,14 +1,14 @@
 using System.Text.Json.Serialization;
 
 
-public class ReservationModel
+public  class ReservationModel
 {
     [JsonPropertyName("id")]
 
     public int Id { get; set; }
 
     [JsonPropertyName("tableID")]
-    public int TableID { get; set; }
+    public List<int> TableID { get; set; }
 
 
     [JsonPropertyName("name")]
@@ -34,7 +34,7 @@ public class ReservationModel
 
 
 
-    public ReservationModel(int id, int tableID, string name, int clientID, int howMany, DateTime date, string typeofreservation, string timeslot)
+    public ReservationModel(int id, List<int> tableID, string name, int clientID, int howMany, DateTime date, string typeofreservation, string timeslot)
     {
         Id = id;
 

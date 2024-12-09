@@ -65,7 +65,7 @@ static class ReservationOld
                     Console.ResetColor();
                     System.Console.WriteLine(@"'You can only book 3 months in advanced'");
                     // check if valid date
-                    string UncheckedDate = reservationlogic.DisplayCalendarReservation("1",2);
+                    string UncheckedDate = reservationlogic.DisplayCalendarReservation("1",2,"Regular");
                     if (DateTime.TryParse(UncheckedDate, out Date))
                     {
                         //checks if user filled in date not before today and not farther than 3 months in the future
@@ -207,7 +207,7 @@ static class ReservationOld
 
                             ReservationModel Reservation = reservationlogic.Create_reservation(TableID, name, clientID, HowMany, Date, typeofreservation, TimeSlot);
 
-                            ReceiptModel receipt = reservationlogic.CreateReceipt(Reservation, cost, number, email);
+                            ReceiptModel receipt = reservationlogic.CreateReceipt(Reservation, cost, number, email,[]);
 
 
                             System.Console.WriteLine();
