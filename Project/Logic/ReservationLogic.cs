@@ -56,7 +56,9 @@ public class ReservationLogic
     public ReservationModel Create_reservation(int tableID, string name, int clientID, int howMany, DateTime date, string typeofreservation, string timeslot, bool foodOrdered)//tested
     {
         int new_id = _reservations.Count + 1;
-        ReservationModel reservation = new(new_id, tableID, name, clientID, howMany, date, typeofreservation, timeslot, foodOrdered);
+
+        ReservationModel reservation = new(new_id, new List<int>() { tableID }, name, clientID, howMany, date, typeofreservation, timeslot,foodOrdered);
+
         // add reservation to table.reservation list
         AssignTable(tableID, reservation);
         _reservations.Add(reservation);
@@ -106,45 +108,8 @@ public class ReservationLogic
         }
         return null;
     }
-    // date is today will be changed later for time of day
-    // check if table is already reserved at the same time
-
-    // public void CheckDate(DateTime date)
-    // {
-    //     List<int> tables_to_remove = new();
-    //     // add all ids of table where already booked at the same time of day
-    //     foreach (var table in _tables)
-    //     {
-    //         foreach (var res in table.Reservations)
-    //         {
-    //             if (res.Date == date && !tables_to_remove.Contains(table.Id))
-    //             {
-
-    //                 tables_to_remove.Add(table.Id);
-    //             }
-    //         }
-    //     }
-
-    //     //remove all tables from available tables where if id of table is in tables_to_remove list
-    //     for (int i = AvailableTables.Count - 1; i >= 0; i--) // reversed loop AvailableTables so you dont get iteration error
-    //     {
-    //         foreach (var table_id in tables_to_remove)
-    //         {
-    //             if ((AvailableTables.Count - 1) >= 0)
-    //             {
-
-    //                 if (AvailableTables[i].Id == table_id)
-    //                 {
-    //                     AvailableTables.RemoveAt(i);
-    //                 }
-
-    //             }
 
 
-    //         }
-    //     }
-
-    // }
     public void CheckDate(DateTime date, string timeSlot)
     {
         // Create a collection to hold IDs of tables that are already booked
@@ -289,7 +254,7 @@ public class ReservationLogic
         string ReturnString = "";
         foreach (var reservation in _reservations)
         {
-            ReturnString += $"reservation details:\nReservation ID: {reservation.Id}\nTable number: {reservation.TableID}\nName: {reservation.Name}\nPersonal ID: {reservation.ClientID}\nPerson Amount: {reservation.HowMany}\nDate of Reservation: {reservation.Date.Date}\nType of reservation: {reservation.TypeOfReservation}\n\n";
+            ReturnString += $"reservation details:\nReservation ID: {reservation.Id}\nTable number: {reservation.TableID[0]}\nName: {reservation.Name}\nPersonal ID: {reservation.ClientID}\nPerson Amount: {reservation.HowMany}\nDate of Reservation: {reservation.Date.Date}\nType of reservation: {reservation.TypeOfReservation}\n\n";
         }
         return ReturnString;
     }
@@ -302,7 +267,7 @@ public class ReservationLogic
             {
                 if (reservation_id == reservation.Id)
                 {
-                    return $"reservation details:\nReservation ID: {reservation.Id}\nTable number: {reservation.TableID}\nName: {reservation.Name}\nPersonal ID: {reservation.ClientID}\nPerson Amount: {reservation.HowMany}\nDate of Reservation: {reservation.Date.Date}\nType of reservation: {reservation.TypeOfReservation}\n\n";
+                    return $"reservation details:\nReservation ID: {reservation.Id}\nTable number: {reservation.TableID[0]}\nName: {reservation.Name}\nPersonal ID: {reservation.ClientID}\nPerson Amount: {reservation.HowMany}\nDate of Reservation: {reservation.Date.Date}\nType of reservation: {reservation.TypeOfReservation}\n\n";
                 }
             }
         }
@@ -396,7 +361,7 @@ public class ReservationLogic
             {
                 if (clientID == reservation.ClientID)
                 {
-                    ReturnString += $"reservation details:\nReservation ID: {reservation.Id}\nTable number: {reservation.TableID}\nName: {reservation.Name}\nPersonal ID: {reservation.ClientID}\nPerson Amount: {reservation.HowMany}\nDate of Reservation: {reservation.Date.Date}\nType of reservation: {reservation.TypeOfReservation}\n\n";
+                    ReturnString += $"reservation details:\nReservation ID: {reservation.Id}\nTable number: {string.Join(", ", reservation.TableID)}\nName: {reservation.Name}\nPersonal ID: {reservation.ClientID}\nPerson Amount: {reservation.HowMany}\nDate of Reservation: {reservation.Date.Date}\nTimeSlot: {reservation.TimeSlot}\nType of reservation: {reservation.TypeOfReservation}\n\n";
                 }
             }
         }
@@ -445,7 +410,7 @@ public class ReservationLogic
         List<string> Reservations = new();
         foreach (ReservationModel reservation in _reservations)
         {
-            Reservations.Add($"reservation details:\nReservation ID: {reservation.Id}\nTable number: {reservation.TableID}\nName: {reservation.Name}\nPersonal ID: {reservation.ClientID}\nPerson Amount: {reservation.HowMany}\nDate of Reservation: {reservation.Date.Date}\nStatus of reservation: {reservation.Status}\n");
+            Reservations.Add($"reservation details:\nReservation ID: {reservation.Id}\nTable number: {reservation.TableID[0]}\nName: {reservation.Name}\nPersonal ID: {reservation.ClientID}\nPerson Amount: {reservation.HowMany}\nDate of Reservation: {reservation.Date.Date}\nStatus of reservation: {reservation.Status}\n");
         }
         return Reservations;
     }
@@ -457,7 +422,7 @@ public class ReservationLogic
         {
             if (reservation.Status == "Ongoing")
             {
-                Reservations.Add($"reservation details:\nReservation ID: {reservation.Id}\nTable number: {reservation.TableID}\nName: {reservation.Name}\nPersonal ID: {reservation.ClientID}\nPerson Amount: {reservation.HowMany}\nDate of Reservation: {reservation.Date.Date}\nStatus of reservation: {reservation.Status}\n");
+                Reservations.Add($"reservation details:\nReservation ID: {reservation.Id}\nTable number: {reservation.TableID[0]}\nName: {reservation.Name}\nPersonal ID: {reservation.ClientID}\nPerson Amount: {reservation.HowMany}\nDate of Reservation: {reservation.Date.Date}\nStatus of reservation: {reservation.Status}\n");
             }
         }
         return Reservations;
@@ -476,10 +441,13 @@ public class ReservationLogic
     }
 
     // receipt ------------------------------------------
-    public ReceiptModel CreateReceipt(ReservationModel reservation, int cost, string number, string email, List<(FoodMenuModel, int)> foodOrdered)
+
+    public ReceiptModel CreateReceipt(ReservationModel reservation, int cost, string number, string email, List<(FoodMenuModel, int)> foodOrdered, List<int> tableId)
     {
         int id = _receipts.Count() + 1;
-        ReceiptModel receipt = new(id, reservation.Id, reservation.ClientID, cost, reservation.Date, reservation.TimeSlot, reservation.Name, number, email, reservation.TypeOfReservation, reservation.TableID, foodOrdered);
+
+        ReceiptModel receipt = new(id, reservation.Id, reservation.ClientID, cost, reservation.Date, reservation.TimeSlot, reservation.Name, number, email, reservation.TypeOfReservation,foodOrdered, Convert.ToString(reservation.TableID[0]));
+
         _receipts.Add(receipt);
         ReceiptAccess.WriteAllReceipts(_receipts);
         return receipt;
@@ -575,26 +543,7 @@ public class ReservationLogic
     // return_string += $" -------------------\n";
 
     // timeslot --------------------------------------------
-    public static string TimSlotChooser(string id)
-    {
-        if (id == "1")
-        {
-            return "Lunch (12:00 - 14:00)";
-        }
-        else if (id == "2")
-        {
-            return "Dinner 1 (17:00 - 19:00)";
-        }
-        else if (id == "3")
-        {
-            return "Dinner 2 (19:00 - 21:00)";
-        }
-        else if (id == "4")
-        {
-            return "Dinner 3 (21:00 - 23:00)";
-        }
-        return null;
-    }
+
 
     // Remove Reservation by choosing date
     public void RemoveReservationsByDate(DateTime date)
@@ -624,10 +573,10 @@ public class ReservationLogic
         // Initialize restaurant layout using a List of Lists
         var RestaurantLayout = new List<List<string>>
     {
-        new() {"[  K  ]","[  K  ]","[  K  ]","[  K  ]","[  K  ]","[H:16 ]", "[H:17 ]"},
-        new() { "[R:1  ]", "[R:2  ]", "[R:3  ]", "[R:4  ]", "[R:5  ]","[R:6  ]" ,"[H:18 ]",},
-        new() { "[R:7  ]", "[R:8  ]", "[R:9  ]", "[R:10 ]", "[R:11 ]","[R:12 ]", "[H:19 ]" },
-        new() { "[R:13 ]", "[R:14 ]", "[R:15 ]", "[H:20 ]", "[H:21 ]","[H:22 ]", "[H:23 ]" }
+        new() {"[  K  ]","[  K  ]","[  K  ]","[R:1  ]","[R:2  ]","[  ♂  ]","[  ♀  ]","[H:16 ]","[H:17 ]"},
+        new() {"[R:3  ]","[R:4  ]","[R:5  ]","[R:6  ]","[R:7  ]","[     ]","[     ]","[R:14 ]","[H:18 ]",},
+        new() {"[R:8  ]","[R:9  ]","[R:10 ]","[     ]","[     ]","[     ]","[     ]","[R:15 ]","[H:19 ]" },
+        new() {"[R:11 ]","[R:12 ]","[R:13 ]","[  E  ]","[  E  ]","[H:23 ]","[H:22 ]","[H:21 ]","[H:20 ]" }
     };
 
         List<string> availableTableIDs = new List<string>() { };
@@ -668,15 +617,10 @@ public class ReservationLogic
                     else if (table.Contains("H"))
                     {
                         string id = table.Split(":")[1].Trim(']').Trim();
-                        if (availableTableIDs.Contains(id))
-                        {
-                            Console.ForegroundColor = ConsoleColor.DarkMagenta;
-                        }
-                        else
-                        {
-                            Console.ForegroundColor = ConsoleColor.Red;
-                            table = "[  X  ]";
-                        }
+
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        table = "[  X  ]";
+
                         Console.Write(table);
                     }
                     else if (table.Contains("R"))
@@ -722,7 +666,7 @@ public class ReservationLogic
             {
                 string selectedTable = RestaurantLayout[currentRow][currentCol];
 
-                if (selectedTable.Contains("R") || selectedTable.Contains("H"))
+                if (selectedTable.Contains("R"))
                 {
                     string id = selectedTable.Split(":")[1].Trim(']').Trim();
                     if (availableTableIDs.Contains(id))
@@ -776,9 +720,7 @@ public class ReservationLogic
         }
         return MaxCapDays;
     }
-
-    // check if there are available tables for each reservation date to check if date is fully booked
-    public List<DateTime> MaxTimeSlot(string timeslotid, int amount)
+    public List<DateTime> MaxTimeSlotRegularSeat(string timeslotid, int amount)
     {
 
         List<DateTime> MaxTimeSlotDays = new();
@@ -802,6 +744,8 @@ public class ReservationLogic
 
         return MaxTimeSlotDays;
     }
+
+
 
     // displays calender for make reservation
     private void PrintCalendar(int year, int month, int selectedDay, List<DateTime> maxCapDays, List<DateTime> maxTimeSlot)
@@ -877,12 +821,12 @@ public class ReservationLogic
         }
         Console.WriteLine();
     }
-    public string DisplayCalendarReservation(string timeslotid, int amount)
+    public string DisplayCalendarReservation(string timeslotid, int amount, string typeofreservation)
     {
 
         List<DateTime> maxCapDays = MaxCapDays();
         // also days where timeslot and the amount of people chosen are same make darkgrey
-        List<DateTime> maxTimeslot = MaxTimeSlot(timeslotid, amount);
+        List<DateTime> maxTimeslot = typeofreservation == "Regular" ? MaxTimeSlotRegularSeat(timeslotid, amount) : MaxTimeSlotHotSeat(timeslotid, amount);
         // date init
         DateTime currentDate = DateTime.Now;
         int selectedDay = currentDate.Day;
@@ -928,7 +872,11 @@ public class ReservationLogic
                     return returnDate;
                 }
 
-            } // Return selected date
+            }
+            if (key == ConsoleKey.Escape)
+            {
+                return "20";
+            }// Return selected date
             // Return a default value to indicate cancellation
 
             // Adjust month and year if out of range
@@ -957,7 +905,290 @@ public class ReservationLogic
         }
         return "";
     }
+    // hotseat shizzlee -----------------------------------------------
+    public void AddHotSeatsAvailableTables()
+    {
+
+        foreach (var table in _tables)
+        {
+
+            if (table.TypeOfTable == "HotSeat")
+            {
+                AvailableTables.Add(table);
+            }
+
+
+        }
+
+    }
+
+    // get all hotseats into the available tables so we an work with them
+    public void CheckDateHotSeat(DateTime date, string timeSlot)
+    {
+        // Create a collection to hold IDs of tables that are already booked
+        HashSet<int> bookedTableIds = new();
+
+        // Identify tables that have reservations on the specified date and time slot
+        foreach (var table in _tables)
+        {
+            // Check if the table has any reservation matching the given date and time slot
+            bool isBooked = table.Reservations.Any(reservation =>
+                reservation.Date.Date == date.Date && reservation.TimeSlot == timeSlot && reservation.TypeOfReservation == "HotSeat");// could be that this last line needs to be changed
+
+            if (isBooked)
+            {
+                bookedTableIds.Add(table.Id); // Add the table's ID to the set
+            }
+        }
+
+
+        // Remove all tables from AvailableTables that have matching IDs in bookedTableIds
+        AvailableTables.RemoveAll(table => bookedTableIds.Contains(table.Id));
+
+    }
+    //gives al unavailable hotseats for the calender display
+    public List<DateTime> MaxTimeSlotHotSeat(string timeslotid, int amount)
+    {
+
+        List<DateTime> MaxTimeSlotDays = new();
+
+        foreach (var table in _tables)
+        {
+            // check reservations in hot seat table
+            if (table.TypeOfTable == "HotSeat")
+            {
+
+                foreach (var res in table.Reservations)
+                {
+
+                    // could be something here
+                    AddHotSeatsAvailableTables();
+                    CheckDateHotSeat(Convert.ToDateTime(res.Date), timeslotid);
+
+                    if (AvailableTables.Count() < amount)
+                    {
+
+                        MaxTimeSlotDays.Add(res.Date);
+                    }
+                }
+
+            }
+        }
+
+
+        return MaxTimeSlotDays;
+    }
+    public List<int> ChooseHotSeats(int amount)
+    {
+     
+        //initialize availableTables for hot hotseats
+
+        List<int> tableIDs = new();
+        int i = 0;
+
+        foreach (var table in AvailableTables)
+        {
+
+            if (i < amount)
+            {
+
+                tableIDs.Add(table.Id);
+                i++;
+            }
+
+
+        }
+        return tableIDs;
+    }
+    // assigns reservations to tables and adds one reservation to the json and gives one reservation to the receipt
+    public List<ReservationModel> Create_reservationHotSeat(List<int> tableid, string name, int clientID, int howMany, DateTime date, string typeofreservation, string timeslot)//tested
+    {
+
+        int new_id = _reservations.Count + 1;
+        List<ReservationModel> reservationList = new();
+        foreach (var tableID in tableid)
+        {
+            ReservationModel reservation = new(new_id, tableid, name, clientID, 1, date, typeofreservation, timeslot);
+            // add reservation to table.reservation list
+            AssignTable(tableID, reservation);
+            reservationList.Add(reservation);
+            AccountModel acc = accountsLogic.GetById(clientID);
+            if (acc.ReservationIDs == null)
+            {
+                acc.ReservationIDs = new List<int>(); // Initialize the list
+            }
+            acc.ReservationIDs.Add(reservation.Id);
+            accountsLogic.UpdateList(acc);
+
+
+            TableAccess.WriteAllTables(_tables);
+        }
+        _reservations.Add(reservationList[0]);
+        ReservationAccess.WriteAllReservations(_reservations);
+        return reservationList;
+
+    }
+    public ReceiptModel CreateReceiptHotSeat(List<ReservationModel> reservations, int cost, string number, string email)
+    {
+        int id = _receipts.Count() + 1;
+        ReceiptModel receipt = new(id, reservations[0].Id, reservations[0].ClientID, cost, reservations[0].Date, reservations[0].TimeSlot, reservations[0].Name, number, email, reservations[0].TypeOfReservation, string.Join(",", reservations[0].TableID));
+        _receipts.Add(receipt);
+        ReceiptAccess.WriteAllReceipts(_receipts);
+        return receipt;
+    }
+    public bool DisplayChosenSeats(List<int> chosenseats)
+    {
+        // Initialize restaurant layout using a List of Lists
+        var RestaurantLayout = new List<List<string>>
+    {
+        new() {"[  K  ]","[  K  ]","[  K  ]","[R:1  ]","[R:2  ]","[  ♂  ]","[  ♀  ]","[H:16 ]","[H:17 ]"},
+        new() {"[R:3  ]","[R:4  ]","[R:5  ]","[R:6  ]","[R:7  ]","[     ]","[     ]","[R:14 ]","[H:18 ]",},
+        new() {"[R:8  ]","[R:9  ]","[R:10 ]","[     ]","[     ]","[     ]","[     ]","[R:15 ]","[H:19 ]" },
+        new() {"[R:11 ]","[R:12 ]","[R:13 ]","[  E  ]","[  E  ]","[H:23 ]","[H:22 ]","[H:21 ]","[H:20 ]" }
+    };
+
+        bool running = true;
+        while (running)
+        {
+            // Console.Clear();
+
+            // Render the layout
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            System.Console.WriteLine("You will be seated at the yellow seat(s)");
+            Console.ForegroundColor = ConsoleColor.Red;
+            System.Console.WriteLine("[X] These Tables are already booked for this timeslot");
+            Console.ForegroundColor = ConsoleColor.White;
+            System.Console.WriteLine("---------------------------------------------------------");
+            for (int row = 0; row < RestaurantLayout.Count; row++)
+            {
+                for (int col = 0; col < RestaurantLayout[row].Count; col++)
+                {
+                    string table = RestaurantLayout[row][col];
+
+                    if (table.Contains("H"))
+                    {
+                        string id = table.Split(":")[1].Trim(']').Trim();
+                        if (chosenseats.Contains(Convert.ToInt32(id)))
+                        {
+                            Console.ForegroundColor = ConsoleColor.DarkYellow;
+                        }
+                        else
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            table = "[  X  ]";
+                        }
+                        Console.Write(table);
+                    }
+                    else if (table.Contains("R"))
+                    {
+                        string id = table.Split(":")[1].Trim(']').Trim(); ;
+                        if (chosenseats.Contains(Convert.ToInt32(id)))
+                        {
+                            Console.ForegroundColor = ConsoleColor.DarkYellow;
+                        }
+                        else
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            table = "[  X  ]";
+                        }
+                        Console.Write(table);
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.Write(table);
+                    }
+
+                    Console.ResetColor();
+                    Console.Write(" "); // Add spacing between items
+                }
+                Console.WriteLine(); // Move to the next row
+            }
+
+            // Instructions
+            Console.WriteLine("\n-------------------------------------------------------");
+            System.Console.WriteLine("Hit Enter if you want to confirm your seat, hit Escape to choose an other preferences");
+
+            // Read key input
+            var key = Console.ReadKey(true).Key;
+
+
+            // Exit on Esc
+            if (key == ConsoleKey.Escape)
+                return false;
+            if (key == ConsoleKey.Enter)
+            {
+                return true;
+            }
+
+        }
+        return true;
+    }
+    public static string Choice(string prompt, string[] opt)
+    {
+        int selectedIndex = 0;  // Start with "Yes" as the default selection
+        string[] options = opt;
+
+        while (true)
+        {
+            Console.Clear();
+            Console.WriteLine($"{prompt}\n");  // Display the prompt (e.g., "Are you sure?")
+
+            // show options
+            for (int i = 0; i < options.Length; i++)
+            {
+                if (i == selectedIndex)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green; // Highlight current selection
+                    Console.WriteLine($"> {options[i]}");
+                    Console.ResetColor();
+                }
+                else
+                {
+                    Console.WriteLine($"  {options[i]}");
+                }
+            }
+
+            //get user input
+            ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+            ConsoleKey key = keyInfo.Key;
+
+            if (key == ConsoleKey.UpArrow)
+            {
+                // Go up
+                selectedIndex = (selectedIndex == 0) ? options.Length - 1 : selectedIndex - 1;
+            }
+            else if (key == ConsoleKey.DownArrow)
+            {
+                // Go down
+                selectedIndex = (selectedIndex == options.Length - 1) ? 0 : selectedIndex + 1;
+            }
+            else if (key == ConsoleKey.Enter)
+            {
+                // Return true for Yes, false for No
+                return options[selectedIndex];
+            }
+        }
+    }
+
+    public static void DisplayOptions(string[] options, int selectedIndex)
+    {
+        for (int i = 0; i < options.Length; i++)
+        {
+            if (i == selectedIndex)
+            {
+                Console.ForegroundColor = ConsoleColor.Green; // Highlight the selected option
+                Console.WriteLine($"> {options[i]}");
+                Console.ResetColor();
+            }
+            else
+            {
+                Console.ResetColor();
+                Console.WriteLine($"  {options[i]}");
+            }
+        }
+    }
+
 
 }
-
 

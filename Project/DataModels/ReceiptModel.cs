@@ -39,10 +39,11 @@ public class ReceiptModel
     public string TypeOfReservation { get; set; }
 
     [JsonPropertyName("tableid")]
-    public int TableID { get; set; }
+    public string TableID { get; set; }
 
     [JsonPropertyName("orderedFood")]
     public List<(FoodMenuModel, int)> OrderedFood{get; set;}
+
 
 
 
