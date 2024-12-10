@@ -1,68 +1,79 @@
 [
   {
     "id": 1,
-    "tableID": 1,
+    "tableID": [1],
     "name": "oli",
     "clientID": 1,
     "howMany": 1,
     "date": "2024-04-04T00:00:00",
     "timeslot": null,
     "status": "Past",
-    "typeofreservation": null
+    "typeofreservation": null,
+    "orderedFood": false
   },
   {
     "id": 2,
-    "tableID": 11,
+    "tableID": [11],
     "name": "TEST",
     "clientID": 2,
     "howMany": 4,
     "date": "2024-04-04T00:00:00",
     "timeslot": null,
     "status": "Canceled",
-    "typeofreservation": null
+    "typeofreservation": null,
+    "orderedFood": false
+
   },
   {
     "id": 3,
-    "tableID": 1,
+    "tableID": [1],
     "name": "TEST",
     "clientID": 2,
     "howMany": 2,
     "date": "2025-01-01T00:00:00",
     "timeslot": null,
     "status": "Ongoing",
-    "typeofreservation": null
+    "typeofreservation": null,
+    "orderedFood": false
   },
   {
     "id": 4,
-    "tableID": 11,
+    "tableID": [11],
     "name": "Jane Joe",
     "clientID": 7,
     "howMany": 4,
     "date": "2024-11-15T00:00:00",
     "timeslot": null,
     "status": "Ongoing",
-    "typeofreservation": "Regular"
+    "typeofreservation": "Regular",
+    "orderedFood": false
   },
   {
     "id": 5,
-    "tableID": 13,
+
+    "tableID": [13],
     "name": "Clien Test",
+
     "clientID": 10,
     "howMany": 4,
     "date": "2024-12-12T00:00:00",
     "timeslot": "Dinner 3 (21:00 - 23:00)",
     "status": "Ongoing",
-    "typeofreservation": "Regular"
+    "typeofreservation": "Regular",
+    "orderedFood": false
   },
   {
     "id": 6,
-    "tableID": 8,
+
+    "tableID": [8],
     "name": "Clien Test",
+
     "clientID": 10,
     "howMany": 2,
     "date": "2024-12-23T00:00:00",
     "timeslot": "Dinner 1 (17:00 - 19:00)",
     "status": "Ongoing",
-    "typeofreservation": "Regular"
+    "typeofreservation": "Regular",
+    "orderedFood": false
   }
 ]

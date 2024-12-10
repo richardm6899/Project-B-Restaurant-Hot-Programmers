@@ -15,24 +15,23 @@ public class AdminLogic : AccountsLogic
     private string Password;
     private string PhoneNumber;
     private string Type = "admin";
-    private int Age;
+    private DateTime Birthdate;
     private DateTime LastLogin = DateTime.MinValue;
 
-
-    public AdminLogic(string name, string email, string password, string phoneNumber, int age)
+    public AdminLogic(string name, string email, string password, string phoneNumber, DateTime birthdate)
     {
         this.Name = name;
         this.Email = email;
         this.Password = password;
         this.PhoneNumber = phoneNumber;
-        this.Age = age;
+        this.Birthdate = birthdate;
     }
 
 
     // public static string CreateAccount(string fullName, string email, string password, string phoneNumber, int age, List<string> allergies, string type, bool locked, int failedloginattempts, DateTime lastlogin)
     public void CreateAdmin()
     {
-        AccountsLogic.CreateAccount(this.Name, this.Email, this.Password, this.PhoneNumber, this.Age, new List<string>(), this.Type, this.LastLogin);
+        AccountsLogic.CreateAccount(this.Name, this.Email, this.Password, this.PhoneNumber, this.Birthdate, default, this.Type, this.LastLogin);
     }
 
 
@@ -41,7 +40,7 @@ public class AdminLogic : AccountsLogic
         return base.GetById(ID);
     }
 
-    public List<AccountModel> GetAccounts(string type)
+    public List<AccountModel> GetAccountsByType(string type)
     {
         List<AccountModel> accounts = base.GetAccounts();
         List<AccountModel> returnAccounts = new();
@@ -56,5 +55,17 @@ public class AdminLogic : AccountsLogic
         return returnAccounts;
 
     }
-
+    public List<AccountModel> GetActivatedAccounts()
+    {
+        List<AccountModel> activatedAccounts = new();
+        List<AccountModel> allAccounts = base.GetAccounts();
+        foreach (AccountModel account in allAccounts)
+        {
+            if (account.Status == "Activated")
+            {
+                activatedAccounts.Add(account);
+            }
+        }
+        return activatedAccounts;
+    }
 }

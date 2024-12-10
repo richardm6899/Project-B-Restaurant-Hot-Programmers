@@ -2,7 +2,7 @@
   {
     "id": 2,
     "dishName": "Spare Ribs",
-    "price": 22.5,
+    "price": 22.50,
     "description": "Slow-cooked spare ribs, glazed in a smoky barbecue sauce, tender and falling off the bone.",
     "type": [
     "Main Course",
@@ -15,7 +15,7 @@
   {
     "id": 3,
     "dishName": "Baked Salmon",
-    "price": 25,
+    "price": 25.00,
     "description": "Oven-baked salmon fillet seasoned with herbs and lemon, served with a side of vegetables.",
     "type": [
       "Main Course",
@@ -28,7 +28,7 @@
   {
     "id": 4,
     "dishName": "Hot Fries",
-    "price": 7.5,
+    "price": 7.50,
     "description": "Crispy hot fries served with a choice of dipping sauces.",
     "type": [
       "Side"
@@ -40,7 +40,7 @@
   {
     "id": 5,
     "dishName": "Hot Cheesy Cornbread",
-    "price": 17.5,
+    "price": 17.50,
     "description": "Moist cornbread mixed with melted cheddar cheese, served hot.",
     "type": [
       "Side"
@@ -53,7 +53,7 @@
   {
     "id": 6,
     "dishName": "Grilled Steak",
-    "price": 25.5,
+    "price": 25.50,
     "description": "Juicy grilled steak served with a side of mashed potatoes and grilled vegetables.",
     "type": [
       "Main Course",
@@ -66,7 +66,7 @@
   {
     "id": 7,
     "dishName": "Rib Eye 1kg",
-    "price": 60,
+    "price": 60.00,
     "description": "A 1kg Rib Eye steak grilled to perfection, served with a rich red wine jus.",
     "type": [
       "Main Course",
@@ -80,7 +80,7 @@
   {
     "id": 8,
     "dishName": "Hot No-Beef-Beef",
-    "price": 25,
+    "price": 25.00,
     "description": "A vegan-friendly, plant-based steak served hot with a side of grilled veggies.",
     "type": [
       "Main Course",
@@ -94,7 +94,7 @@
   {
     "id": 9,
     "dishName": "Pulled Pork Sandwich",
-    "price": 14.5,
+    "price": 14.50,
     "description": "Tender pulled pork slow-cooked in barbecue sauce, served on a toasted bun with coleslaw.",
     "type": [
       "Main Course",
@@ -107,7 +107,7 @@
   {
     "id": 10,
     "dishName": "Smoked Brisket",
-    "price": 30,
+    "price": 30.00,
     "description": "A generous serving of slow-smoked beef brisket, served with barbecue sauce and pickles.",
     "type": [
       "Main Course",
@@ -120,7 +120,7 @@
   {
     "id": 11,
     "dishName": "Grilled Chicken Wings",
-    "price": 12.5,
+    "price": 12.50,
     "description": "Marinated chicken wings, grilled and basted in a smoky barbecue sauce, served with ranch dip.",
     "type": [
       "Side",
@@ -133,7 +133,7 @@
   {
     "id": 12,
     "dishName": "BBQ Beans",
-    "price": 8.5,
+    "price": 8.50,
     "description": "Slow-cooked beans in a rich barbecue sauce, seasoned with smoked spices.",
     "type": [
       "Side",
@@ -146,7 +146,7 @@
   {
     "id": 13,
     "dishName": "BBQ Vegetables",
-    "price": 11,
+    "price": 11.00,
     "description": "Prepared with carrot, pumpkin, sweet potato, onion, courgette and spices together on the grill.",
     "type": [
       "Side",
@@ -159,7 +159,7 @@
   {
     "id": 14,
     "dishName": "Steak tartare",
-    "price": 15,
+    "price": 15.00,
     "description": "Seasoned to perfection",
     "type": [
       "Main Course",
@@ -174,7 +174,7 @@
   {
     "id": 15,
     "dishName": "Smoked Brisket Platter",
-    "price": 26.0,
+    "price": 26.00,
     "description": "Tender brisket smoked for 12 hours, served with pickles, coleslaw, and cornbread.",
     "type": [
       "Main Course",
@@ -187,7 +187,7 @@
   {
     "id": 16,
     "dishName": "Grilled Shrimp Skewers",
-    "price": 24.0,
+    "price": 24.00,
     "description": "Skewered shrimp marinated in garlic and herbs, grilled to a smoky finish, served with a citrus aioli.",
     "type": [
       "Main Course",
@@ -200,7 +200,7 @@
   {
     "id": 17,
     "dishName": "Crispy Onion Rings",
-    "price": 8.5,
+    "price": 8.50,
     "description": "Golden-fried onion rings, served with a tangy dipping sauce.",
     "type": [
       "Side",
@@ -213,7 +213,7 @@
   {
     "id": 18,
     "dishName": "Loaded Potato Skins",
-    "price": 9.0,
+    "price": 9.00,
     "description": "Crispy potato skins filled with cheese, bacon, and sour cream.",
     "type": [
       "Appetizer",
@@ -226,7 +226,7 @@
   {
     "id": 19,
     "dishName": "Spicy Buffalo Wings",
-    "price": 12.0,
+    "price": 12.00,
     "description": "Chicken wings tossed in our signature hot sauce, served with blue cheese dip and celery sticks.",
     "type": [
       "Appetizer",
@@ -239,7 +239,7 @@
   {
     "id": 20,
     "dishName": "Grilled Veggie Platter",
-    "price": 15.0,
+    "price": 15.00,
     "description": "Seasonal vegetables grilled to smoky perfection, served with a balsamic glaze.",
     "type": [
       "Main Course",
@@ -252,7 +252,7 @@
   {
     "id": 21,
     "dishName": "Molten Lava Cake",
-    "price": 8.5,
+    "price": 8.50,
     "description": "Rich chocolate cake with a gooey molten center, served with a scoop of vanilla ice cream.",
     "type": [
       "Dessert",
@@ -266,7 +266,7 @@
   {
     "id": 22,
     "dishName": "Classic Cheesecake",
-    "price": 9.0,
+    "price": 9.00,
     "description": "Creamy cheesecake with a graham cracker crust, topped with fresh berries.",
     "type": [
       "Dessert",
@@ -280,7 +280,7 @@
   {
     "id": 23,
     "dishName": "Cornbread Muffins",
-    "price": 6.0,
+    "price": 6.00,
     "description": "Sweet and moist cornbread muffins, served warm with honey butter.",
     "type": [
       "Side",

@@ -45,14 +45,6 @@ public class TestAccountLogic
 
 
 
-    [TestMethod]
-    [DataRow("john")]
-    public void CapitalizeFirstLetter_Check(string word)
-    {
-        string Expected = "John";
-        Assert.AreEqual(Expected, AccountsLogic.CapitalizeFirstLetter(word));
-    }
-
 
     [TestMethod]
     public void CheckEmailInJson_Already_used_true()
@@ -104,10 +96,10 @@ public class TestAccountLogic
     {
         // int id, string emailAddress, string password, string fullName, string phoneNumber, List<string> allergies, List<int> reservationsIDs)
         // Arrange
-        var existingAccount = new AccountModel(1, "test@example.com", "password", "John Doe", 21, "1234567890", ["Dough"], [3], "client", false, 0, DateTime.Now);
+        var existingAccount = new AccountModel(1, "test@example.com", "password", "John Doe", default, "1234567890", ["Dough"], [3], "client", false, 0, DateTime.Now);
         _accountsLogic.UpdateList(existingAccount);
 
-        var updatedAccount = new AccountModel(1, "updated@example.com", "newpassword", "John Doe", 21, "0987654321", ["Dough"], [3], "client", false, 0, DateTime.Now);
+        var updatedAccount = new AccountModel(1, "updated@example.com", "newpassword", "John Doe", default, "0987654321", ["Dough"], [3], "client", false, 0, DateTime.Now);
 
         // Act
         _accountsLogic.UpdateList(updatedAccount);
@@ -121,7 +113,7 @@ public class TestAccountLogic
     public void UpdateList_NewAccount_AddedToAccounts()
     {
         // Arrange
-        var newAccount = new AccountModel(2, "richard@example.com", "richardpassword", "Richard Morris", 21, "0653269420", ["spicy food"], [], "client", false, 0, DateTime.Now);
+        var newAccount = new AccountModel(2, "richard@example.com", "richardpassword", "Richard Morris", default, "0653269420", ["spicy food"], [], "client", false, 0, DateTime.Now);
 
         // Act
         _accountsLogic.UpdateList(newAccount);
@@ -156,7 +148,7 @@ public class TestAccountLogic
     public void CheckLogin_ValidCredentials_ReturnsAccount()
     {
         // Arrange
-        var account = new AccountModel(2, "richard@example.com", "richardpassword", "Richard Morris", 21, "0653269420", ["spicy food"], [], "client", false, 0, DateTime.Now);
+        var account = new AccountModel(2, "richard@example.com", "richardpassword", "Richard Morris", default, "0653269420", ["spicy food"], [], "client", false, 0, DateTime.Now);
         _accountsLogic.UpdateList(account);
 
         // Act

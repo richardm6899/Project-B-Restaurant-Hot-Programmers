@@ -45,7 +45,7 @@ static class UserMakeAccount
             System.Console.WriteLine("Invalid name, please re-enter your First Name: ");
             firstNameLower = Console.ReadLine();
         }
-        string FirstName = AccountsLogic.CapitalizeFirstLetter(firstNameLower);
+        string FirstName = HelperLogic.CapitalizeFirstLetter(firstNameLower);
 
         // last name
         System.Console.WriteLine("What is your Last Name: ");
@@ -55,10 +55,10 @@ static class UserMakeAccount
             System.Console.WriteLine("Invalid name, please re-enter your Last Name: ");
             lastNameLower = Console.ReadLine();
         }
-        string LastName = AccountsLogic.CapitalizeFirstLetter(lastNameLower);
+        string LastName = HelperLogic.CapitalizeFirstLetter(lastNameLower);
 
         // pass
-        System.Console.WriteLine("(Password must contain a capital letter, password must be 8 characters or longer\n and needs to contain a number or symbol)");
+        System.Console.WriteLine("(Password must contain a capital letter, a lowercase letter, must be 8 characters or longer\n and needs to contain a number or symbol)");
         System.Console.WriteLine("What is your password: ");
         string password = Console.ReadLine();
         bool correct_password = false;
@@ -66,7 +66,7 @@ static class UserMakeAccount
         {
             string pass_massage = AccountsLogic.CheckCreatePassword(password);
             Console.WriteLine(pass_massage);
-            if (pass_massage == "Password has been set") { correct_password = true; break; }
+            if (pass_massage == "Password has been set.") { correct_password = true; break; }
             System.Console.WriteLine("New Password:");
             password = Console.ReadLine();
 
@@ -85,31 +85,41 @@ static class UserMakeAccount
         }
 
         // age
+        DateTime birthday = default;
         bool correct_age = false;
-        System.Console.WriteLine("What is your age: ");
-        int age = Convert.ToInt32(Console.ReadLine());
         do
         {
-            try
+            System.Console.WriteLine("What is your Birthdate: ");
+            birthday = accountsLogic.GetBirthday();
+            if (HelperPresentation.YesOrNo($"Is this correct? {birthday.ToShortDateString()}"))
             {
-                if (age <= 0 || age > 150)
-                {
-                    System.Console.WriteLine("Invalid age, please re-enter Age: ");
-                    age = Convert.ToInt32(Console.ReadLine());
-                }
-                else if (age < 18)
-                {
-                    System.Console.WriteLine("You are too young to make an account.");
-                    Menu.Start();
-                }
-                else correct_age = true;
+                correct_age = true;
+            }
+        } while (correct_age == false);
 
-            }
-            catch (FormatException)
-            {
-                System.Console.WriteLine("Please enter a number.");
-            }
-        } while (correct_age != true);
+        // int age = Convert.ToInt32(Console.ReadLine());
+        // do
+        // {
+        //     try
+        //     {
+        //         if (age <= 0 || age > 150)
+        //         {
+        //             System.Console.WriteLine("Invalid age, please re-enter Age: ");
+        //             age = Convert.ToInt32(Console.ReadLine());
+        //         }
+        //         else if (age < 18)
+        //         {
+        //             System.Console.WriteLine("You are too young to make an account.");
+        //             Menu.Start();
+        //         }
+        //         else correct_age = true;
+
+        //     }
+        //     catch (FormatException)
+        //     {
+        //         System.Console.WriteLine("Please enter a number.");
+        //     }
+        // } while (correct_age != true);
 
         // allergies
         List<string> allergies = [];
@@ -157,7 +167,6 @@ static class UserMakeAccount
         // make full name
         string fullName = $"{FirstName} {LastName}";
         // make an account with all given info
-        // public static string CreateAccount(string fullName, string email, string password, string phoneNumber, int age, List<string> allergies, string type, bool locked, int failedloginattempts, DateTime lastlogin)
-        System.Console.WriteLine(AccountsLogic.CreateAccount(fullName, email, password, phoneNumber, age, allergies, "client", DateTime.MinValue));
+        System.Console.WriteLine(AccountsLogic.CreateAccount(fullName, email, password, phoneNumber, birthday, allergies, "client", DateTime.MinValue));
     }
 }

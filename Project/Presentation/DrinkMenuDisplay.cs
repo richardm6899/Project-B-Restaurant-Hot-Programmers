@@ -6,8 +6,8 @@ class DrinkMenuDisplay
     {
         string[] options = {
             "Show whole menu",
-            "Sort by type",
-            "Sort by allergies",
+            "Filter by type",
+            "Filter by allergies",
             "Return"
         };
         DrinkMenuLogic.GetOptionMain(options);
@@ -54,6 +54,14 @@ class DrinkMenuDisplay
         List<string> allergies = drinkMenuLogic.GetAllAllergies();
         List<string> selectedAllergies = DrinkMenuLogic.SelectAllergies(allergies);
         List<DrinkMenuModel> drinks = drinkMenuLogic.GetMenuExcludingAllergies(selectedAllergies);
+        if (drinks == null)
+        {
+            return;
+        }
+        if(drinks.Count == 0)
+        {
+            Console.WriteLine("No menu items available based on the selected filters.");
+        }
         if (selectedAllergies != null)
         {
             foreach (DrinkMenuModel drink in drinks)

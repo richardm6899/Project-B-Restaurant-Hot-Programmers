@@ -27,7 +27,11 @@ public class RestaurantModel
     [JsonPropertyName("FAQ")]
     public List<string> faq { get; set; }
 
-    public RestaurantModel(string tittle, string description, List<string> opening_hours, List<string> closed_dates,string location, string phone_number, string email_address, List<string> faq)
+    [JsonPropertyName("maxcapacity")]
+    public int MaxCapacity { get; set; }
+
+
+    public RestaurantModel(string tittle, string description, List<string> opening_hours, List<string> closed_dates, string location, string phone_number, string email_address, List<string> faq,int maxCapacity)
     {
         this.tittle = tittle;
         this.description = description;
@@ -37,6 +41,7 @@ public class RestaurantModel
         this.phone_number = phone_number;
         this.email_address = email_address;
         this.faq = faq ?? new List<string>();
+        this.MaxCapacity = maxCapacity;
     }
 
 }

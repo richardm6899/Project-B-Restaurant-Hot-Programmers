@@ -29,6 +29,20 @@ static class UserLogin
             int remainingSeconds = accountsLogic.CalculateRemainingSeconds(acc, email);
             // FailedLoginAttempts = accountsLogic.FailedToLoginin();
             // check if account exists
+            if (accountsLogic.CheckAccountDeactivated(email))
+            {
+                System.Console.WriteLine("A deactivated account has been found with this email.");
+                Console.ReadKey();
+                bool reactivate = HelperPresentation.YesOrNo("Would you like to reactivate this account?");
+                if (reactivate)
+                {
+                    System.Console.WriteLine("Re-enter password.");
+                    password = ReadPassword();
+                    accountsLogic.ActivateAccount(email);
+                    acc = accountsLogic.CheckLogin(email, password);
+                }
+
+            }
             if (Locked == false)
             {
                 if (acc == null)
