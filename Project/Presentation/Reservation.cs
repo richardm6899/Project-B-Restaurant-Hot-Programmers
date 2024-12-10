@@ -27,7 +27,7 @@ static class Reservation
         while (reservation)
         {
             // user has to enter yes or no to go further
-            bool Client_answer = ChoicesLogic.YesOrNo("Hello would you like to make a reservation?");
+            bool Client_answer = HelperPresentation.YesOrNo("Hello would you like to make a reservation?");
 
             if (Client_answer)
             {
@@ -353,7 +353,7 @@ static class Reservation
         bool cancelreservation = true;
         while (cancelreservation)
         {
-            if (ChoicesLogic.YesOrNo("Would you like to cancel a reservation? (Y/N)"))
+            if (HelperPresentation.YesOrNo("Would you like to cancel a reservation? (Y/N)"))
             {
                 List<string> ongoingReservations = reservationlogic.DisplayAllOngoingReservations();
                 foreach (string reservation in ongoingReservations)
@@ -370,7 +370,7 @@ static class Reservation
                     int cancelID = Convert.ToInt32(Console.ReadLine());
 
                     ReservationModel toCancelReservation = reservationlogic.GetReservationById(cancelID);
-                    bool cancelReservation = ChoicesLogic.YesOrNo($"Are you sure you want to cancel this reservation:\nId: {toCancelReservation.Id}\nName: {toCancelReservation.Name}\nTotal people: {toCancelReservation.HowMany}\nDate: {toCancelReservation.Date.ToShortDateString()} {toCancelReservation.TimeSlot}\nType of reservation: {toCancelReservation.TypeOfReservation}");
+                    bool cancelReservation = HelperPresentation.YesOrNo($"Are you sure you want to cancel this reservation:\nId: {toCancelReservation.Id}\nName: {toCancelReservation.Name}\nTotal people: {toCancelReservation.HowMany}\nDate: {toCancelReservation.Date.ToShortDateString()} {toCancelReservation.TimeSlot}\nType of reservation: {toCancelReservation.TypeOfReservation}");
                     if (cancelReservation)
                     {
                         reservationlogic.RemoveReservationByID(cancelID);

@@ -27,7 +27,7 @@ static class UserLogin
             {
                 System.Console.WriteLine("A deactivated account has been found with this email.");
                 Console.ReadKey();
-                bool reactivate = ChoicesLogic.YesOrNo("Would you like to reactivate this account?");
+                bool reactivate = HelperPresentation.YesOrNo("Would you like to reactivate this account?");
                 if (reactivate)
                 {
                     System.Console.WriteLine("Re-enter password.");

@@ -41,7 +41,7 @@ class AdminMakeReservation
             if (account.EmailAddress == Email)
             {
                 System.Console.WriteLine("Email found in system.");
-                bool linkAccount = ChoicesLogic.YesOrNo("Would you like to link the reservation to this email.");
+                bool linkAccount = HelperPresentation.YesOrNo("Would you like to link the reservation to this email.");
                 if (linkAccount)
                 {
                     Reservation.MakeReservation(account.FullName, account.Id, account.PhoneNumber, account.EmailAddress);

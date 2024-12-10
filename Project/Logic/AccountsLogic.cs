@@ -154,7 +154,6 @@ public class AccountsLogic
     }
 
 
-    public static string CapitalizeFirstLetter(string toCapitalize) => char.ToUpper(toCapitalize[0]) + toCapitalize.Substring(1);
 
     public string ChangeName(int id, string newFullName)
     {
@@ -356,7 +355,7 @@ public class AccountsLogic
         "July", "August", "September", "October", "November", "December"
     };
 
-        // Years between 1900 and 2023
+        // Years between 1900 and 2007
         int startYear = 1900;
         int endYear = 2007;
         int[] years = new int[endYear - startYear + 1];
@@ -373,20 +372,20 @@ public class AccountsLogic
         }
 
         // Year selection (10 columns)
-        int selectedYear = years[NavigateGrid(years, 10, "Select your birth year:")];
+        int selectedYear = years[NavigateBirthdayGrid(years, 10, "Select your birth year:")];
 
         // Month selection (4 columns)
-        int selectedMonth = NavigateGrid(months, 4, $"{selectedYear} \nSelect your birth month:") + 1;
+        int selectedMonth = NavigateBirthdayGrid(months, 4, $"{selectedYear} \nSelect your birth month:") + 1;
 
         // Day selection (7 columns)
-        int maxDays = GetDaysInMonth(selectedMonth);
-        int selectedDay = days[NavigateGrid(days, 7, $"{selectedYear} {months[selectedMonth - 1]}\nSelect your birth day:", maxDays)];
+        int maxDays = GetDaysInMonth(selectedMonth, selectedYear);
+        int selectedDay = days[NavigateBirthdayGrid(days, 7, $"{selectedYear} {months[selectedMonth - 1]}\nSelect your birth day:", maxDays)];
 
         return new DateTime(selectedYear, selectedMonth, selectedDay);
     }
 
 
-    private static int NavigateGrid<T>(T[] options, int columns, string prompt, int limit = 0)
+    private static int NavigateBirthdayGrid<T>(T[] options, int columns, string prompt, int limit = 0)
     {
         int currentIndex = 0;
         limit = (limit == 0 || limit > options.Length) ? options.Length : limit; // Limit the options
@@ -407,7 +406,8 @@ public class AccountsLogic
                         if (index == currentIndex)
                         {
                             Console.ForegroundColor = ConsoleColor.Green;
-                            Console.Write($"{options[index],-10}"); // Adjust width for alignment
+                            // Adjust width for alignment
+                            Console.Write($"{options[index],-10}");
                             Console.ResetColor();
                         }
                         else
@@ -419,6 +419,7 @@ public class AccountsLogic
                 Console.WriteLine();
             }
 
+            // move highlighted year, month, day
             var key = Console.ReadKey(true).Key;
             switch (key)
             {
@@ -440,13 +441,14 @@ public class AccountsLogic
         }
     }
 
-    // Function to get the maximum number of days in a month
-    private static int GetDaysInMonth(int month)
+    // Method to get the days in a month
+    private static int GetDaysInMonth(int month, int year)
     {
         return month switch
         {
             1 => 31,
-            2 => 28, // Simplified: No leap year handling for now
+            // check if leap year
+            2 => HelperLogic.IsLeapYear(year) ? 29 : 28,
             3 => 31,
             4 => 30,
             5 => 31,
