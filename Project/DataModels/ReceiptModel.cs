@@ -47,7 +47,7 @@ public class ReceiptModel
 
 
 
-    public ReceiptModel(int id, int reservationId, int clientId, int cost, DateTime date,string timeslot, string name, string phoneNumber, string email,string typeofreservation,int tableID, List<(FoodMenuModel,int)> orderedFood)
+    public ReceiptModel(int id, int reservationId, int clientId, int cost, DateTime date,string timeslot, string name, string phoneNumber, string email,string typeofreservation,string tableID, List<(FoodMenuModel,int)> orderedFood)
     {
         Id = id;
         ReservationId = reservationId;

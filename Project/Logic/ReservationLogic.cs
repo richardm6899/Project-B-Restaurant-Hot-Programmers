@@ -446,7 +446,7 @@ public class ReservationLogic
     {
         int id = _receipts.Count() + 1;
 
-        ReceiptModel receipt = new(id, reservation.Id, reservation.ClientID, cost, reservation.Date, reservation.TimeSlot, reservation.Name, number, email, reservation.TypeOfReservation,foodOrdered, Convert.ToString(reservation.TableID[0]));
+        ReceiptModel receipt = new(id, reservation.Id, reservation.ClientID, cost, reservation.Date, reservation.TimeSlot, reservation.Name, number, email, reservation.TypeOfReservation,Convert.ToString(reservation.TableID[0]),foodOrdered);
 
         _receipts.Add(receipt);
         ReceiptAccess.WriteAllReceipts(_receipts);
@@ -1001,14 +1001,14 @@ public class ReservationLogic
         return tableIDs;
     }
     // assigns reservations to tables and adds one reservation to the json and gives one reservation to the receipt
-    public List<ReservationModel> Create_reservationHotSeat(List<int> tableid, string name, int clientID, int howMany, DateTime date, string typeofreservation, string timeslot)//tested
+    public List<ReservationModel> Create_reservationHotSeat(List<int> tableid, string name, int clientID, int howMany, DateTime date, string typeofreservation, string timeslot,bool foodOrdered)//tested
     {
 
         int new_id = _reservations.Count + 1;
         List<ReservationModel> reservationList = new();
         foreach (var tableID in tableid)
         {
-            ReservationModel reservation = new(new_id, tableid, name, clientID, 1, date, typeofreservation, timeslot);
+            ReservationModel reservation = new(new_id, tableid, name, clientID, 1, date, typeofreservation, timeslot, foodOrdered);
             // add reservation to table.reservation list
             AssignTable(tableID, reservation);
             reservationList.Add(reservation);
@@ -1028,10 +1028,10 @@ public class ReservationLogic
         return reservationList;
 
     }
-    public ReceiptModel CreateReceiptHotSeat(List<ReservationModel> reservations, int cost, string number, string email)
+    public ReceiptModel CreateReceiptHotSeat(List<ReservationModel> reservations, int cost, string number, string email,List<(FoodMenuModel, int)> orderdFood)
     {
         int id = _receipts.Count() + 1;
-        ReceiptModel receipt = new(id, reservations[0].Id, reservations[0].ClientID, cost, reservations[0].Date, reservations[0].TimeSlot, reservations[0].Name, number, email, reservations[0].TypeOfReservation, string.Join(",", reservations[0].TableID));
+        ReceiptModel receipt = new(id, reservations[0].Id, reservations[0].ClientID, cost, reservations[0].Date, reservations[0].TimeSlot, reservations[0].Name, number, email, reservations[0].TypeOfReservation, string.Join(",", reservations[0].TableID),orderdFood);
         _receipts.Add(receipt);
         ReceiptAccess.WriteAllReceipts(_receipts);
         return receipt;
