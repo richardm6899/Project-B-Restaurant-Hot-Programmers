@@ -178,7 +178,7 @@ static class HotSeatReservation
                     string foodorder = "Would you like to order food in advanced?";
                     System.Console.WriteLine("-----------------------------------------");
                     System.Console.WriteLine($"{foodorder}\n");
-                    bool orderfood = ChoicesLogic.YesOrNo(foodorder);
+                    bool orderfood = HelperPresentation.YesOrNo(foodorder);
 
                     if (orderfood)
                     {
