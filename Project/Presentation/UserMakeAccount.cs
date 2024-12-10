@@ -45,7 +45,7 @@ static class UserMakeAccount
             System.Console.WriteLine("Invalid name, please re-enter your First Name: ");
             firstNameLower = Console.ReadLine();
         }
-        string FirstName = AccountsLogic.CapitalizeFirstLetter(firstNameLower);
+        string FirstName = HelperLogic.CapitalizeFirstLetter(firstNameLower);
 
         // last name
         System.Console.WriteLine("What is your Last Name: ");
@@ -55,7 +55,7 @@ static class UserMakeAccount
             System.Console.WriteLine("Invalid name, please re-enter your Last Name: ");
             lastNameLower = Console.ReadLine();
         }
-        string LastName = AccountsLogic.CapitalizeFirstLetter(lastNameLower);
+        string LastName = HelperLogic.CapitalizeFirstLetter(lastNameLower);
 
         // pass
         System.Console.WriteLine("(Password must contain a capital letter, a lowercase letter, must be 8 characters or longer\n and needs to contain a number or symbol)");
@@ -91,7 +91,7 @@ static class UserMakeAccount
         {
             System.Console.WriteLine("What is your Birthdate: ");
             birthday = accountsLogic.GetBirthday();
-            if (ChoicesLogic.YesOrNo($"Is this correct? {birthday.ToShortDateString()}"))
+            if (HelperPresentation.YesOrNo($"Is this correct? {birthday.ToShortDateString()}"))
             {
                 correct_age = true;
             }

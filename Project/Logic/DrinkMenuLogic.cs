@@ -144,7 +144,7 @@ class DrinkMenuLogic
             Console.Clear();
             Console.ResetColor();
             System.Console.WriteLine("Welcome to the drinks menu.");
-            ChoicesLogic.DisplayOptions(options, selectedIndex);
+            HelperPresentation.DisplayOptions(options, selectedIndex);
 
             ConsoleKeyInfo keyInfo = Console.ReadKey(true);
             ConsoleKey key = keyInfo.Key;
@@ -176,7 +176,7 @@ class DrinkMenuLogic
             Console.Clear();
             Console.ResetColor();
             System.Console.WriteLine("Welcome to the types menu.");
-            ChoicesLogic.DisplayOptions(options, selectedIndex);
+            HelperPresentation.DisplayOptions(options, selectedIndex);
 
             ConsoleKeyInfo keyInfo = Console.ReadKey(true);
             ConsoleKey key = keyInfo.Key;

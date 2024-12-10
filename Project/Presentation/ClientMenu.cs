@@ -243,7 +243,7 @@ class ClientMenu
                         switch (userDeleteDeactivate)
                         {
                             case "1":
-                                bool userDeactivate = ChoicesLogic.YesOrNo("Are you sure you want to deactivate your account?");
+                                bool userDeactivate = HelperPresentation.YesOrNo("Are you sure you want to deactivate your account?");
                                 if (userDeactivate)
                                 {
                                     System.Console.WriteLine("Please re-enter your password.");
@@ -264,7 +264,7 @@ class ClientMenu
                                 break;
 
                             case "2":
-                                bool userDelete = ChoicesLogic.YesOrNo("Are you sure you want to delete your account?");
+                                bool userDelete = HelperPresentation.YesOrNo("Are you sure you want to delete your account?");
                                 if (userDelete)
                                 {
                                     System.Console.WriteLine("Please re-enter your password.");

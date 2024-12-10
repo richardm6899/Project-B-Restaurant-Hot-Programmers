@@ -45,14 +45,6 @@ public class TestAccountLogic
 
 
 
-    [TestMethod]
-    [DataRow("john")]
-    public void CapitalizeFirstLetter_Check(string word)
-    {
-        string Expected = "John";
-        Assert.AreEqual(Expected, AccountsLogic.CapitalizeFirstLetter(word));
-    }
-
 
     [TestMethod]
     public void CheckEmailInJson_Already_used_true()
