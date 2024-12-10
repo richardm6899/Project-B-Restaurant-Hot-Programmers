@@ -10,7 +10,6 @@ public class FoodMenuLogic
     // Method to return all food menu items
     public List<FoodMenuModel> GetAllMenuItems()
     {
-
         return _foodMenu;
     }
 
@@ -125,6 +124,7 @@ public class FoodMenuLogic
     }
     public static void GetOptionMain(string[] options)
     {
+        
         int selectedIndex = 0;
         bool lookingAtFood = true;
         while (lookingAtFood)

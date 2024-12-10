@@ -130,5 +130,17 @@
     ],
     "type": "client",
     "status": "Activated"
+  },
+  {
+    "clientId": 11,
+    "emailAddress": "Oli@gmail.com",
+    "password": "Hungry11!",
+    "fullName": "Oli Vries",
+    "birthdate": "1900-01-01T00:00:00",
+    "phoneNumber": "310687892027",
+    "allergies": [],
+    "reservationId": [],
+    "type": "client",
+    "status": "Activated"
   }
 ]
