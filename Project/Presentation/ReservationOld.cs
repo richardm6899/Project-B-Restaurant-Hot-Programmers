@@ -86,7 +86,7 @@ static class ReservationOld
                             {
                                 System.Console.WriteLine("In what timeslot would you like to book your reservation: \n1. 12:00 - 14:00\n2. 17:00 - 19:00\n3. 19:00 - 21:00\n4. 21:00 - 23:00\nChoose id:");
                                 string timeslotIdcheck = Console.ReadLine();
-                                TimeSlot = ReservationLogic.TimSlotChooser(timeslotIdcheck);
+                                TimeSlot = "1";
                                 if (TimeSlot != null)
                                 {
                                     //    check if valid time slot

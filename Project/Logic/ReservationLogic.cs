@@ -339,7 +339,7 @@ public class ReservationLogic
             {
                 if (clientID == reservation.ClientID)
                 {
-                    ReturnString += $"reservation details:\nReservation ID: {reservation.Id}\nTable number: {string.Join(", ",reservation.TableID)}\nName: {reservation.Name}\nPersonal ID: {reservation.ClientID}\nPerson Amount: {reservation.HowMany}\nDate of Reservation: {reservation.Date.Date}\nTimeSlot: {reservation.TimeSlot}\nType of reservation: {reservation.TypeOfReservation}\n\n";
+                    ReturnString += $"reservation details:\nReservation ID: {reservation.Id}\nTable number: {string.Join(", ", reservation.TableID)}\nName: {reservation.Name}\nPersonal ID: {reservation.ClientID}\nPerson Amount: {reservation.HowMany}\nDate of Reservation: {reservation.Date.Date}\nTimeSlot: {reservation.TimeSlot}\nType of reservation: {reservation.TypeOfReservation}\n\n";
                 }
             }
         }
@@ -472,26 +472,7 @@ public class ReservationLogic
     // return_string += $" -------------------\n";
 
     // timeslot --------------------------------------------
-    public static string TimSlotChooser(string id)
-    {
-        if (id == "1")
-        {
-            return "Lunch (12:00 - 14:00)";
-        }
-        else if (id == "2")
-        {
-            return "Dinner 1 (17:00 - 19:00)";
-        }
-        else if (id == "3")
-        {
-            return "Dinner 2 (19:00 - 21:00)";
-        }
-        else if (id == "4")
-        {
-            return "Dinner 3 (21:00 - 23:00)";
-        }
-        return null;
-    }
+
 
     // Remove Reservation by choosing date
     public void RemoveReservationsByDate(DateTime date)
@@ -520,10 +501,10 @@ public class ReservationLogic
         // Initialize restaurant layout using a List of Lists
         var RestaurantLayout = new List<List<string>>
     {
-        new() {"[  K  ]","[  K  ]","[  K  ]","[R:4  ]","[R:5  ]","[  ♂  ]","[  ♀  ]","[H:16 ]","[H:17 ]"},
-        new() {"[R:1  ]","[R:2  ]","[R:3  ]","[R:10 ]","[R:11 ]","[     ]","[     ]","[R:6  ]","[H:18 ]",},
-        new() {"[R:7  ]","[R:8  ]","[R:9  ]","[     ]","[     ]","[     ]","[     ]","[R:12 ]","[H:19 ]" },
-        new() {"[R:13 ]","[R:14 ]","[R:15 ]","[  E  ]","[  E  ]","[H:23 ]","[H:22 ]","[H:21 ]","[H:20 ]" }
+        new() {"[  K  ]","[  K  ]","[  K  ]","[R:1  ]","[R:2  ]","[  ♂  ]","[  ♀  ]","[H:16 ]","[H:17 ]"},
+        new() {"[R:3  ]","[R:4  ]","[R:5  ]","[R:6  ]","[R:7  ]","[     ]","[     ]","[R:14 ]","[H:18 ]",},
+        new() {"[R:8  ]","[R:9  ]","[R:10 ]","[     ]","[     ]","[     ]","[     ]","[R:15 ]","[H:19 ]" },
+        new() {"[R:11 ]","[R:12 ]","[R:13 ]","[  E  ]","[  E  ]","[H:23 ]","[H:22 ]","[H:21 ]","[H:20 ]" }
     };
 
         List<string> availableTableIDs = new List<string>() { };
@@ -564,15 +545,10 @@ public class ReservationLogic
                     else if (table.Contains("H"))
                     {
                         string id = table.Split(":")[1].Trim(']').Trim();
-                        if (availableTableIDs.Contains(id))
-                        {
-                            Console.ForegroundColor = ConsoleColor.DarkMagenta;
-                        }
-                        else
-                        {
-                            Console.ForegroundColor = ConsoleColor.Red;
-                            table = "[  X  ]";
-                        }
+
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        table = "[  X  ]";
+
                         Console.Write(table);
                     }
                     else if (table.Contains("R"))
@@ -618,7 +594,7 @@ public class ReservationLogic
             {
                 string selectedTable = RestaurantLayout[currentRow][currentCol];
 
-                if (selectedTable.Contains("R") || selectedTable.Contains("H"))
+                if (selectedTable.Contains("R"))
                 {
                     string id = selectedTable.Split(":")[1].Trim(']').Trim();
                     if (availableTableIDs.Contains(id))
@@ -824,7 +800,11 @@ public class ReservationLogic
                     return returnDate;
                 }
 
-            } // Return selected date
+            }
+            if (key == ConsoleKey.Escape)
+            {
+                return "20";
+            }// Return selected date
             // Return a default value to indicate cancellation
 
             // Adjust month and year if out of range
@@ -926,9 +906,9 @@ public class ReservationLogic
 
         return MaxTimeSlotDays;
     }
-    public List<int> ChooseHotSeats(DateTime ChosenDate, string TimeSlot, int amount)
+    public List<int> ChooseHotSeats(int amount)
     {
-        System.Console.WriteLine("ChooseHotSeats ----------------------");
+     
         //initialize availableTables for hot hotseats
 
         List<int> tableIDs = new();
@@ -989,10 +969,10 @@ public class ReservationLogic
         // Initialize restaurant layout using a List of Lists
         var RestaurantLayout = new List<List<string>>
     {
-        new() {"[  K  ]","[  K  ]","[  K  ]","[R:4  ]","[R:5  ]","[  ♂  ]","[  ♀  ]","[H:16 ]","[H:17 ]"},
-        new() {"[R:1  ]","[R:2  ]","[R:3  ]","[R:10 ]","[R:11 ]","[     ]","[     ]","[R:6  ]","[H:18 ]",},
-        new() {"[R:7  ]","[R:8  ]","[R:9  ]","[     ]","[     ]","[     ]","[     ]","[R:12 ]","[H:19 ]" },
-        new() {"[R:13 ]","[R:14 ]","[R:15 ]","[  E  ]","[  E  ]","[H:23 ]","[H:22 ]","[H:21 ]","[H:20 ]" }
+        new() {"[  K  ]","[  K  ]","[  K  ]","[R:1  ]","[R:2  ]","[  ♂  ]","[  ♀  ]","[H:16 ]","[H:17 ]"},
+        new() {"[R:3  ]","[R:4  ]","[R:5  ]","[R:6  ]","[R:7  ]","[     ]","[     ]","[R:14 ]","[H:18 ]",},
+        new() {"[R:8  ]","[R:9  ]","[R:10 ]","[     ]","[     ]","[     ]","[     ]","[R:15 ]","[H:19 ]" },
+        new() {"[R:11 ]","[R:12 ]","[R:13 ]","[  E  ]","[  E  ]","[H:23 ]","[H:22 ]","[H:21 ]","[H:20 ]" }
     };
 
         bool running = true;
