@@ -29,14 +29,23 @@ public class AccountModel
     public List<int> ReservationIDs { get; set; }
 
     [JsonPropertyName("type")]
-
     public string Type { get; set; }
+
+    [JsonPropertyName("locked")]
+    public bool Locked { get; set; }
+
+    [JsonPropertyName("failedLoginAttempts")]
+
+    public int FailedLoginAttempts { get; set; }
+
+    [JsonPropertyName("lastLogin")]
+    public DateTime LastLogin{get; set;}
 
     // tbh idk why this needs to be here, but it does. it doesnt work without.
     public AccountModel() { }
 
 
-    public AccountModel(int id, string emailAddress, string password, string fullName, int age, string phoneNumber, List<string> allergies, List<int> reservationsIDs, string type)
+    public AccountModel(int id, string emailAddress, string password, string fullName, int age, string phoneNumber, List<string> allergies, List<int> reservationsIDs, string type,  bool locked, int failedloginattempts, DateTime lastlogin)
     {
         this.Id = id;
         this.EmailAddress = emailAddress;
@@ -47,6 +56,9 @@ public class AccountModel
         this.Allergies = allergies ?? new List<string>();
         this.ReservationIDs = reservationsIDs ?? new List<int>();
         this.Type = type;
+        this.Locked = locked;
+        this.FailedLoginAttempts = failedloginattempts;
+        this.LastLogin = lastlogin;
     }
 
 }

@@ -56,7 +56,7 @@ static class UserMakeAccount
             lastNameLower = Console.ReadLine();
         }
         string LastName = AccountsLogic.CapitalizeFirstLetter(lastNameLower);
-        
+
         // pass
         System.Console.WriteLine("(Password must contain a capital letter, password must be 8 characters or longer\n and needs to contain a number or symbol)");
         System.Console.WriteLine("What is your password: ");
@@ -157,6 +157,7 @@ static class UserMakeAccount
         // make full name
         string fullName = $"{FirstName} {LastName}";
         // make an account with all given info
-        System.Console.WriteLine(AccountsLogic.CreateAccount(fullName, email, password, phoneNumber, age, allergies, "client"));
+        // public static string CreateAccount(string fullName, string email, string password, string phoneNumber, int age, List<string> allergies, string type, bool locked, int failedloginattempts, DateTime lastlogin)
+        System.Console.WriteLine(AccountsLogic.CreateAccount(fullName, email, password, phoneNumber, age, allergies, "client", DateTime.MinValue));
     }
 }

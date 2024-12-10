@@ -107,7 +107,7 @@ public class ModifyData
                 {
                     Console.Write("Enter new email: ");
                     string newEmail = Console.ReadLine();
-                    if (!string.IsNullOrWhiteSpace(newEmail) && newEmail.Contains("@."))
+                    if (!string.IsNullOrWhiteSpace(newEmail) && newEmail.Contains("@"))
                     {
                         string emailChange = accountsLogic.ChangeEmail(account.Id, newEmail);
                         Console.WriteLine(emailChange);
