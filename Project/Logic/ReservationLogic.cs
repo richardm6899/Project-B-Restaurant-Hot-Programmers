@@ -33,11 +33,32 @@ public class ReservationLogic
         return table;
     }
 
+    public void UpdateReservationsList(ReservationModel res)
+    {
+        //Find if there is already an model with the same id
+        int index = _reservations.FindIndex(s => s.Id == res.Id);
+
+        if (index != -1)
+        {
+            //update existing model
+            _reservations[index] = res;
+        }
+        else
+        {
+            //add new model
+            _reservations.Add(res);
+        }
+        ReservationAccess.WriteAllReservations(_reservations);
+
+    }
+
     // create reservation with given checks
-    public ReservationModel Create_reservation(int tableID, string name, int clientID, int howMany, DateTime date, string typeofreservation, string timeslot)//tested
+    public ReservationModel Create_reservation(int tableID, string name, int clientID, int howMany, DateTime date, string typeofreservation, string timeslot, bool foodOrdered)//tested
     {
         int new_id = _reservations.Count + 1;
-        ReservationModel reservation = new(new_id, new List<int>() { tableID }, name, clientID, howMany, date, typeofreservation, timeslot);
+
+        ReservationModel reservation = new(new_id, new List<int>() { tableID }, name, clientID, howMany, date, typeofreservation, timeslot,foodOrdered);
+
         // add reservation to table.reservation list
         AssignTable(tableID, reservation);
         _reservations.Add(reservation);
@@ -166,10 +187,9 @@ public class ReservationLogic
                 {
                     GetReceiptById(reservation_id).Status = "Canceled";
                 }
-                ReservationAccess.WriteAllReservations(_reservations);
                 TableAccess.WriteAllTables(_tables);
                 ReceiptAccess.WriteAllReceipts(_receipts);
-
+                UpdateReservationsList(reservation);
                 return reservation;
             }
         }
@@ -289,6 +309,8 @@ public class ReservationLogic
 
     public List<ReservationModel> DisplayAllReservationsByStatusAndID(int id, string status)
     {
+        //  if _reservations doesn't update add this to the method. :)
+        _reservations = ReservationAccess.LoadAllReservations();
         List<ReservationModel> reservations = new();
         foreach (ReservationModel reservation in _reservations)
         {
@@ -345,6 +367,20 @@ public class ReservationLogic
         }
         return ReturnString;
     }
+
+    public List<ReservationModel> AllOngoingReservationsByID(int id)
+    {
+        List<ReservationModel> reservations = new();
+        foreach (ReservationModel reservation in _reservations)
+        {
+            if (reservation.ClientID == id && reservation.Status == "Ongoing")
+            {
+                reservations.Add(reservation);
+            }
+        }
+        return reservations;
+    }
+
     public List<int> IsReservationInAccount(int clientID, int reservation_id)
     {
         List<int> valid_reservations = new();
@@ -405,41 +441,76 @@ public class ReservationLogic
     }
 
     // receipt ------------------------------------------
-    public ReceiptModel CreateReceipt(ReservationModel reservation, int cost, string number, string email, List<int> tableId)
+
+    public ReceiptModel CreateReceipt(ReservationModel reservation, int cost, string number, string email, List<(FoodMenuModel, int)> foodOrdered, List<int> tableId)
     {
         int id = _receipts.Count() + 1;
 
-        ReceiptModel receipt = new(id, reservation.Id, reservation.ClientID, cost, reservation.Date, reservation.TimeSlot, reservation.Name, number, email, reservation.TypeOfReservation, Convert.ToString(reservation.TableID[0]));
+        ReceiptModel receipt = new(id, reservation.Id, reservation.ClientID, cost, reservation.Date, reservation.TimeSlot, reservation.Name, number, email, reservation.TypeOfReservation,foodOrdered, Convert.ToString(reservation.TableID[0]));
+
         _receipts.Add(receipt);
         ReceiptAccess.WriteAllReceipts(_receipts);
         return receipt;
     }
     public string DisplayReceipt(ReceiptModel receipt)
     {
-        string return_string = "";
+        if(receipt.OrderedFood.Count() > 0)
+        {
+            string return_string = "";
+            float totalCost = 0;
 
-        return_string += $" -------------------------------------------- \n";
-        return_string += $"          Hot Restaurant                       \n";
-        return_string += $"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  \n";
-        return_string += $" Reservation No.: {receipt.ReservationId,-13}  \n";
-        return_string += $" Date:            {receipt.Date.ToShortDateString(),-13}\n";
-        return_string += $" TimeSlot:        {receipt.TimeSlot,-13}\n";
-        return_string += $"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
-        return_string += $" Name:            {receipt.Name,-13}\n";
-        return_string += $" Email:           {receipt.Email,-13}\n";
-        return_string += $"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
-        return_string += $" Table No.:       {receipt.TableID,-13}\n";
-        return_string += $" Type:            {receipt.TypeOfReservation,-13}\n";
-        return_string += $"---------------------------------------------\n";
-        return_string += $" Ordered:                             \n";
-        return_string += $"                                      \n";
-        return_string += $" Total:                               \n";
-        return_string += $"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
-        return_string += $" Cost:            €{receipt.Cost,-13}\n";
-        return_string += $"                                     \n";
-        return_string += $" --------------------------------------------- \n";
+            return_string += $" -------------------------------------------- \n";
+            return_string += $"          Hot Restaurant                       \n";
+            return_string += $"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  \n";
+            return_string += $" Reservation No.: {receipt.ReservationId,-13}  \n";
+            return_string += $" Date:            {receipt.Date.ToShortDateString(),-13}\n";
+            return_string += $" TimeSlot:        {receipt.TimeSlot,-13}\n";
+            return_string += $"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
+            return_string += $" Name:            {receipt.Name,-13}\n";
+            return_string += $" Email:           {receipt.Email,-13}\n";
+            return_string += $"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
+            return_string += $" Table No.:       {receipt.TableID,-13}\n";
+            return_string += $" Type:            {receipt.TypeOfReservation,-13}\n";
+            return_string += $"---------------------------------------------\n";
+            return_string += $" Ordered:                             \n";
+            foreach(var(item, quantity) in receipt.OrderedFood)
+            {
+            return_string += $"                   {item.DishName,-13} {quantity}x €{item.Price:F2}\n";
+            totalCost += item.Price *quantity;
+            }
+            return_string += $"                                      \n";
+            return_string += $" Total:           €{totalCost:F2}                  \n";
+            return_string += $"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
+            return_string += $" Cost:            €{receipt.Cost,-13}\n";
+            return_string += $"                                     \n";
+            return_string += $" --------------------------------------------- \n";
 
-        return return_string;
+            return return_string;
+        }
+        else
+        {
+            string return_string = "";
+
+            return_string += $" -------------------------------------------- \n";
+            return_string += $"          Hot Restaurant                       \n";
+            return_string += $"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  \n";
+            return_string += $" Reservation No.: {receipt.ReservationId,-13}  \n";
+            return_string += $" Date:            {receipt.Date.ToShortDateString(),-13}\n";
+            return_string += $" TimeSlot:        {receipt.TimeSlot,-13}\n";
+            return_string += $"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
+            return_string += $" Name:            {receipt.Name,-13}\n";
+            return_string += $" Email:           {receipt.Email,-13}\n";
+            return_string += $"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
+            return_string += $" Table No.:       {receipt.TableID,-13}\n";
+            return_string += $" Type:            {receipt.TypeOfReservation,-13}\n";
+            return_string += $"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
+            return_string += $" Cost:            €{receipt.Cost,-13}\n";
+            return_string += $"                                     \n";
+            return_string += $" --------------------------------------------- \n";
+
+            return return_string;
+        }
+
 
 
 
@@ -492,6 +563,7 @@ public class ReservationLogic
                 ReservationAccess.WriteAllReservations(_reservations);
                 TableAccess.WriteAllTables(_tables);
                 ReceiptAccess.WriteAllReceipts(_receipts);
+                UpdateReservationsList(reservation);
             }
         }
     }

@@ -15,22 +15,22 @@ public class AdminLogic : AccountsLogic
     private string Password;
     private string PhoneNumber;
     private string Type = "admin";
-    private int Age;
+    private DateTime Birthdate;
 
-    public AdminLogic(string name, string email, string password, string phoneNumber, int age)
+    public AdminLogic(string name, string email, string password, string phoneNumber, DateTime birthdate)
     {
         this.Name = name;
         this.Email = email;
         this.Password = password;
         this.PhoneNumber = phoneNumber;
-        this.Age = age;
+        this.Birthdate = birthdate;
     }
 
 
     // public static string CreateAccount(string fullName, string email, string password, string phoneNumber, int age, List<string> allergies, string type)
     public void CreateAdmin()
     {
-        AccountsLogic.CreateAccount(this.Name, this.Email, this.Password, this.PhoneNumber, this.Age, default, this.Type);
+        AccountsLogic.CreateAccount(this.Name, this.Email, this.Password, this.PhoneNumber, this.Birthdate, default, this.Type);
     }
 
     public override AccountModel GetById(int ID)
@@ -38,12 +38,12 @@ public class AdminLogic : AccountsLogic
         return base.GetById(ID);
     }
 
-    public List<AccountModel> GetAccounts(string type)
+    public List<AccountModel> GetAccountsByType(string type)
     {
         List<AccountModel> accounts = base.GetAccounts();
         List<AccountModel> returnAccounts = new();
 
-        foreach(AccountModel account in accounts)
+        foreach (AccountModel account in accounts)
         {
             if (account.Type == type)
             {
@@ -51,7 +51,21 @@ public class AdminLogic : AccountsLogic
             }
         }
         return returnAccounts;
-        
+
     }
-    
+
+    public List<AccountModel> GetActivatedAccounts()
+    {
+        List<AccountModel> activatedAccounts = new();
+        List<AccountModel> allAccounts = base.GetAccounts();
+        foreach (AccountModel account in allAccounts)
+        {
+            if (account.Status == "Activated")
+            {
+                activatedAccounts.Add(account);
+            }
+        }
+        return activatedAccounts;
+    }
+
 }

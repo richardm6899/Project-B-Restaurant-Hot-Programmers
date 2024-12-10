@@ -7,7 +7,7 @@ using System.Text.Json;
 //This class is not static so later on we can use inheritance and interfaces
 public class AccountsLogic
 {
-    public  List<AccountModel> _accounts;
+    public List<AccountModel> _accounts;
 
     //Static properties are shared across all instances of the class
     //This can be used to get the current logged in account from anywhere in the program
@@ -44,14 +44,32 @@ public class AccountsLogic
         return _accounts.Find(i => i.Id == id);
     }
 
+    public virtual AccountModel GetByEmail(string email)
+    {
+        return _accounts.Find(i => i.EmailAddress == email);
+    }
+
     public AccountModel CheckLogin(string email, string password)
     {
         if (email == null || password == null)
         {
             return null;
         }
-        CurrentAccount = _accounts.Find(i => i.EmailAddress == email && i.Password == password);
+        CurrentAccount = _accounts.Find(i => i.EmailAddress == email && i.Password == password && i.Status == "Activated");
         return CurrentAccount;
+    }
+
+    // check if given email is connected to a deactivated account, return true if found
+    public bool CheckAccountDeactivated(string email)
+    {
+        foreach (AccountModel account in _accounts)
+        {
+            if (account.EmailAddress == email && account.Status == "Deactivated")
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     public List<AccountModel> GetAccounts()
@@ -71,10 +89,10 @@ public class AccountsLogic
         return false;
     }
 
-    public static string CreateAccount(string fullName, string email, string password, string phoneNumber, int age, List<string> allergies, string type)
+    public static string CreateAccount(string fullName, string email, string password, string phoneNumber, DateTime birthdate, List<string> allergies, string type)
     {
         int newID = AccountsAccess.LoadAll().Count + 1;
-        AccountModel account = new(newID, email, password, fullName, age, phoneNumber, allergies, default, type);
+        AccountModel account = new(newID, email, password, fullName, birthdate, phoneNumber, allergies, default, type);
         AccountsLogic ac = new AccountsLogic();
         ac.UpdateList(account);
         if (ac.GetById(newID) == null)
@@ -102,145 +120,345 @@ public class AccountsLogic
     // must contain number or symbol
     public static string CheckCreatePassword(string password)
     {
-        if (password.Count() < 8)
+        string passMessage = "Password ";
+        bool isValid = true;
+
+        if (password.Length < 8)
         {
-            return "Password not long enough, must contain 8 characters";
+            passMessage += "is not long enough, must contain at least 8 characters. ";
+            isValid = false;
         }
         if (!password.Any(char.IsUpper))
         {
-            return "Password must contain an Uppercase Letter.";
+            passMessage += "must contain at least one uppercase letter. ";
+            isValid = false;
         }
-        if (!password.Any(char.IsSymbol) && !password.Any(char.IsNumber))
+        if (!password.Any(char.IsLower))
         {
-            return "Password must contain a Number or Symbol";
+            passMessage += "must contain at least one lowercase letter. ";
+            isValid = false;
         }
-        else return "Password has been set";
+        // a lambda is used so that both classifications are checked. ch => .....
+        if (!password.Any(char.IsDigit) && !password.Any(ch => char.IsSymbol(ch) || char.IsPunctuation(ch)))
+        {
+            passMessage += "must contain at least one number or symbol. ";
+            isValid = false;
+        }
 
+        if (isValid)
+        {
+            passMessage = "Password has been set.";
+        }
+
+        return passMessage;
     }
+
 
     public static string CapitalizeFirstLetter(string toCapitalize) => char.ToUpper(toCapitalize[0]) + toCapitalize.Substring(1);
 
     public string ChangeName(int id, string newFullName)
-{
+    {
 
-    AccountModel account = GetById(id);
-    if (account != null)
-    {
-        account.FullName = newFullName;
-        UpdateList(account);
-        return "Name changed successfully";
-    }
-    else
-    {
-        return "Account not found";
-    }
-}
-
-public string ChangeAge(int id, int age)
-{
-    if (age < 18 || age > 150)
-    {
-        return "Age must be between 18 and 150";
-    }
-
-    AccountModel account = GetById(id);
-    if (account != null)
-    {
-        account.Age = age;
-        UpdateList(account);
-        return "Age changed successfully";
-    }
-    else
-    {
-        return "Account not found";
-    }
-}
-
-public string ChangeAllergies(int id, List<string> newAllergies)
-{
-    if (newAllergies == null || newAllergies.Count == 0)
-    {
-        return "Allergies list is required";
-    }
-
-    AccountModel account = GetById(id);
-    if (account != null)
-    {
-        account.Allergies = newAllergies;
-        UpdateList(account);
-        return "Allergies changed successfully";
-    }
-    else
-    {
-        return "Account not found";
-    }
-}
-
-public string ChangePassword(int id, string oldPassword, string newPassword)
-{
-    if (string.IsNullOrWhiteSpace(oldPassword) || string.IsNullOrWhiteSpace(newPassword))
-    {
-        return "Old password and new password are required";
-    }
-
-    AccountModel account = GetById(id);
-    if (account != null && account.Password == oldPassword)
-    {
-        string passwordCheck = CheckCreatePassword(newPassword);
-        if (passwordCheck == "Password has been set")
+        AccountModel account = GetById(id);
+        if (account != null)
         {
-            account.Password = newPassword;
+            account.FullName = newFullName;
             UpdateList(account);
-            return "Password changed successfully";
+            return "Name changed successfully";
         }
         else
         {
-            return passwordCheck;
+            return "Account not found";
         }
     }
-    else
-    {
-        return "Invalid old password";
-    }
-}
 
-public string ChangeEmail(int id, string newEmail)
-{
-    if (string.IsNullOrWhiteSpace(newEmail))
-    {
-        return "Email is required";
-    }
+    // public string ChangeAge(int id, int age)
+    // {
+    //     if (age < 18 || age > 150)
+    //     {
+    //         return "Age must be between 18 and 150";
+    //     }
 
-    AccountModel account = GetById(id);
-    if (account != null)
+    //     AccountModel account = GetById(id);
+    //     if (account != null)
+    //     {
+    //         account.Age = age;
+    //         UpdateList(account);
+    //         return "Age changed successfully";
+    //     }
+    //     else
+    //     {
+    //         return "Account not found";
+    //     }
+    // }
+
+    public string ChangeAllergies(int id, List<string> newAllergies)
     {
-        if (!CheckEmailInJson(newEmail))
+        if (newAllergies == null || newAllergies.Count == 0)
         {
-            account.EmailAddress = newEmail;
+            return "Allergies list is required";
+        }
+
+        AccountModel account = GetById(id);
+        if (account != null)
+        {
+            account.Allergies = newAllergies;
             UpdateList(account);
-            return "Email changed successfully";
+            return "Allergies changed successfully";
         }
         else
         {
-            return "Email already exists";
+            return "Account not found";
         }
     }
-    else
-    {
-        return "Account not found";
-    }
-}
 
-public string UserInfo(int id)
-{
-    AccountModel account = GetById(id);
-    if (account != null)
+    public string ChangePassword(int id, string oldPassword, string newPassword)
     {
-        return $"Your accounts data:\nName: {account.FullName}\nEmail: {account.EmailAddress}\nPhone Number: {account.PhoneNumber}\nAllergies: {string.Join(", ", account.Allergies)}";
+        if (string.IsNullOrWhiteSpace(oldPassword) || string.IsNullOrWhiteSpace(newPassword))
+        {
+            return "Old password and new password are required";
+        }
+
+        AccountModel account = GetById(id);
+        if (account != null && account.Password == oldPassword)
+        {
+            string passwordCheck = CheckCreatePassword(newPassword);
+            if (passwordCheck == "Password has been set")
+            {
+                account.Password = newPassword;
+                UpdateList(account);
+                return "Password changed successfully";
+            }
+            else
+            {
+                return passwordCheck;
+            }
+        }
+        else
+        {
+            return "Invalid old password";
+        }
     }
-    else
+
+    public string ChangeEmail(int id, string newEmail)
     {
-        return "Account not found";
+        if (string.IsNullOrWhiteSpace(newEmail))
+        {
+            return "Email is required";
+        }
+
+        AccountModel account = GetById(id);
+        if (account != null)
+        {
+            if (!CheckEmailInJson(newEmail))
+            {
+                account.EmailAddress = newEmail;
+                UpdateList(account);
+                return "Email changed successfully";
+            }
+            else
+            {
+                return "Email already exists";
+            }
+        }
+        else
+        {
+            return "Account not found";
+        }
     }
-}
+
+    public string UserInfo(int id)
+    {
+        AccountModel account = GetById(id);
+        if (account != null)
+        {
+            return $"Your accounts data:\nName: {account.FullName}\nEmail: {account.EmailAddress}\nPhone Number: {account.PhoneNumber}\nAllergies: {string.Join(", ", account.Allergies)}";
+        }
+        else
+        {
+            return "Account not found";
+        }
+    }
+
+    public bool deactivateAccount(int clientid)
+    {
+        AccountModel account = GetById(clientid);
+        if (account == null)
+        {
+            return false;
+        }
+
+        account.Status = "Deactivated";
+        UpdateList(account);
+        if (account.Status == "Deactivated") { return true; }
+
+
+        return false;
+    }
+
+    public bool ActivateAccount(string email)
+    {
+        AccountModel account = GetByEmail(email);
+        if (account == null)
+        {
+            return false;
+        }
+
+        account.Status = "Activated";
+        UpdateList(account);
+        if (account.Status == "Activated") { return true; }
+
+
+        return false;
+    }
+
+    public bool deleteAccount(int clientid)
+    {
+        AccountModel account = GetById(clientid);
+        if (account == null)
+        {
+            return false;
+        }
+        // changing
+        account.EmailAddress = null;
+        account.Password = null;
+        account.FullName = null;
+        account.Birthdate = default;
+        account.PhoneNumber = null;
+        account.Allergies = null;
+        account.ReservationIDs = null;
+        account.Type = null;
+        account.Status = "Deleted";
+
+        UpdateList(account);
+
+        if (account.Status == "Deleted")
+        { return true; }
+
+        return false;
+    }
+
+    public bool ReCheckPassWord(AccountModel acc, string passToCheck)
+    {
+        if (acc.Password == passToCheck)
+        {
+            return true;
+        }
+        return false;
+    }
+
+
+    public DateTime GetBirthday()
+    {
+        // Array of months
+        string[] months = {
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    };
+
+        // Years between 1900 and 2023
+        int startYear = 1900;
+        int endYear = 2007;
+        int[] years = new int[endYear - startYear + 1];
+        for (int i = 0; i < years.Length; i++)
+        {
+            years[i] = startYear + i;
+        }
+
+        // Days array
+        int[] days = new int[31];
+        for (int i = 0; i < days.Length; i++)
+        {
+            days[i] = i + 1;
+        }
+
+        // Year selection (10 columns)
+        int selectedYear = years[NavigateGrid(years, 10, "Select your birth year:")];
+
+        // Month selection (4 columns)
+        int selectedMonth = NavigateGrid(months, 4, $"{selectedYear} \nSelect your birth month:") + 1;
+
+        // Day selection (7 columns)
+        int maxDays = GetDaysInMonth(selectedMonth);
+        int selectedDay = days[NavigateGrid(days, 7, $"{selectedYear} {months[selectedMonth - 1]}\nSelect your birth day:", maxDays)];
+
+        return new DateTime(selectedYear, selectedMonth, selectedDay);
+    }
+
+
+    private static int NavigateGrid<T>(T[] options, int columns, string prompt, int limit = 0)
+    {
+        int currentIndex = 0;
+        limit = (limit == 0 || limit > options.Length) ? options.Length : limit; // Limit the options
+        int rows = (limit + columns - 1) / columns; // Calculate number of rows
+
+        while (true)
+        {
+            Console.Clear();
+            System.Console.WriteLine(prompt);
+            // Print grid
+            for (int r = 0; r < rows; r++)
+            {
+                for (int c = 0; c < columns; c++)
+                {
+                    int index = r * columns + c;
+                    if (index < limit)
+                    {
+                        if (index == currentIndex)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.Write($"{options[index],-10}"); // Adjust width for alignment
+                            Console.ResetColor();
+                        }
+                        else
+                        {
+                            Console.Write($"{options[index],-10}");
+                        }
+                    }
+                }
+                Console.WriteLine();
+            }
+
+            var key = Console.ReadKey(true).Key;
+            switch (key)
+            {
+                case ConsoleKey.UpArrow:
+                    currentIndex = (currentIndex - columns + limit) % limit;
+                    break;
+                case ConsoleKey.DownArrow:
+                    currentIndex = (currentIndex + columns) % limit;
+                    break;
+                case ConsoleKey.LeftArrow:
+                    currentIndex = (currentIndex - 1 + limit) % limit;
+                    break;
+                case ConsoleKey.RightArrow:
+                    currentIndex = (currentIndex + 1) % limit;
+                    break;
+                case ConsoleKey.Enter:
+                    return currentIndex;
+            }
+        }
+    }
+
+    // Function to get the maximum number of days in a month
+    private static int GetDaysInMonth(int month)
+    {
+        return month switch
+        {
+            1 => 31,
+            2 => 28, // Simplified: No leap year handling for now
+            3 => 31,
+            4 => 30,
+            5 => 31,
+            6 => 30,
+            7 => 31,
+            8 => 31,
+            9 => 30,
+            10 => 31,
+            11 => 30,
+            12 => 31,
+            _ => 31,
+        };
+    }
+
 }

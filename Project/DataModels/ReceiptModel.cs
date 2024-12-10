@@ -41,10 +41,13 @@ public class ReceiptModel
     [JsonPropertyName("tableid")]
     public string TableID { get; set; }
 
+    [JsonPropertyName("orderedFood")]
+    public List<(FoodMenuModel, int)> OrderedFood{get; set;}
 
 
-    public ReceiptModel(int id, int reservationId, int clientId, int cost, DateTime date,string timeslot, string name, string phoneNumber, string email,string typeofreservation,string tableID)
 
+
+    public ReceiptModel(int id, int reservationId, int clientId, int cost, DateTime date,string timeslot, string name, string phoneNumber, string email,string typeofreservation,int tableID, List<(FoodMenuModel,int)> orderedFood)
     {
         Id = id;
         ReservationId = reservationId;
@@ -58,8 +61,7 @@ public class ReceiptModel
         Status = "Ongoing";
         TypeOfReservation = typeofreservation;
         TableID = tableID;
-        
-
+        OrderedFood = orderedFood;
     }
 }
 

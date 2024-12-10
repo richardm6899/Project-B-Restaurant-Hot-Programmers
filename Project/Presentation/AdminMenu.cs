@@ -1,6 +1,7 @@
 class AdminMenu
 {
     static private ReservationLogic reservationLogic = new ReservationLogic();
+    static private AccountsLogic accountsLogic = new();
     public static void Start(AccountModel acc)
     {
         bool adminMenu = true;
@@ -21,7 +22,8 @@ class AdminMenu
             System.Console.WriteLine("Enter 8 to see your accounts data.");
             System.Console.WriteLine("Enter 9 to look at finances.");
             System.Console.WriteLine("Enter 10 to make en account");
-            System.Console.WriteLine("Enter 11 to log out");
+            System.Console.WriteLine("Enter 11 to delete or deactivate an account.");
+            System.Console.WriteLine("Enter 12 to log out");
 
 
             string user_logged_in_answer = System.Console.ReadLine();
@@ -146,8 +148,158 @@ class AdminMenu
                     // newAdmin.CreateAdmin();
                     break;
 
-                // log out
+                // deactivate or delete an account
                 case "11":
+                    bool deactivatingDeleting = true;
+                    do
+                    {
+                        Console.Clear();
+                        System.Console.WriteLine("What type of account would you like to look at.");
+                        System.Console.WriteLine("Enter 1 to see all accounts");
+                        System.Console.WriteLine("Enter 2 to see all client accounts");
+                        System.Console.WriteLine("Enter 3 to see all staff accounts");
+                        System.Console.WriteLine("Enter 4 to see all finance accounts");
+                        System.Console.WriteLine("Enter 5 to choose account to delete");
+                        System.Console.WriteLine("Enter 6 to choose account to deactivate");
+                        System.Console.WriteLine("Enter 7 to return");
+
+                        string adminDelDea = Console.ReadLine();
+
+                        AdminLogic adminLogic = new(acc.FullName, acc.EmailAddress, acc.Password, acc.PhoneNumber, acc.Birthdate);
+                        List<AccountModel> activatedAccounts = adminLogic.GetActivatedAccounts();
+                        switch (adminDelDea)
+                        {
+                            // show all activated accounts
+                            case "1":
+                                foreach (AccountModel account in activatedAccounts)
+                                {
+                                    Console.ForegroundColor = ConsoleColor.Red;
+                                    System.Console.WriteLine("------------------------------");
+                                    Console.ResetColor();
+                                    System.Console.WriteLine($"ID: {account.Id}\nFullname: {account.FullName}\nEmail: {account.EmailAddress}\nPhone number: {account.PhoneNumber}\nType: {account.Type}");
+                                }
+                                Console.ReadKey();
+                                break;
+
+                            // show all client accounts
+                            case "2":
+                                System.Console.WriteLine("Client Accounts:");
+                                foreach (AccountModel account in activatedAccounts)
+                                {
+                                    if (account.Type == "client")
+                                    {
+                                        Console.ForegroundColor = ConsoleColor.Red;
+                                        System.Console.WriteLine("------------------------------");
+                                        Console.ResetColor();
+                                        System.Console.WriteLine($"ID: {account.Id}\nFullname: {account.FullName}\nEmail: {account.EmailAddress}\nPhone number: {account.PhoneNumber}");
+                                    }
+                                }
+                                Console.ReadKey();
+                                break;
+
+                            // show all staff accounts
+                            case "3":
+                                System.Console.WriteLine("Staff Accounts:");
+                                foreach (AccountModel account in activatedAccounts)
+                                {
+                                    if (account.Type == "staff")
+                                    {
+                                        Console.ForegroundColor = ConsoleColor.Red;
+                                        System.Console.WriteLine("------------------------------");
+                                        Console.ResetColor();
+                                        System.Console.WriteLine($"ID: {account.Id}\nFullname: {account.FullName}\nEmail: {account.EmailAddress}\nPhone number: {account.PhoneNumber}");
+                                    }
+                                }
+                                Console.ReadKey();
+                                break;
+
+                            // show all finance accounts
+                            case "4":
+                                System.Console.WriteLine("finance Accounts:");
+                                foreach (AccountModel account in activatedAccounts)
+                                {
+                                    if (account.Type == "finance")
+                                    {
+                                        Console.ForegroundColor = ConsoleColor.Red;
+                                        System.Console.WriteLine("------------------------------");
+                                        Console.ResetColor();
+                                        System.Console.WriteLine($"ID: {account.Id}\nFullname: {account.FullName}\nEmail: {account.EmailAddress}\nPhone number: {account.PhoneNumber}");
+                                    }
+                                }
+                                Console.ReadKey();
+                                break;
+
+                            // delete account
+                            case "5":
+                                System.Console.WriteLine("Please enter the id of the account you wish to delete..");
+                                int toDeleteID = Convert.ToInt32(Console.ReadLine());
+                                AccountModel toDeleteAccount = accountsLogic.GetById(toDeleteID);
+                                if (toDeleteAccount.Status == "Deleted")
+                                {
+                                    System.Console.WriteLine($"This account has already been {toDeleteAccount.Status}");
+                                    Console.ReadLine();
+                                    break;
+                                }
+
+                                bool toDelete = ChoicesLogic.YesOrNo($"Is this the account you wish to delete?\nID: {toDeleteAccount.Id}\nFullName: {toDeleteAccount.FullName}\nEmail: {toDeleteAccount.EmailAddress}\nPhone number: {toDeleteAccount.PhoneNumber}\nType: {toDeleteAccount.Type}\nStatus: {toDeleteAccount.Status}");
+                                if (toDelete)
+                                {
+                                    System.Console.WriteLine("Please re-enter password.");
+                                    string adminPass = Console.ReadLine();
+                                    if (accountsLogic.ReCheckPassWord(acc, adminPass))
+                                    {
+                                        System.Console.WriteLine("Correct password, account has been deleted");
+                                        accountsLogic.deleteAccount(toDeleteID);
+                                        Console.ReadLine();
+                                    }
+                                    else System.Console.WriteLine("Incorrect password");
+                                }
+                                break;
+
+                            // deactivate account
+                            case "6":
+                                System.Console.WriteLine("Please enter the id of the account you wish to deactivate..");
+                                int toDeactivateID = Convert.ToInt32(Console.ReadLine());
+                                AccountModel toDeactivateAccount = accountsLogic.GetById(toDeactivateID);
+                                if (toDeactivateAccount.Status == "Deleted" || toDeactivateAccount.Status == "Deactivated")
+                                {
+                                    System.Console.WriteLine($"This account has already been {toDeactivateAccount.Status}");
+                                    Console.ReadLine();
+                                    break;
+                                }
+
+                                bool toDeactivate = ChoicesLogic.YesOrNo($"Is this the account you wish to delete?\nID: {toDeactivateAccount.Id}\nFullName: {toDeactivateAccount.FullName}\nEmail: {toDeactivateAccount.EmailAddress}\nPhone number: {toDeactivateAccount.PhoneNumber}\nType: {toDeactivateAccount.Type}");
+                                if (toDeactivate)
+                                {
+                                    System.Console.WriteLine("Please re-enter password.");
+                                    string adminPass = Console.ReadLine();
+                                    if (accountsLogic.ReCheckPassWord(acc, adminPass))
+                                    {
+                                        System.Console.WriteLine("Correct password, account has been deactivated");
+                                        accountsLogic.deactivateAccount(toDeactivateID);
+                                        Console.ReadKey();
+                                    }
+                                    else System.Console.WriteLine("Incorrect password");
+                                }
+                                break;
+
+                            // return
+                            case "7":
+                                deactivatingDeleting = false;
+                                break;
+
+                            default:
+                                System.Console.WriteLine("Invalid input");
+                                System.Console.WriteLine("[enter]");
+                                Console.ReadLine();
+                                break;
+                        }
+                    } while (deactivatingDeleting);
+                    break;
+
+
+                // log out
+                case "12":
                     acc = null;
                     Menu.Start();
                     break;
