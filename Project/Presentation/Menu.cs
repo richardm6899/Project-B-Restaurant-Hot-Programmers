@@ -14,7 +14,8 @@ static class Menu
 
         while (running_start)
         {
-            Console.Clear();
+
+            // Console.Clear(); Commented because it intervenes with how the user sees how much time he needs to wait to log in
             System.Console.WriteLine("Welcome to:");
             // ASCII art banner
             // Console.BackgroundColor = ConsoleColor.DarkBlue;

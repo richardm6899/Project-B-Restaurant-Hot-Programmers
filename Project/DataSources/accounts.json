@@ -12,6 +12,9 @@
     ],
     "reservationId": null,
     "type": "client",
+    "locked": false,
+    "failedLoginAttempts": 0,
+    "lastLogin": "2024-12-10T16:01:59.5823506+01:00",
     "status": "Activated"
   },
   {
@@ -24,6 +27,9 @@
     "allergies": [],
     "reservationId": null,
     "type": "client",
+    "locked": false,
+    "failedLoginAttempts": 0,
+    "lastLogin": "2024-12-10T15:10:45.7924802+01:00",
     "status": "Activated"
   },
   {
@@ -38,6 +44,9 @@
     ],
     "reservationId": null,
     "type": "client",
+    "locked": false,
+    "failedLoginAttempts": 0,
+    "lastLogin": "0001-01-01T00:00:00",
     "status": "Activated"
   },
   {
@@ -52,6 +61,9 @@
     ],
     "reservationId": null,
     "type": "client",
+    "locked": false,
+    "failedLoginAttempts": 0,
+    "lastLogin": "0001-01-01T00:00:00",
     "status": "Activated"
   },
   {
@@ -64,6 +76,9 @@
     "allergies": [],
     "reservationId": null,
     "type": "client",
+    "locked": false,
+    "failedLoginAttempts": 0,
+    "lastLogin": "0001-01-01T00:00:00",
     "status": "Activated"
   },
   {
@@ -76,6 +91,9 @@
     "allergies": [],
     "reservationId": null,
     "type": "client",
+    "locked": false,
+    "failedLoginAttempts": 0,
+    "lastLogin": "0001-01-01T00:00:00",
     "status": "Activated"
   },
   {
@@ -90,6 +108,9 @@
       4
     ],
     "type": "admin",
+    "locked": false,
+    "failedLoginAttempts": 0,
+    "lastLogin": "2024-12-10T14:01:32.6865567+01:00",
     "status": "Activated"
   },
   {
@@ -102,6 +123,9 @@
     "allergies": [],
     "reservationId": [],
     "type": "staff",
+    "locked": false,
+    "failedLoginAttempts": 0,
+    "lastLogin": "0001-01-01T00:00:00",
     "status": "Activated"
   },
   {
@@ -114,6 +138,9 @@
     "allergies": [],
     "reservationId": [],
     "type": "finance",
+    "locked": false,
+    "failedLoginAttempts": 0,
+    "lastLogin": "0001-01-01T00:00:00",
     "status": "Activated"
   },
   {
@@ -129,6 +156,9 @@
       6
     ],
     "type": "client",
+    "locked": false,
+    "failedLoginAttempts": 0,
+    "lastLogin": "0001-01-01T00:00:00",
     "status": "Activated"
   },
   {
@@ -141,6 +171,9 @@
     "allergies": [],
     "reservationId": [],
     "type": "client",
+    "locked: false,
+    "failedLoginAttempts": 0,
+    "lastLogin": "0001-01-01T00:00:00",
     "status": "Activated"
   }
 ]

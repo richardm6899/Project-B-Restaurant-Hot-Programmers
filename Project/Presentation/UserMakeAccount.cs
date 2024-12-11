@@ -167,6 +167,6 @@ static class UserMakeAccount
         // make full name
         string fullName = $"{FirstName} {LastName}";
         // make an account with all given info
-        System.Console.WriteLine(AccountsLogic.CreateAccount(fullName, email, password, phoneNumber, birthday, allergies, "client"));
+        System.Console.WriteLine(AccountsLogic.CreateAccount(fullName, email, password, phoneNumber, birthday, allergies, "client", DateTime.MinValue));
     }
 }
