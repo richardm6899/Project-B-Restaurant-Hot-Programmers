@@ -15,7 +15,7 @@ using System.Runtime.Intrinsics.Arm;
 // show receipt with costs * amount of people, table numbers
 
 
-// tips 
+// tips
 // at the end when everything works find a way to implement generics
 // so that you don't have alot of repeated code.
 static class HotSeatReservation
@@ -83,7 +83,7 @@ static class HotSeatReservation
             else if (progress == 20)
             {
 
-                string[] timeslots = ["Lunch (12:00 - 14:00)", "Dinner 1 (17:00 - 19:00)", "Dinner 2 (19:00 - 21:00)", "Dinner 3 (21:00 - 23:00)", "Return,Quit"];
+                string[] timeslots = ["Lunch (12:00 - 14:00)", "Dinner 1 (17:00 - 19:00)", "Dinner 2 (19:00 - 21:00)", "Dinner 3 (21:00 - 23:00)", "Return", "Quit"];
                 TimeSlot = ReservationLogic.Choice("\nWhat TimeSlot would you prefer: \n----------------------------------------\nPress 'Return' to go back to choosing amount of people.", timeslots);
 
 
@@ -176,9 +176,13 @@ static class HotSeatReservation
                 if (TableChoice)
                 {
                     Reservation.ResOrderFood(tableIDs, name, clientID, HowMany, Date, "HotSeat", TimeSlot, number, email, cost);
+                    reservationlogic.AvailableTables.Clear();
+                    Console.Clear();
+                    break;
                 }
                 else if (TableChoice == false)
                 {
+
                     progress = 40;
                 }
 
