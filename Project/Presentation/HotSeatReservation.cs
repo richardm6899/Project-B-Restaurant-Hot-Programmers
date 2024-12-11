@@ -61,7 +61,7 @@ static class HotSeatReservation
                         Console.Clear();
 
                     }
-                    else if (howMany.ToUpper() == "Quit")
+                    else if (howMany == "Quit")
                     {
                         System.Console.WriteLine("Goodbye....");
                         System.Console.WriteLine("[enter]");

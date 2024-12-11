@@ -32,7 +32,7 @@ static class RegularReservation
 
 
                 }
-                else if (howMany.ToUpper() == "Quit")
+                else if (howMany == "Quit")
                 {
                     System.Console.WriteLine("Goodbye....");
                     System.Console.WriteLine("[enter]");
@@ -56,7 +56,7 @@ static class RegularReservation
                 {
                     progress = 0;
                 }
-                else if (TimeSlot.ToUpper() == "Quit")
+                else if (TimeSlot == "Quit")
                 {
                     System.Console.WriteLine("Goodbye....");
                     System.Console.WriteLine("[enter]");

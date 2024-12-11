@@ -573,7 +573,7 @@ public class ReservationLogic
         // Initialize restaurant layout using a List of Lists
         var RestaurantLayout = new List<List<string>>
     {
-        new() {"[  K  ]","[  K  ]","[  K  ]","[R:1  ]","[R:2  ]","[  ♂  ]","[  ♀  ]","[H:16 ]","[H:17 ]"},
+        new() {"[  K  ]","[  K  ]","[  K  ]","[R:1  ]","[R:2  ]","[  T  ]","[  T  ]","[H:16 ]","[H:17 ]"},
         new() {"[R:3  ]","[R:4  ]","[R:5  ]","[R:6  ]","[R:7  ]","[     ]","[     ]","[R:14 ]","[H:18 ]",},
         new() {"[R:8  ]","[R:9  ]","[R:10 ]","[     ]","[     ]","[     ]","[     ]","[R:15 ]","[H:19 ]" },
         new() {"[R:11 ]","[R:12 ]","[R:13 ]","[  E  ]","[  E  ]","[H:23 ]","[H:22 ]","[H:21 ]","[H:20 ]" }
@@ -1041,7 +1041,7 @@ public class ReservationLogic
         // Initialize restaurant layout using a List of Lists
         var RestaurantLayout = new List<List<string>>
     {
-        new() {"[  K  ]","[  K  ]","[  K  ]","[R:1  ]","[R:2  ]","[  ♂  ]","[  ♀  ]","[H:16 ]","[H:17 ]"},
+        new() {"[  K  ]","[  K  ]","[  K  ]","[R:1  ]","[R:2  ]","[  T  ]","[  T  ]","[H:16 ]","[H:17 ]"},
         new() {"[R:3  ]","[R:4  ]","[R:5  ]","[R:6  ]","[R:7  ]","[     ]","[     ]","[R:14 ]","[H:18 ]",},
         new() {"[R:8  ]","[R:9  ]","[R:10 ]","[     ]","[     ]","[     ]","[     ]","[R:15 ]","[H:19 ]" },
         new() {"[R:11 ]","[R:12 ]","[R:13 ]","[  E  ]","[  E  ]","[H:23 ]","[H:22 ]","[H:21 ]","[H:20 ]" }
