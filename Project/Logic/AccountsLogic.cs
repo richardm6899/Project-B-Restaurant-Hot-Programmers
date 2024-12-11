@@ -103,7 +103,7 @@ public class AccountsLogic
     public static string CreateAccount(string fullName, string email, string password, string phoneNumber, DateTime birthdate, List<string> allergies, string type, DateTime LastLogin)
     {
         int newID = AccountsAccess.LoadAll().Count + 1;
-        AccountModel account = new(newID, email, password, fullName, age, phoneNumber, allergies, default, type, false, 0, LastLogin);
+        AccountModel account = new(newID, email, password, fullName, birthdate, phoneNumber, allergies, default, type, false, 0, LastLogin);
         AccountsLogic ac = new AccountsLogic();
         ac.UpdateList(account);
         if (ac.GetById(newID) == null)
@@ -379,7 +379,7 @@ public class AccountsLogic
          
         else // logged_in_account is null
         {
-            AccountModel? accountfound = _accounts.Find(a => a.EmailAddress == email && i.Status == "Activated");
+            AccountModel? accountfound = _accounts.Find(a => a.EmailAddress == email && a.Status == "Activated");
             if (accountfound != null) // there is an existing account with the email
             {
                 if(accountfound.Locked == false)
@@ -466,7 +466,7 @@ public class AccountsLogic
         }
         else // acount is null
         {
-        AccountModel? accountfound = _accounts.Find(a => a.EmailAddress == email);
+        AccountModel? accountfound = _accounts.Find(a => a.EmailAddress == email && a.Status == "Activated");
         if (accountfound != null)
         {
         TimeSpan timeSinceLock = DateTime.Now - accountfound.LastLogin;
