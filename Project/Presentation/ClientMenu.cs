@@ -63,7 +63,7 @@ Welcome back {acc.FullName}
 
                 // log out
                 case 6:
-                    ModifyData.Start(acc, accountsLogic);
+                    ModifyData.Start(acc);
                     break;
 
                 case 7:
