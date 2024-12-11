@@ -81,9 +81,7 @@ class FoodOrderMenu
                     // If the dish is "Chef's Menu", ask for allergies based on quantity
                     if (selectedDish.Type.Contains("Chef's Menu"))
                     {
-                        
                         Console.WriteLine($"Please select allergies for '{selectedDish.DishName}):");
-
                         var allergyList = AskForAllergies();
                         allergies.Add(allergyList ?? new List<string>());
                     }
@@ -113,7 +111,7 @@ class FoodOrderMenu
     public static List<string> AskForAllergies()
     {
         string prompt = "Do you have any allergies our chef needs to take into account?";
-        if (ChoicesLogic.YesOrNo(prompt))
+        if (HelperPresentation.YesOrNo(prompt))
         {
             string[] options = foodMenuLogic.GetAllAllergies().ToArray();
             List<string> selectedAllergies = new List<string>();
