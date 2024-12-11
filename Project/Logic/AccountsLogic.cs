@@ -14,6 +14,13 @@ public class AccountsLogic
     //private set, so this can only be set by the class itself
     static public AccountModel? CurrentAccount { get; private set; }
 
+    public int FailedLoginAttempts = 0;
+
+    public bool Locked = false;
+
+    public DateTime LastLogin = DateTime.Now;
+
+
     public AccountsLogic()
     {
         _accounts = AccountsAccess.LoadAll();
@@ -56,6 +63,10 @@ public class AccountsLogic
             return null;
         }
         CurrentAccount = _accounts.Find(i => i.EmailAddress == email && i.Password == password && i.Status == "Activated");
+        if (CurrentAccount != null && (CurrentAccount.Locked || Locked))
+        {
+            return null;
+        }
         return CurrentAccount;
     }
 
@@ -89,10 +100,10 @@ public class AccountsLogic
         return false;
     }
 
-    public static string CreateAccount(string fullName, string email, string password, string phoneNumber, DateTime birthdate, List<string> allergies, string type)
+    public static string CreateAccount(string fullName, string email, string password, string phoneNumber, DateTime birthdate, List<string> allergies, string type, DateTime LastLogin)
     {
         int newID = AccountsAccess.LoadAll().Count + 1;
-        AccountModel account = new(newID, email, password, fullName, birthdate, phoneNumber, allergies, default, type);
+        AccountModel account = new(newID, email, password, fullName, birthdate, phoneNumber, allergies, default, type, false, 0, LastLogin);
         AccountsLogic ac = new AccountsLogic();
         ac.UpdateList(account);
         if (ac.GetById(newID) == null)
@@ -152,8 +163,6 @@ public class AccountsLogic
 
         return passMessage;
     }
-
-
 
     public string ChangeName(int id, string newFullName)
     {
@@ -346,7 +355,161 @@ public class AccountsLogic
         return false;
     }
 
+    // Menu.cs Console.clear() is working weird, so its commented so that user can see how he attempts to log in
+    // Returns true or false if account is null or not null. True meaning its Locked, so account won't be able to log in
+    public bool CancelLogin(AccountModel logged_in_account, string email)
+    {
+        
+        if (logged_in_account != null)
+        {
+            if(logged_in_account.Locked == false)
+            {
+                
+                logged_in_account.FailedLoginAttempts = 0;
+                logged_in_account.Locked = false;
+                UpdateList(logged_in_account);
+                return logged_in_account.Locked; // false
+            }
+            else
+            {
+                UpdateList(logged_in_account);
+                return logged_in_account.Locked; // true
+            }
+        }
+         
+        else // logged_in_account is null
+        {
+            AccountModel? accountfound = _accounts.Find(a => a.EmailAddress == email && a.Status == "Activated");
+            if (accountfound != null) // there is an existing account with the email
+            {
+                if(accountfound.Locked == false)
+                {
+                    accountfound.FailedLoginAttempts++;
+                    if (accountfound.FailedLoginAttempts >= 3)
+                    {
+                        accountfound.Locked = true;
+                        accountfound.LastLogin = DateTime.Now;
+                        UpdateList(accountfound);
+                        return accountfound.Locked; // true
+                    }
+                    else
+                    {
+                        UpdateList(accountfound);
+                        return accountfound.Locked; // false
+                    }
+                }
+                else
+                {
+                        if (CalculateRemainingSeconds(accountfound, email) <= 0)
+                        {
+                        accountfound.Locked = false;
+                        accountfound.LastLogin = DateTime.Now;
+                        UpdateList(accountfound);
+                        return accountfound.Locked; //false
+                        }
+                        else
+                        {
+                            return accountfound.Locked;// true
+                        }
+                }
+            }
+            else // accountfound is null
+            {
+                if (Locked == false)
+                {
+                    FailedLoginAttempts++;
+                    if (FailedLoginAttempts >= 3)
+                    {
+                        Locked = true;
+                        LastLogin = DateTime.Now;
+                        return Locked; // true
+                    }
+                    else
+                    {
+                        return Locked; // false
+                    }
+                }
+                else
+                {
+                    return Locked; // true
+                }
+            }
+        }
+    }
+    // Returns remaining seconds starting from 30. When reached to 0, user can log in
+    public int CalculateRemainingSeconds(AccountModel account, string email)
+    {
+        int remainingSeconds = 0;
+        if (account != null)
+        {
+        
+        TimeSpan timeSinceLock = DateTime.Now - account.LastLogin;
+        remainingSeconds = 30 - (int)timeSinceLock.TotalSeconds;
+            if (account.Locked)
+            {
+                if (remainingSeconds <= 0)
+                {
+                    account.FailedLoginAttempts = 0;
+                    account.Locked = false;
+                    remainingSeconds = 0;
+                    UpdateList(account);
+                    return remainingSeconds;
+                }
+                else
+                {
+                    return remainingSeconds;
+                }
+            }
 
+            return remainingSeconds;
+
+        }
+        else // acount is null
+        {
+        AccountModel? accountfound = _accounts.Find(a => a.EmailAddress == email && a.Status == "Activated");
+        if (accountfound != null)
+        {
+        TimeSpan timeSinceLock = DateTime.Now - accountfound.LastLogin;
+        remainingSeconds = 30 - (int)timeSinceLock.TotalSeconds;
+            if (Locked)
+                {
+                    if (remainingSeconds <= 0)
+                    {
+                        accountfound.FailedLoginAttempts = 0;
+                        accountfound.Locked = false;
+                        remainingSeconds = 0;
+                        return remainingSeconds;
+                    }
+                    else
+                    {
+                        return remainingSeconds;
+                    }
+                }
+                return remainingSeconds;
+        }
+        else
+        {
+        TimeSpan timeSinceLock = DateTime.Now - LastLogin;
+        remainingSeconds = 30 - (int)timeSinceLock.TotalSeconds;
+            if (Locked)
+                {
+                    if (remainingSeconds <= 0)
+                    {
+                        FailedLoginAttempts = 0;
+                        Locked = false;
+                        remainingSeconds = 0;
+                        return remainingSeconds;
+                    }
+                    else
+                    {
+                        return remainingSeconds;
+                    }
+                }
+                return remainingSeconds;
+        }
+        }
+    }
+  
     public DateTime GetBirthday()
     {
         // Array of months
@@ -462,5 +625,4 @@ public class AccountsLogic
             _ => 31,
         };
     }
-
 }

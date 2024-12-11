@@ -1,19 +1,22 @@
 class FoodOrderMenu
 {
+    static private FoodMenuLogic foodMenuLogic = new FoodMenuLogic();
     static private FoodOrderLogic foodOrderLogic = new FoodOrderLogic();
 
-    public static List<(FoodMenuModel, int)> OrderFood()
+    public static (List<(FoodMenuModel, int)>, List<List<string>>) OrderFood()
     {
         // Get all menu items
         List<FoodMenuModel> foodMenu = foodOrderLogic.GetAllMenuItems();
         List<(FoodMenuModel, int)> FoodCart = new List<(FoodMenuModel, int)>();
-        FoodMenuModel[] foodChoices = foodMenu.ToArray();
+        List<List<string>> allergies = new List<List<string>>();
 
-        OrderFoodMenu(foodChoices, FoodCart);
-        return FoodCart;
+        FoodMenuModel[] foodChoices = foodMenu.ToArray();
+        OrderFoodMenu(foodChoices, FoodCart, allergies);
+
+        return (FoodCart, allergies);
     }
 
-    public static void OrderFoodMenu(FoodMenuModel[] options, List<(FoodMenuModel, int)> FoodCart)
+    public static void OrderFoodMenu(FoodMenuModel[] options, List<(FoodMenuModel, int)> FoodCart, List<List<string>> allergies)
     {
         int selectedIndex = 0;
         bool selecting = true;
@@ -21,8 +24,6 @@ class FoodOrderMenu
         while (selecting)
         {
             Console.Clear();
-
-            // Display the food options with the current selected index
             DisplayFoodOptions(options, selectedIndex, FoodCart);
 
             // Display menu options
@@ -74,9 +75,16 @@ class FoodOrderMenu
             {
                 if (selectedIndex < options.Length)
                 {
-                    // Add the selected dish to the cart
                     var selectedDish = options[selectedIndex];
                     FoodOrderLogic.AddToCart(FoodCart, selectedDish);
+
+                    // If the dish is "Chef's Menu", ask for allergies based on quantity
+                    if (selectedDish.Type.Contains("Chef's Menu"))
+                    {
+                        Console.WriteLine($"Please select allergies for '{selectedDish.DishName}):");
+                        var allergyList = AskForAllergies();
+                        allergies.Add(allergyList ?? new List<string>());
+                    }
                 }
                 else if (selectedIndex == options.Length)
                 {
@@ -86,9 +94,7 @@ class FoodOrderMenu
                 else if (selectedIndex == options.Length + 1)
                 {
                     // "Done" option selected
-
                     selecting = false;
-
                 }
                 else if (selectedIndex == options.Length + 2)
                 {
@@ -99,6 +105,156 @@ class FoodOrderMenu
             }
         }
     }
+
+
+
+    public static List<string> AskForAllergies()
+    {
+        string prompt = "Do you have any allergies our chef needs to take into account?";
+        if (HelperPresentation.YesOrNo(prompt))
+        {
+            string[] options = foodMenuLogic.GetAllAllergies().ToArray();
+            List<string> selectedAllergies = new List<string>();
+
+            int selectedIndex = 0;
+            bool selecting = true;
+
+            while (selecting)
+            {
+
+                Console.Clear();
+                Console.WriteLine("Please select your allergies (use arrow keys to navigate and Enter to select/deselect):\n");
+
+                // Display allergy options
+                for (int i = 0; i < options.Length; i++)
+                {
+                    if (selectedIndex == i)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.Write($"> {options[i]}");
+                        Console.ResetColor();
+                    }
+                    else
+                    {
+                        Console.Write($"  {options[i]}");
+                    }
+
+                    // Indicate if the allergy is already selected
+                    if (selectedAllergies.Contains(options[i]))
+                    {
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        Console.Write(" [Selected]");
+                        Console.ResetColor();
+                    }
+
+                    Console.WriteLine();
+                }
+
+                // Display additional options
+                if (selectedIndex == options.Length)
+                {
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine("> No Allergies");
+                    Console.ResetColor();
+                }
+                else
+                {
+                    Console.WriteLine("  No Allergies");
+                }
+
+                if (selectedIndex == options.Length + 1)
+                {
+                    Console.ForegroundColor = ConsoleColor.Magenta;
+                    Console.WriteLine("> Other (Specify)");
+                    Console.ResetColor();
+                }
+                else
+                {
+                    Console.WriteLine("  Other (Specify)");
+                }
+
+                if (selectedIndex == options.Length + 2)
+                {
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.WriteLine("> Done");
+                    Console.ResetColor();
+                }
+                else
+                {
+                    Console.WriteLine("  Done");
+                }
+
+                if (selectedIndex == options.Length + 3)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("> Return");
+                    Console.ResetColor();
+                }
+                else
+                {
+                    Console.WriteLine("  Return");
+                }
+
+                // Handle user input
+                var key = Console.ReadKey(true).Key;
+
+                if (key == ConsoleKey.UpArrow)
+                {
+                    selectedIndex = (selectedIndex == 0) ? options.Length + 3 : selectedIndex - 1;
+                }
+                else if (key == ConsoleKey.DownArrow)
+                {
+                    selectedIndex = (selectedIndex == options.Length + 3) ? 0 : selectedIndex + 1;
+                }
+                else if (key == ConsoleKey.Enter)
+                {
+                    if (selectedIndex < options.Length)
+                    {
+                        var selectedAllergy = options[selectedIndex];
+                        if (selectedAllergies.Contains(selectedAllergy))
+                        {
+                            selectedAllergies.Remove(selectedAllergy); // Deselect if already selected
+                        }
+                        else
+                        {
+                            selectedAllergies.Add(selectedAllergy); // Select the allergy
+                        }
+                    }
+                    else if (selectedIndex == options.Length)
+                    {
+                        // "No Allergies" option selected
+                        return new List<string>();
+                    }
+                    else if (selectedIndex == options.Length + 1)
+                    {
+                        // "Other" option selected - prompt for custom allergy
+                        Console.Write("\nEnter custom allergy: ");
+                        string customAllergy = Console.ReadLine();
+                        if (!string.IsNullOrWhiteSpace(customAllergy) && !selectedAllergies.Contains(customAllergy))
+                        {
+                            selectedAllergies.Add(customAllergy);
+                        }
+                    }
+                    else if (selectedIndex == options.Length + 2)
+                    {
+                        // "Done" option selected
+                        selecting = false;
+                    }
+                    else if (selectedIndex == options.Length + 3)
+                    {
+                        // "Return" option selected
+                        return null;
+                    }
+                }
+            }
+
+            return selectedAllergies;
+        }
+
+        // If the user says "No" to the initial prompt
+        return new List<string>();
+    }
+
 
     public static void DisplayFoodOptions(FoodMenuModel[] options, int selected, List<(FoodMenuModel, int)> FoodCart)
     {

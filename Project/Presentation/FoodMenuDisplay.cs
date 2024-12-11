@@ -201,7 +201,7 @@ public class FoodMenuDisplay
         {
             
             // Define the desired display order
-            var displayOrder = new List<string> { "Appetizer", "Main Course", "Side", "Dessert" };
+            var displayOrder = new List<string> { "Appetizer", "Main Course", "Side", "Dessert", "Chef's Menu"};
 
             // Group and order menu items based on the display order
             var orderedMenu = menuItems

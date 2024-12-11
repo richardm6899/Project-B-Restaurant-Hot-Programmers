@@ -175,51 +175,7 @@ static class HotSeatReservation
                 bool TableChoice = reservationlogic.DisplayChosenSeats(tableIDs);
                 if (TableChoice)
                 {
-                    string foodorder = "Would you like to order food in advanced?";
-                    System.Console.WriteLine("-----------------------------------------");
-                    System.Console.WriteLine($"{foodorder}\n");
-                    bool orderfood = HelperPresentation.YesOrNo(foodorder);
-
-                    if (orderfood)
-                    {
-                        List<(FoodMenuModel, int)> foodCart = FoodOrderMenu.OrderFood();
-                        // reservation
-                        //(int id, List<int> tableID, string name, int clientID, int howMany, DateTime date, string typeofreservation, string timeslot, bool foodOrdered)
-                        // receipt
-                        //(int id, int reservationId, int clientId, int cost, DateTime date,string timeslot, string name, string phoneNumber, string email,string typeofreservation,int tableID, List<(FoodMenuModel,int)> orderedFood)
-                        List<ReservationModel> Reservation = reservationlogic.Create_reservationHotSeat(tableIDs, name, clientID, HowMany, Date, "HotSeat", TimeSlot, true);
-                        ReceiptModel receipt = reservationlogic.CreateReceiptHotSeat(Reservation, cost, number, email, foodCart);
-                        System.Console.WriteLine();
-                        System.Console.WriteLine("This is your receipt for now: ");
-
-                        System.Console.WriteLine(reservationlogic.DisplayReceipt(receipt));
-                        System.Console.WriteLine("reservation created");
-                        System.Console.WriteLine("[enter]");
-                        Console.ReadLine();
-
-                        reservationlogic.AvailableTables.Clear();
-                        Console.Clear();
-                        break;
-                    }
-                    else
-                    {
-                        List<ReservationModel> Reservation = reservationlogic.Create_reservationHotSeat(tableIDs, name, clientID, HowMany, Date, "HotSeat", TimeSlot, true);
-                        ReceiptModel receipt = reservationlogic.CreateReceiptHotSeat(Reservation, cost, number, email, []);
-                        System.Console.WriteLine();
-                        System.Console.WriteLine("This is your receipt for now: ");
-
-                        System.Console.WriteLine(reservationlogic.DisplayReceipt(receipt));
-                        System.Console.WriteLine("reservation created");
-                        System.Console.WriteLine("[enter]");
-                        Console.ReadLine();
-
-                        reservationlogic.AvailableTables.Clear();
-                        Console.Clear();
-                        break;
-
-
-
-                    }
+                    Reservation.ResOrderFood(tableIDs, name, clientID, HowMany, Date, "HotSeat", TimeSlot, number, email, cost);
                 }
                 else if (TableChoice == false)
                 {
