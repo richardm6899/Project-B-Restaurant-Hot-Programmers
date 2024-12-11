@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
@@ -58,6 +58,7 @@ public class AccountsLogic
 
     public AccountModel CheckLogin(string email, string password)
     {
+        _accounts = AccountsAccess.LoadAll();
         if (email == null || password == null)
         {
             return null;
@@ -164,6 +165,8 @@ public class AccountsLogic
         return passMessage;
     }
 
+
+
     public string ChangeName(int id, string newFullName)
     {
 
@@ -180,25 +183,6 @@ public class AccountsLogic
         }
     }
 
-    // public string ChangeAge(int id, int age)
-    // {
-    //     if (age < 18 || age > 150)
-    //     {
-    //         return "Age must be between 18 and 150";
-    //     }
-
-    //     AccountModel account = GetById(id);
-    //     if (account != null)
-    //     {
-    //         account.Age = age;
-    //         UpdateList(account);
-    //         return "Age changed successfully";
-    //     }
-    //     else
-    //     {
-    //         return "Account not found";
-    //     }
-    // }
 
     public string ChangeAllergies(int id, List<string> newAllergies)
     {
@@ -248,39 +232,24 @@ public class AccountsLogic
         }
     }
 
-    public string ChangeEmail(int id, string newEmail)
-    {
-        if (string.IsNullOrWhiteSpace(newEmail))
-        {
-            return "Email is required";
-        }
 
+    public void ChangeEmail(int id, string newEmail)
+    {
         AccountModel account = GetById(id);
         if (account != null)
         {
-            if (!CheckEmailInJson(newEmail))
-            {
-                account.EmailAddress = newEmail;
-                UpdateList(account);
-                return "Email changed successfully";
-            }
-            else
-            {
-                return "Email already exists";
-            }
-        }
-        else
-        {
-            return "Account not found";
+            account.EmailAddress = newEmail;
+            UpdateList(account);
         }
     }
+
 
     public string UserInfo(int id)
     {
         AccountModel account = GetById(id);
         if (account != null)
         {
-            return $"Your accounts data:\nName: {account.FullName}\nEmail: {account.EmailAddress}\nPhone Number: {account.PhoneNumber}\nAllergies: {string.Join(", ", account.Allergies)}";
+            return $"Your accounts data:\nName: {account.FullName}\nBirthdate: {HelperPresentation.DateTimeToReadableDate(account.Birthdate)}\nEmail: {account.EmailAddress}\nPhone Number: {account.PhoneNumber}\nAllergies: {string.Join(", ", account.Allergies)}\nPassword: {account.Password}";
         }
         else
         {
@@ -509,7 +478,7 @@ public class AccountsLogic
         }
         }
     }
-  
+
     public DateTime GetBirthday()
     {
         // Array of months
