@@ -1,6 +1,6 @@
 public class FoodMenuLogic
 {
-    private List<FoodMenuModel> _foodMenu;
+    public List<FoodMenuModel> _foodMenu;
 
     public FoodMenuLogic()
     {
@@ -22,9 +22,12 @@ public class FoodMenuLogic
             {
                 if (!Allergies.Contains(allergy))
                 {
-                    if (allergy != "none")
+                    if (allergy != "None")
                     {
-                        Allergies.Add(allergy);
+                        if (allergy != "none")
+                        {
+                            Allergies.Add(allergy);
+                        }
                     }
                 }
                 else

@@ -1,5 +1,6 @@
 
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Runtime.Intrinsics.Arm;
 
 
@@ -207,27 +208,31 @@ static class Reservation
                         string confirmation = Console.ReadLine().ToUpper();
                         if (confirmation == "Y")
                         {
-                            string foodorder = "Would you like to order food in advanced?";
+                            string foodorder = "Would you like to order food in advance?";
                             System.Console.WriteLine("-----------------------------------------");
                             System.Console.WriteLine($"{foodorder}\n");
                             bool orderfood = ChoicesLogic.YesOrNo(foodorder);
 
-                            if(orderfood)
-                            {                                
-                                List<(FoodMenuModel, int)> foodCart = FoodOrderMenu.OrderFood();
+                            if (orderfood)
+                            {
+                                var (foodCart, allergies) = FoodOrderMenu.OrderFood();
                                 ReservationModel Reservation = reservationlogic.Create_reservation(TableID, name, clientID, HowMany, Date, typeofreservation, TimeSlot, true);
+
                                 ReceiptModel receipt = reservationlogic.CreateReceipt(Reservation, cost, number, email, foodCart);
+
                                 System.Console.WriteLine();
                                 System.Console.WriteLine("This is your receipt for now: ");
-
-                                System.Console.WriteLine(reservationlogic.DisplayReceipt(receipt));
-                                System.Console.WriteLine("reservation created");
+                                System.Console.WriteLine(reservationlogic.DisplayReceipt(receipt, allergies));
+                                System.Console.WriteLine("Reservation created");
                                 System.Console.WriteLine("[enter]");
                                 Console.ReadLine();
+
                                 reservation = false;
                                 tableIDcheck = false;
                                 reservationlogic.AvailableTables.Clear();
-                                Console.Clear();                         
+                                Console.Clear();
+                            
+                        
                             }
                             else
                             {
@@ -237,7 +242,7 @@ static class Reservation
                                 System.Console.WriteLine();
                                 System.Console.WriteLine("This is your receipt for now: ");
 
-                                System.Console.WriteLine(reservationlogic.DisplayReceipt(receipt));
+                                System.Console.WriteLine(reservationlogic.DisplayReceipt(receipt, []));
                                 System.Console.WriteLine("reservation created");
                                 System.Console.WriteLine("[enter]");
                                 Console.ReadLine();
@@ -247,9 +252,6 @@ static class Reservation
                                 Console.Clear();
 
                             }
-
-                            
-
 
                         }
                         else

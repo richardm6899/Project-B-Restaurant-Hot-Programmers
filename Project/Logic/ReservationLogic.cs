@@ -484,10 +484,11 @@ public class ReservationLogic
         ReceiptAccess.WriteAllReceipts(_receipts);
         return receipt;
     }
-    public string DisplayReceipt(ReceiptModel receipt)
+    public string DisplayReceipt(ReceiptModel receipt, List<List<string>> allergies)
     {
         if(receipt.OrderedFood.Count() > 0)
         {
+            int position = 0;
             string return_string = "";
             float totalCost = 0;
 
@@ -505,19 +506,40 @@ public class ReservationLogic
             return_string += $" Type:            {receipt.TypeOfReservation,-13}\n";
             return_string += $"---------------------------------------------\n";
             return_string += $" Ordered:                             \n";
-            foreach(var(item, quantity) in receipt.OrderedFood)
+            foreach (var (item, quantity) in receipt.OrderedFood)
             {
-            return_string += $"                   {item.DishName,-13} {quantity}x €{item.Price:F2}\n";
-            totalCost += item.Price *quantity;
+                float itemTotal = item.Price * quantity; // Calculate total price for this item
+                totalCost += itemTotal; // Add to the total cost
+
+                // Display dish name, quantity, and item price
+                return_string += $" {item.DishName,-20} {quantity}x €{item.Price:F2}  (Total: €{itemTotal:F2})\n";
+
+                // Check if the item is a "Chef's Menu" and allergies are provided
+                if (item.Type.Contains("Chef's Menu"))
+                {
+                    for (int i = 0; i < quantity; i++)
+                    {
+                        if (position < allergies.Count && allergies[position].Count > 0)
+                        {
+                            return_string += $"   Allergies: {string.Join(", ", allergies[position])}\n";
+                        }
+                        else
+                        {
+                            return_string += $"   Allergies: None\n";
+                        }
+                        position++;
+                    }
+                }
             }
             return_string += $"                                      \n";
-            return_string += $" Total:           €{totalCost:F2}                  \n";
+            return_string += $" Total Food Cost: €{totalCost:F2}            \n";
             return_string += $"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
             return_string += $" Cost:            €{receipt.Cost,-13}\n";
             return_string += $"                                     \n";
             return_string += $" --------------------------------------------- \n";
 
             return return_string;
+
         }
         else
         {
