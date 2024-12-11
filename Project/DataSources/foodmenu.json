@@ -40,7 +40,7 @@
   {
     "id": 5,
     "dishName": "Hot Cheesy Cornbread",
-    "price": 17.50,
+    "price": 12.50,
     "description": "Moist cornbread mixed with melted cheddar cheese, served hot.",
     "type": [
       "Side"
@@ -290,5 +290,53 @@
       "gluten",
       "dairy"
     ]
+  },
+  {
+    "id": 100,
+    "dishName": "Chef's 3 Course Beef Menu",
+    "price": 40.00,
+    "description": "A pre-made, surprise, 3 course menu by our own head-chef",
+    "type": ["Chef's Menu", "Beef"],
+    "allergies": []
+  },
+  {
+    "id": 101,
+    "dishName": "Chef's 4 Course Beef Menu",
+    "price": 50.00,
+    "description": "A pre-made, surprise, 4 course menu by our own head-chef",
+    "type": ["Chef's Menu", "Beef"],
+    "allergies": []
+  },
+  {
+    "id": 102,
+    "dishName": "Chef's 3 Course Vegan Menu",
+    "price": 40.00,
+    "description": "A pre-made, surprise, 3 course menu by our own head-chef",
+    "type": ["Chef's Menu", "Vegan"],
+    "allergies": []
+  },
+  {
+    "id": 103,
+    "dishName": "Chef's 4 Course Vegan Menu",
+    "price": 50.00,
+    "description": "A pre-made, surprise, 4 course menu by our own head-chef",
+    "type": ["Chef's Menu", "Vegan"],
+    "allergies": []
+  },
+  {
+    "id": 104,
+    "dishName": "Chef's 3 Course Fish Menu",
+    "price": 45.00,
+    "description": "A pre-made, surprise, 3 course menu by our own head-chef",
+    "type": ["Chef's Menu", "Fish"],
+    "allergies": []
+  },
+  {
+    "id": 105,
+    "dishName": "Chef's 4 Course Fish Menu",
+    "price": 55.00,
+    "description": "A pre-made, surprise, 4 course menu by our own head-chef",
+    "type": ["Chef's Menu", "Fish"],
+    "allergies": []
   }
 ]

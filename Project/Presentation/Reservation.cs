@@ -1,5 +1,6 @@
 
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Runtime.Intrinsics.Arm;
 
 
@@ -48,6 +49,7 @@ static class Reservation
                 }
                 else if (HotOrRegChoice == "Quit")
                 {
+
                     System.Console.WriteLine("Goodbye...");
                     System.Console.WriteLine("[enter]");
                     System.Console.ReadLine();

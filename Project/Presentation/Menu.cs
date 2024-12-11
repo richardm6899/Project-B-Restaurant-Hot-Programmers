@@ -11,7 +11,6 @@ static class Menu
         };
         bool running_start = true;
         int selectedIndex = 0;
-
         while (running_start)
         {
 
