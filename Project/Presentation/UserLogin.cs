@@ -6,6 +6,9 @@ static class UserLogin
     static private AccountsLogic accountsLogic = new AccountsLogic();
     static private AccountModel acc = null;
 
+    static public int FailedLoginAttempts = 0;
+    static public bool Locked = false;
+
     public static void Start()
     {
         acc = null;
@@ -22,12 +25,15 @@ static class UserLogin
             string password = ReadPassword();
 
             acc = accountsLogic.CheckLogin(email, password);
+            Locked = accountsLogic.CancelLogin(acc, email);
+            int remainingSeconds = accountsLogic.CalculateRemainingSeconds(acc, email);
+            // FailedLoginAttempts = accountsLogic.FailedToLoginin();
             // check if account exists
             if (accountsLogic.CheckAccountDeactivated(email))
             {
                 System.Console.WriteLine("A deactivated account has been found with this email.");
                 Console.ReadKey();
-                bool reactivate = ChoicesLogic.YesOrNo("Would you like to reactivate this account?");
+                bool reactivate = HelperPresentation.YesOrNo("Would you like to reactivate this account?");
                 if (reactivate)
                 {
                     System.Console.WriteLine("Re-enter password.");
@@ -37,19 +43,45 @@ static class UserLogin
                 }
 
             }
-            if (acc == null)
+            if (Locked == false)
             {
-                Console.WriteLine("No account found with that email or password, try again!");
-                Menu.Start();
-            }
-        }
-
+                if (acc == null)
+                {
+                    if (Locked)
+                        {
+                            Console.WriteLine($"Your account is blocked for {remainingSeconds} seconds.");
+                            if (remainingSeconds <= 0)
+                            {
+                                acc.FailedLoginAttempts = 0;
+                                FailedLoginAttempts = 0;
+                                Locked = false;
+                            }
+                        }
+                    // if (FailedLoginAttempts >= 3)
+                    else
+                    {
+                    FailedLoginAttempts++;
+                    // FailedLoginAttempts = accountsLogic.FailedToLogin();
+                    Console.WriteLine($"Invalid password, try again!");
+                    Console.WriteLine($"You have {3 - FailedLoginAttempts} attempts left.");
+                    if (FailedLoginAttempts >= 3)
+                    {
+                        FailedLoginAttempts = 0;
+                    }
+                    Menu.Start();
+                    }
+                }
+        // Menu.Start();
+        // proceed to the corresponding menu based on the account type
         // if logged in show this
         if (acc != null)
         {
+            accountsLogic.CancelLogin(acc, email);
+            FailedLoginAttempts = 0;
+            acc.FailedLoginAttempts = 0;
             if (acc.Type == "admin")
             {
-                AdminMenu.Start(acc);
+                    AdminMenu.Start(acc);   
             }
             else if (acc.Type == "client")
             {
@@ -64,6 +96,18 @@ static class UserLogin
                 FinancialMenu.Start(acc);
             }
 
+        }
+        
+            }
+        if (Locked == true)
+        {
+            Console.WriteLine($"Your account is blocked for {remainingSeconds} seconds.");
+            if (remainingSeconds <= 0)
+            {
+                FailedLoginAttempts = 0;
+                Locked = false;
+            }
+        }
         }
     }
 

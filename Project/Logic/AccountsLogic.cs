@@ -14,6 +14,13 @@ public class AccountsLogic
     //private set, so this can only be set by the class itself
     static public AccountModel? CurrentAccount { get; private set; }
 
+    public int FailedLoginAttempts = 0;
+
+    public bool Locked = false;
+
+    public DateTime LastLogin = DateTime.Now;
+
+
     public AccountsLogic()
     {
         _accounts = AccountsAccess.LoadAll();
@@ -56,6 +63,10 @@ public class AccountsLogic
             return null;
         }
         CurrentAccount = _accounts.Find(i => i.EmailAddress == email && i.Password == password && i.Status == "Activated");
+        if (CurrentAccount != null && (CurrentAccount.Locked || Locked))
+        {
+            return null;
+        }
         return CurrentAccount;
     }
 
@@ -89,10 +100,10 @@ public class AccountsLogic
         return false;
     }
 
-    public static string CreateAccount(string fullName, string email, string password, string phoneNumber, DateTime birthdate, List<string> allergies, string type)
+    public static string CreateAccount(string fullName, string email, string password, string phoneNumber, DateTime birthdate, List<string> allergies, string type, DateTime LastLogin)
     {
         int newID = AccountsAccess.LoadAll().Count + 1;
-        AccountModel account = new(newID, email, password, fullName, birthdate, phoneNumber, allergies, default, type);
+        AccountModel account = new(newID, email, password, fullName, birthdate, phoneNumber, allergies, default, type, false, 0, LastLogin);
         AccountsLogic ac = new AccountsLogic();
         ac.UpdateList(account);
         if (ac.GetById(newID) == null)
@@ -152,9 +163,6 @@ public class AccountsLogic
 
         return passMessage;
     }
-
-
-    public static string CapitalizeFirstLetter(string toCapitalize) => char.ToUpper(toCapitalize[0]) + toCapitalize.Substring(1);
 
     public string ChangeName(int id, string newFullName)
     {
@@ -347,7 +355,161 @@ public class AccountsLogic
         return false;
     }
 
+    // Menu.cs Console.clear() is working weird, so its commented so that user can see how he attempts to log in
+    // Returns true or false if account is null or not null. True meaning its Locked, so account won't be able to log in
+    public bool CancelLogin(AccountModel logged_in_account, string email)
+    {
+        
+        if (logged_in_account != null)
+        {
+            if(logged_in_account.Locked == false)
+            {
+                
+                logged_in_account.FailedLoginAttempts = 0;
+                logged_in_account.Locked = false;
+                UpdateList(logged_in_account);
+                return logged_in_account.Locked; // false
+            }
+            else
+            {
+                UpdateList(logged_in_account);
+                return logged_in_account.Locked; // true
+            }
+        }
+         
+        else // logged_in_account is null
+        {
+            AccountModel? accountfound = _accounts.Find(a => a.EmailAddress == email && a.Status == "Activated");
+            if (accountfound != null) // there is an existing account with the email
+            {
+                if(accountfound.Locked == false)
+                {
+                    accountfound.FailedLoginAttempts++;
+                    if (accountfound.FailedLoginAttempts >= 3)
+                    {
+                        accountfound.Locked = true;
+                        accountfound.LastLogin = DateTime.Now;
+                        UpdateList(accountfound);
+                        return accountfound.Locked; // true
+                    }
+                    else
+                    {
+                        UpdateList(accountfound);
+                        return accountfound.Locked; // false
+                    }
+                }
+                else
+                {
+                        if (CalculateRemainingSeconds(accountfound, email) <= 0)
+                        {
+                        accountfound.Locked = false;
+                        accountfound.LastLogin = DateTime.Now;
+                        UpdateList(accountfound);
+                        return accountfound.Locked; //false
+                        }
+                        else
+                        {
+                            return accountfound.Locked;// true
+                        }
+                }
+            }
+            else // accountfound is null
+            {
+                if (Locked == false)
+                {
+                    FailedLoginAttempts++;
+                    if (FailedLoginAttempts >= 3)
+                    {
+                        Locked = true;
+                        LastLogin = DateTime.Now;
+                        return Locked; // true
+                    }
+                    else
+                    {
+                        return Locked; // false
+                    }
+                }
+                else
+                {
+                    return Locked; // true
+                }
+            }
+        }
+    }
+    // Returns remaining seconds starting from 30. When reached to 0, user can log in
+    public int CalculateRemainingSeconds(AccountModel account, string email)
+    {
+        int remainingSeconds = 0;
+        if (account != null)
+        {
+        
+        TimeSpan timeSinceLock = DateTime.Now - account.LastLogin;
+        remainingSeconds = 30 - (int)timeSinceLock.TotalSeconds;
+            if (account.Locked)
+            {
+                if (remainingSeconds <= 0)
+                {
+                    account.FailedLoginAttempts = 0;
+                    account.Locked = false;
+                    remainingSeconds = 0;
+                    UpdateList(account);
+                    return remainingSeconds;
+                }
+                else
+                {
+                    return remainingSeconds;
+                }
+            }
 
+            return remainingSeconds;
+
+        }
+        else // acount is null
+        {
+        AccountModel? accountfound = _accounts.Find(a => a.EmailAddress == email && a.Status == "Activated");
+        if (accountfound != null)
+        {
+        TimeSpan timeSinceLock = DateTime.Now - accountfound.LastLogin;
+        remainingSeconds = 30 - (int)timeSinceLock.TotalSeconds;
+            if (Locked)
+                {
+                    if (remainingSeconds <= 0)
+                    {
+                        accountfound.FailedLoginAttempts = 0;
+                        accountfound.Locked = false;
+                        remainingSeconds = 0;
+                        return remainingSeconds;
+                    }
+                    else
+                    {
+                        return remainingSeconds;
+                    }
+                }
+                return remainingSeconds;
+        }
+        else
+        {
+        TimeSpan timeSinceLock = DateTime.Now - LastLogin;
+        remainingSeconds = 30 - (int)timeSinceLock.TotalSeconds;
+            if (Locked)
+                {
+                    if (remainingSeconds <= 0)
+                    {
+                        FailedLoginAttempts = 0;
+                        Locked = false;
+                        remainingSeconds = 0;
+                        return remainingSeconds;
+                    }
+                    else
+                    {
+                        return remainingSeconds;
+                    }
+                }
+                return remainingSeconds;
+        }
+        }
+    }
+  
     public DateTime GetBirthday()
     {
         // Array of months
@@ -356,7 +518,7 @@ public class AccountsLogic
         "July", "August", "September", "October", "November", "December"
     };
 
-        // Years between 1900 and 2023
+        // Years between 1900 and 2007
         int startYear = 1900;
         int endYear = 2007;
         int[] years = new int[endYear - startYear + 1];
@@ -373,20 +535,20 @@ public class AccountsLogic
         }
 
         // Year selection (10 columns)
-        int selectedYear = years[NavigateGrid(years, 10, "Select your birth year:")];
+        int selectedYear = years[NavigateBirthdayGrid(years, 10, "Select your birth year:")];
 
         // Month selection (4 columns)
-        int selectedMonth = NavigateGrid(months, 4, $"{selectedYear} \nSelect your birth month:") + 1;
+        int selectedMonth = NavigateBirthdayGrid(months, 4, $"{selectedYear} \nSelect your birth month:") + 1;
 
         // Day selection (7 columns)
-        int maxDays = GetDaysInMonth(selectedMonth);
-        int selectedDay = days[NavigateGrid(days, 7, $"{selectedYear} {months[selectedMonth - 1]}\nSelect your birth day:", maxDays)];
+        int maxDays = GetDaysInMonth(selectedMonth, selectedYear);
+        int selectedDay = days[NavigateBirthdayGrid(days, 7, $"{selectedYear} {months[selectedMonth - 1]}\nSelect your birth day:", maxDays)];
 
         return new DateTime(selectedYear, selectedMonth, selectedDay);
     }
 
 
-    private static int NavigateGrid<T>(T[] options, int columns, string prompt, int limit = 0)
+    private static int NavigateBirthdayGrid<T>(T[] options, int columns, string prompt, int limit = 0)
     {
         int currentIndex = 0;
         limit = (limit == 0 || limit > options.Length) ? options.Length : limit; // Limit the options
@@ -407,7 +569,8 @@ public class AccountsLogic
                         if (index == currentIndex)
                         {
                             Console.ForegroundColor = ConsoleColor.Green;
-                            Console.Write($"{options[index],-10}"); // Adjust width for alignment
+                            // Adjust width for alignment
+                            Console.Write($"{options[index],-10}");
                             Console.ResetColor();
                         }
                         else
@@ -419,6 +582,7 @@ public class AccountsLogic
                 Console.WriteLine();
             }
 
+            // move highlighted year, month, day
             var key = Console.ReadKey(true).Key;
             switch (key)
             {
@@ -440,13 +604,14 @@ public class AccountsLogic
         }
     }
 
-    // Function to get the maximum number of days in a month
-    private static int GetDaysInMonth(int month)
+    // Method to get the days in a month
+    private static int GetDaysInMonth(int month, int year)
     {
         return month switch
         {
             1 => 31,
-            2 => 28, // Simplified: No leap year handling for now
+            // check if leap year
+            2 => HelperLogic.IsLeapYear(year) ? 29 : 28,
             3 => 31,
             4 => 30,
             5 => 31,
@@ -460,5 +625,4 @@ public class AccountsLogic
             _ => 31,
         };
     }
-
 }

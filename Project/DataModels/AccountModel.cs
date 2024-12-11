@@ -16,6 +16,9 @@ public class AccountModel
       6
     ],
     "type": "client",
+    "locked": false,
+    "failedLoginAttempts": 0,
+    "lastLogin": "0001-01-01T00:00:00",
     "status" : "Activated"
   }*/
     [JsonPropertyName("clientId")]
@@ -46,6 +49,16 @@ public class AccountModel
     [JsonPropertyName("type")]
     public string Type { get; set; }
 
+    [JsonPropertyName("locked")]
+    public bool Locked { get; set; }
+
+    [JsonPropertyName("failedLoginAttempts")]
+
+    public int FailedLoginAttempts { get; set; }
+
+    [JsonPropertyName("lastLogin")]
+    public DateTime LastLogin{get; set;}
+  
     [JsonPropertyName("status")]
     public string Status { get; set; }
 
@@ -53,7 +66,7 @@ public class AccountModel
     public AccountModel() { }
 
 
-    public AccountModel(int id, string emailAddress, string password, string fullName, DateTime birthdate, string phoneNumber, List<string> allergies, List<int> reservationsIDs, string type)
+    public AccountModel(int id, string emailAddress, string password, string fullName, DateTime birthdate, string phoneNumber, List<string> allergies, List<int> reservationsIDs, string type,  bool locked, int failedloginattempts, DateTime lastlogin)
     {
         this.Id = id;
         this.EmailAddress = emailAddress;
@@ -64,7 +77,9 @@ public class AccountModel
         this.Allergies = allergies ?? new List<string>();
         this.ReservationIDs = reservationsIDs ?? new List<int>();
         this.Type = type;
+        this.Locked = locked;
+        this.FailedLoginAttempts = failedloginattempts;
+        this.LastLogin = lastlogin;
         this.Status = "Activated";
     }
-
 }

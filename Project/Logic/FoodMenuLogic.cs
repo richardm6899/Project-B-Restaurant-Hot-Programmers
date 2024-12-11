@@ -82,7 +82,7 @@ public class FoodMenuLogic
         {
             Console.Clear();
             Console.ResetColor();
-            ChoicesLogic.DisplayOptions(options, selectedIndex);
+            HelperPresentation.DisplayOptions(options, selectedIndex);
 
             ConsoleKeyInfo keyInfo = Console.ReadKey(true);
             ConsoleKey key = keyInfo.Key;
@@ -135,7 +135,7 @@ public class FoodMenuLogic
             Console.Clear();
             Console.ResetColor();
             System.Console.WriteLine("Welcome to the food menu.");
-            ChoicesLogic.DisplayOptions(options, selectedIndex);
+            HelperPresentation.DisplayOptions(options, selectedIndex);
 
             ConsoleKeyInfo keyInfo = Console.ReadKey(true);
             ConsoleKey key = keyInfo.Key;
@@ -194,7 +194,7 @@ public class FoodMenuLogic
             Console.Clear();
             Console.ResetColor();
             System.Console.WriteLine("Welcome to the types menu.");
-            ChoicesLogic.DisplayOptions(options, selectedIndex);
+            HelperPresentation.DisplayOptions(options, selectedIndex);
 
             ConsoleKeyInfo keyInfo = Console.ReadKey(true);
             ConsoleKey key = keyInfo.Key;
