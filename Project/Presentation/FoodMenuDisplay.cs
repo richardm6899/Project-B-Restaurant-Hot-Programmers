@@ -294,6 +294,36 @@ public class FoodMenuDisplay
         return false;
     }
 
+    public static void DisplayByAllergy()
+    {
+        System.Console.WriteLine("Allergies");
+        // all allergies in the json
+        List<string> allergies = foodMenuLogic.GetAllAllergies();
+        List<string> selectedAllergies = DrinkMenuLogic.SelectAllergies(allergies);
+        List<FoodMenuModel> foods = foodMenuLogic.GetMenuExcludingAllergies(selectedAllergies);
+        if (foods == null)
+        {
+            return;
+        }
+        if(foods.Count == 0)
+        {
+            Console.WriteLine("No menu items available based on the selected filters.");
+        }
+        if (selectedAllergies != null)
+        {
+            foreach (FoodMenuModel dish in foods)
+            {
+                System.Console.WriteLine("\n----------------------");
+                System.Console.WriteLine($"*** {dish.DishName} ***\n{dish.Description}\n${dish.Price:F2}\n allergies:");
+                foreach (string allergy in dish.Allergies)
+                {
+                    System.Console.Write(allergy + " ");
+                }
+            }
+        }
+        Console.ReadKey();
+    }
+
 
     public static void AddDishToFoodMenu()
     {
