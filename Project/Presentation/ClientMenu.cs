@@ -119,7 +119,9 @@ Welcome back {acc.FullName}
             "All past reservations.",
             "All canceled reservations.",
             "Search reservation by date",
+            "Select reservation for more information",
             "Return",
+
         };
 
         bool seeingReservations = true;
@@ -232,8 +234,43 @@ Welcome back {acc.FullName}
                     break;
 
                 case 5:
-                    return;
+                    int reservationSelectedIndex = 0;
+                    List<ReservationModel> allReservations = reservationLogic.DisplayAllReservationsByStatusAndID(acc.Id, null);
+                    List<string> ReservationsInformation = new();
+                    foreach (ReservationModel reservation in allReservations)
+                    {
+                        ReservationsInformation.Add($"Reservation ID: {reservation.Id}\nHow many People: {reservation.HowMany}\nDate: {reservation.Date}\nTime slot: {reservation.TimeSlot}\nStatus: {reservation.Status}\n");
+                    }
+                    int IndexSelectedReservation = HelperPresentation.ChooseItem("Select reservation for more information:", ReservationsInformation, reservationSelectedIndex);
+
+                    ReservationModel selectedReservation = allReservations[IndexSelectedReservation];
+
+                    System.Console.WriteLine("Selected Reservation: ");
+                    System.Console.WriteLine($@"Reservation ID: {selectedReservation.Id},");
+                    System.Console.Write("Table Id/Ids: ");
+                    foreach (int ids in selectedReservation.TableID)
+                    {
+                        System.Console.Write($"{ids}, ");
+                    }
+                    System.Console.WriteLine();
+                    System.Console.WriteLine($@"Name: {selectedReservation.Name},
+ClientID: {selectedReservation.ClientID},
+How many People: {selectedReservation.HowMany},
+Date: {HelperPresentation.DateTimeToReadableDate(selectedReservation.Date)},
+Time slot: {selectedReservation.TimeSlot},
+Status: {selectedReservation.Status},
+Type of Reservation: {selectedReservation.TypeOfReservation},");
+                    if (selectedReservation.FoodOrdered)
+                    {
+                        System.Console.WriteLine("Has food been ordered: yes");
+                    }
+                    else System.Console.WriteLine("Has food been ordered: no");
+
+                    Console.ReadKey();
                     break;
+
+                case 6:
+                    return;
 
                 default:
                     System.Console.WriteLine("Invalid input");

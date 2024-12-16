@@ -40,7 +40,8 @@ public class ModifyData
                     break;
                 case 1:
                     // change birthdate
-                    System.Console.WriteLine("Not created yet.");
+                    ChangeBirthdate(account);
+                    // System.Console.WriteLine("Not created yet.");
                     break;
                 case 2:
                     // change email
@@ -55,7 +56,7 @@ public class ModifyData
                     System.Console.WriteLine("Not implemented yet");
                     break;
                 case 5:// password
-                break;
+                    break;
                 case 6:// return
                     return;
                     break;
@@ -140,9 +141,21 @@ public class ModifyData
         }
     }
     // case 1 change birthdate 
-    private static void ChangeBirthdate()
+    private static void ChangeBirthdate(AccountModel acc)
     {
-
+        bool changingBirthday = true;
+        while (changingBirthday)
+        {
+            bool correctBirthday = HelperPresentation.YesOrNo($"Is this your birthday?\n{HelperPresentation.DateTimeToReadableDate(acc.Birthdate)}");
+            if (correctBirthday == false)
+            {
+                DateTime newBirthday = accountsLogic.GetBirthday();
+                acc.Birthdate = newBirthday;
+                accountsLogic.UpdateList(acc);
+            }
+            else
+                break;
+        }
     }
     // case 2 change email
     private static void ChangeEmail(AccountModel acc)
