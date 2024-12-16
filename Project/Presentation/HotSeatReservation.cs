@@ -22,6 +22,7 @@ static class HotSeatReservation
 {
     static private ReservationLogic reservationlogic = new();
 
+
     public static void HotSeat(string name, int clientID, string number, string email)
     {
         reservationlogic.AddHotSeatsAvailableTables();
@@ -38,141 +39,62 @@ static class HotSeatReservation
         {
             if (progress == 0)
             {
-                string[] nums = ["1", "2", "3", "4", "5", "6", "7", "8", "Quit"];
-                string howMany = ReservationLogic.Choice("\nFor how many people? We have a max of 8 hot seats per timeslot.\nThere is a higher availability for smaller groups.\n----------------------------------------", nums);
-
-                if (int.TryParse(howMany, out int HowManycheck))
+                HowMany = Reservation.HowManyCheck("HotSeat");
+                if (HowMany > 0)
                 {
-                    if (HowManycheck >= 1 && HowManycheck <= 8)
-                    {
-                        HowMany = HowManycheck;
-                        progress = 20;
-                        cost *= HowMany;
-                        System.Console.WriteLine($"{HowMany} person(s) to be seated");
-                        System.Console.WriteLine("[enter]");
-                        Console.ReadLine();
-                        Console.Clear();
-                    }
-                    else if (HowManycheck < 1 || HowManycheck > 8)
-                    {
-                        System.Console.WriteLine("no table found with amount of people. Enter again...");
-                        System.Console.WriteLine("[enter]");
-                        System.Console.ReadLine();
-                        Console.Clear();
-
-                    }
-                    else if (howMany == "Quit")
-                    {
-                        System.Console.WriteLine("Goodbye....");
-                        System.Console.WriteLine("[enter]");
-                        Console.ReadLine();
-                        Console.Clear();
-                        break;
-                    }
+                    progress = 20;
                 }
-                else
+                else if (HowMany == 0)
                 {
-                    System.Console.WriteLine("invalid input please fill in digit");
-                    System.Console.WriteLine("[enter]");
-                    System.Console.ReadLine();
-                    Console.Clear();
+
+                    break;
                 }
+
 
             }
 
+
+            // user gets to choose timeslot of reservation
             else if (progress == 20)
             {
-
-                string[] timeslots = ["Lunch (12:00 - 14:00)", "Dinner 1 (17:00 - 19:00)", "Dinner 2 (19:00 - 21:00)", "Dinner 3 (21:00 - 23:00)", "Return", "Quit"];
-                TimeSlot = ReservationLogic.Choice("\nWhat TimeSlot would you prefer: \n----------------------------------------\nPress 'Return' to go back to choosing amount of people.", timeslots);
-
-
+                TimeSlot = Reservation.TimeSlot();
+                System.Console.WriteLine("----------------------------------------");
                 if (TimeSlot == "Return")
                 {
                     progress = 0;
                 }
                 else if (TimeSlot == "Quit")
                 {
-                    System.Console.WriteLine("GoodBye...");
-                    System.Console.WriteLine("[Enter]");
-                    System.Console.ReadLine();
                     break;
                 }
                 else
                 {
-                    //    check if valid time slot
-                    System.Console.WriteLine($"Time slot {TimeSlot} chosen.");
-                    System.Console.WriteLine("[enter]");
-                    System.Console.ReadLine();
-                    Console.Clear();
-
                     progress = 40;
-
                 }
-
-
             }
 
 
             else if (progress == 40)
             {
-                // calender gets shown with all available dates 
-                System.Console.WriteLine(@"'You can only book 3 months in advanced'");
-                // check if valid date
-
-                string UncheckedDate = reservationlogic.DisplayCalendarReservation(TimeSlot, HowMany, "HotSeat");
-                if (DateTime.TryParse(UncheckedDate, out Date))
+                Date = Reservation.ChooseDate(TimeSlot, HowMany);
+                if (Date != default)
                 {
-                    //checks if user filled in date not before today and not farther than 3 months in the future
-                    // can be more personalised in terms of what the user filled in wrong by making returns numbers
-                    if (reservationlogic.IsValidDate(Date))
-                    {
-
-                        System.Console.WriteLine(Date + "chosen");
-                        System.Console.WriteLine("[enter]");
-                        System.Console.ReadLine();
-                        Console.Clear();
-                        progress = 60;
-
-
-                    }
-
-                    else
-                    {
-                        System.Console.WriteLine("Invalid date entered. Try again");
-                        System.Console.WriteLine("[enter]");
-                        System.Console.ReadLine();
-                        Console.Clear();
-                    }
-                }
-                else if (int.TryParse(UncheckedDate, out int num) && num == 20)
-                {
-                    System.Console.WriteLine("Going back to timeslot choice");
-                    System.Console.WriteLine("[enter]");
-                    System.Console.ReadLine();
-                    progress = 20;
-                    Console.Clear();
+                    progress = 60;
                 }
                 else
                 {
-                    System.Console.WriteLine(UncheckedDate);
-                    System.Console.WriteLine("[enter]");
-                    System.Console.ReadLine();
-                    Console.Clear();
+                    progress = 20;
                 }
-            }
 
+            }
 
 
             else if (progress == 60)
             {
-                reservationlogic.AvailableTables.Clear();
-                reservationlogic.AddHotSeatsAvailableTables();
+                Reservation.AvailableTablesHotSeat(Date, TimeSlot);
 
-                reservationlogic.CheckDateHotSeat(Date, TimeSlot);
-
-                List<int> tableIDs = reservationlogic.ChooseHotSeats(HowMany);
-                bool TableChoice = reservationlogic.DisplayChosenSeats(tableIDs);
+                List<int> tableIDs = reservationlogic.ChooseSeats(HowMany);
+                bool TableChoice = Reservation.DisplayChosenSeats(tableIDs);
                 if (TableChoice)
                 {
                     Reservation.ResOrderFood(tableIDs, name, clientID, HowMany, Date, "HotSeat", TimeSlot, number, email, cost);
@@ -191,5 +113,7 @@ static class HotSeatReservation
 
         }
     }
+
+    
 }
 

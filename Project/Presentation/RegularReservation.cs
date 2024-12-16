@@ -16,28 +16,14 @@ static class RegularReservation
             // user gets asked with how many people are and check is done
             if (progress == 0)
             {
-                string[] nums = ["1", "2", "3", "4", "5", "6", "Quit"];
-                string howMany = ReservationLogic.Choice("\nFor how many people? We have a max of 6 per table.\n----------------------------------------", nums);
-
-                if (int.TryParse(howMany, out int HowManycheck))
+                HowMany = Reservation.HowManyCheck("Regular");
+                if (HowMany > 0)
                 {
-
-                    HowMany = HowManycheck;
                     progress = 20;
-
-                    System.Console.WriteLine($"{HowMany} person(s) to be seated");
-                    System.Console.WriteLine("[enter]");
-                    Console.ReadLine();
-                    Console.Clear();
-
-
                 }
-                else if (howMany == "Quit")
+                else if (HowMany == 0)
                 {
-                    System.Console.WriteLine("Goodbye....");
-                    System.Console.WriteLine("[enter]");
-                    Console.ReadLine();
-                    Console.Clear();
+
                     break;
                 }
 
@@ -48,9 +34,7 @@ static class RegularReservation
             // user gets to choose timeslot of reservation
             else if (progress == 20)
             {
-                string[] timeslots = ["Lunch (12:00 - 14:00)", "Dinner 1 (17:00 - 19:00)", "Dinner 2 (19:00 - 21:00)", "Dinner 3 (21:00 - 23:00)", "Return", "Quit"];
-                TimeSlot = ReservationLogic.Choice("\nWhat TimeSlot would you prefer: \n----------------------------------------\nPress 'Return' to go back to choosing amount of people.\n", timeslots);
-
+                TimeSlot = Reservation.TimeSlot();
                 System.Console.WriteLine("----------------------------------------");
                 if (TimeSlot == "Return")
                 {
@@ -58,69 +42,27 @@ static class RegularReservation
                 }
                 else if (TimeSlot == "Quit")
                 {
-                    System.Console.WriteLine("Goodbye....");
-                    System.Console.WriteLine("[enter]");
-                    Console.ReadLine();
-                    Console.Clear();
                     break;
                 }
                 else
                 {
-                    //    check if valid time slot
-                    System.Console.WriteLine($"Time slot {TimeSlot} chosen.");
-                    System.Console.WriteLine("[enter]");
-                    System.Console.ReadLine();
-                    Console.Clear();
-
                     progress = 40;
-
                 }
             }
 
 
             else if (progress == 40)
             {
-                // calender gets shown with all available dates 
-                System.Console.WriteLine(@"'You can only book 3 months in advanced'");
-                // check if valid date
-
-                string UncheckedDate = reservationlogic.DisplayCalendarReservation(TimeSlot, HowMany, "Regular");
-                if (DateTime.TryParse(UncheckedDate, out Date))
+                Date = Reservation.ChooseDate(TimeSlot, HowMany);
+                if (Date != default)
                 {
-                    //checks if user filled in date not before today and not farther than 3 months in the future
-                    // can be more personalised in terms of what the user filled in wrong by making returns numbers
-                    if (reservationlogic.IsValidDate(Date))
-                    {
-
-                        System.Console.WriteLine(Date + "chosen");
-                        System.Console.WriteLine("[enter]");
-                        System.Console.ReadLine();
-                        progress = 60;
-
-
-                    }
-                    else
-                    {
-                        System.Console.WriteLine("Invalid date entered. Try again");
-                        System.Console.WriteLine("[enter]");
-                        System.Console.ReadLine();
-                    }
-                }
-                // if it is equal to 20 means that they want to go back to timeslot chocie
-                else if (int.TryParse(UncheckedDate, out int num) && num == 20)
-                {
-                    System.Console.WriteLine("Going back to timeslot choice");
-                    System.Console.WriteLine("[enter]");
-                    System.Console.ReadLine();
-                    progress = 20;
-                    Console.Clear();
+                    progress = 60;
                 }
                 else
                 {
-                    System.Console.WriteLine(UncheckedDate);
-                    System.Console.WriteLine("[enter]");
-                    System.Console.ReadLine();
+                    progress = 20;
                 }
+
             }
 
             // available table check
@@ -128,27 +70,25 @@ static class RegularReservation
 
             else if (progress == 60)
             {
-                reservationlogic.AvailableTables.Clear();
-                reservationlogic.CheckMin_MaxCapacity(HowMany);
-                reservationlogic.CheckDate(Date, TimeSlot);
+                Reservation.AvailableTablesRegular(Date, TimeSlot, HowMany);
                 // User gets shown restaurant and is shown what tables 
                 System.Console.WriteLine("Where would you like to sit.\nChoose the table id of the table.");
 
-                List<int> TableID = [reservationlogic.DisplayRestaurant()];
+                List<int> TableID = [Reservation.DisplayRestaurant()];
 
                 bool TableIdValid = true;
 
                 if (TableIdValid)
                 {
 
-                    bool TableChoice = reservationlogic.DisplayChosenSeats(TableID);
+                    bool TableChoice = Reservation.DisplayChosenSeats(TableID);
                     System.Console.WriteLine("-----------------------------------------");
                     System.Console.WriteLine(reservationlogic.displayTable(TableID[0]));
 
 
                     if (TableChoice)
                     {
-                        Reservation.ResOrderFood(TableID, name, clientID, HowMany, Date, "Regular", TimeSlot,  number, email, cost);
+                        Reservation.ResOrderFood(TableID, name, clientID, HowMany, Date, "Regular", TimeSlot, number, email, cost);
 
                         reservationlogic.AvailableTables.Clear();
                         Console.Clear();
@@ -157,10 +97,10 @@ static class RegularReservation
 
 
                     }
-                else if (TableChoice == false)
-                {
-                    progress = 40;
-                }
+                    else if (TableChoice == false)
+                    {
+                        progress = 40;
+                    }
 
                 }
 
@@ -168,6 +108,8 @@ static class RegularReservation
 
         }
     }
+
+    
 }
 
 
