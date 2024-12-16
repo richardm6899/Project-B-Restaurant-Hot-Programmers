@@ -97,7 +97,6 @@ static class Reservation
                 reservationlogic.AvailableTables.Clear();
                 Console.Clear();
 
-
             }
             else
             {
