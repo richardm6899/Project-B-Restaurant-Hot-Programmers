@@ -72,7 +72,6 @@ class DrinkMenuDisplay
                 {
                     System.Console.Write(allergy + " ");
                 }
-
             }
         }
         Console.ReadKey();
