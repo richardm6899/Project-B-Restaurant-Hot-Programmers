@@ -3,7 +3,7 @@ class HelperPresentation
     public static bool YesOrNo(string prompt)
     {
         int selectedIndex = 0;  // Start with "Yes" as the default selection
-        string[] options = { "Yes", "No" };
+        string[] options = ["Yes", "No"];
 
         while (true)
         {
@@ -47,39 +47,41 @@ class HelperPresentation
         }
     }
 
-    public static void DisplayOptions(string[] options, int selectedIndex)
+    public static void DisplayOptions<T>(IEnumerable<T> options, int selectedIndex)
     {
-        for (int i = 0; i < options.Length; i++)
+        int index = 0;
+        foreach (var option in options)
         {
-            if (i == selectedIndex)
+            if (index == selectedIndex)
             {
                 Console.ForegroundColor = ConsoleColor.Green; // Highlight the selected option
-                Console.WriteLine($"> {options[i]}");
+                Console.WriteLine($"> {option}");
                 Console.ResetColor();
             }
             else
             {
                 Console.ResetColor();
-                Console.WriteLine($"  {options[i]}");
+                Console.WriteLine($"  {option}");
             }
+            index++;
         }
     }
 
-// enter a main prompt that will be shown above the given menu options, this is also connected to the move arrow keys
-// to loop through a menu only this method needs to be called. 
-    public static int ChooseOption(string mainprompt, string[] options, int selectedIndex)
+    // enter a main prompt that will be shown above the given menu options, this is also connected to the move arrow keys
+    // to loop through a menu only this method needs to be called. 
+    public static int ChooseOption(string mainPrompt, string[] options, int selectedIndex)
     {
         while (true)
         {
 
-            // clear screen to make cleaner
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Red;
-            System.Console.WriteLine(mainprompt);
+            System.Console.WriteLine(mainPrompt);
             Console.ResetColor();
             System.Console.WriteLine("Use the arrow keys to navigate and press Enter to select:");
-            // display options
+
             DisplayOptions(options, selectedIndex);
+            
             ConsoleKeyInfo keyInfo = Console.ReadKey(true);
             ConsoleKey key = keyInfo.Key;
 
@@ -100,6 +102,33 @@ class HelperPresentation
             }
         }
     }
-    
+
+    public static int ChooseItem<T>(string mainPrompt, List<T> items, int selectedIndex)
+    {
+        while (true)
+        {
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine(mainPrompt);
+            Console.ResetColor();
+            Console.WriteLine("Use the arrow keys to navigate and press Enter to select:");
+
+            DisplayOptions(items, selectedIndex);
+
+            ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+            switch (keyInfo.Key)
+            {
+                case ConsoleKey.UpArrow:
+                    selectedIndex = (selectedIndex == 0) ? items.Count - 1 : selectedIndex - 1;
+                    break;
+                case ConsoleKey.DownArrow:
+                    selectedIndex = (selectedIndex == items.Count - 1) ? 0 : selectedIndex + 1;
+                    break;
+                case ConsoleKey.Enter:
+                    return selectedIndex;
+            }
+        }
+    }
+
     public static string DateTimeToReadableDate(DateTime dateTime) => dateTime.ToString("dd MMMM, yyy");
 }
