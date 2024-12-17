@@ -1,4 +1,7 @@
-class HelperPresentation
+using System;
+using System.Text;
+
+static class HelperPresentation
 {
     public static bool YesOrNo(string prompt)
     {
@@ -81,7 +84,7 @@ class HelperPresentation
             System.Console.WriteLine("Use the arrow keys to navigate and press Enter to select:");
 
             DisplayOptions(options, selectedIndex);
-            
+
             ConsoleKeyInfo keyInfo = Console.ReadKey(true);
             ConsoleKey key = keyInfo.Key;
 
@@ -128,6 +131,41 @@ class HelperPresentation
                     return selectedIndex;
             }
         }
+    }
+
+
+    // star password
+    public static string ReadPassword()
+    {
+        StringBuilder passwordBuilder = new StringBuilder();
+        while (true)
+        {
+            // Read a key from the console without writing it
+            var keyInfo = Console.ReadKey(intercept: true);
+
+            // Check if enter is pressed
+            if (keyInfo.Key == ConsoleKey.Enter)
+            {
+                break;
+            }
+            // delete a character
+            else if (keyInfo.Key == ConsoleKey.Backspace && passwordBuilder.Length > 0)
+            {
+                // remove character
+                passwordBuilder.Length--;
+
+                // Move the cursor back, overwrite with space, and move back again
+                Console.Write("\b \b");
+            }
+            // add character
+            else if (!char.IsControl(keyInfo.KeyChar))
+            {
+                passwordBuilder.Append(keyInfo.KeyChar);
+                Console.Write("*");
+            }
+        }
+        Console.WriteLine();
+        return passwordBuilder.ToString();
     }
 
     public static string DateTimeToReadableDate(DateTime dateTime) => dateTime.ToString("dd MMMM, yyy");

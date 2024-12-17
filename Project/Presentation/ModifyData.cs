@@ -15,12 +15,6 @@ public class ModifyData
             "Change Password.",
             "Return",
         };
-        // Console.WriteLine("Enter 1 to change name");
-        // Console.WriteLine("Enter 2 to change age");
-        // Console.WriteLine("Enter 3 to change allergies");
-        // Console.WriteLine("Enter 4 to change password");
-        // Console.WriteLine("Enter 5 to change email");
-        // Console.WriteLine("Enter 6 to view user info");
 
         bool changingData = true;
 
@@ -56,10 +50,10 @@ public class ModifyData
                     System.Console.WriteLine("Not implemented yet");
                     break;
                 case 5:// password
+                    ChangePassword(account);
                     break;
                 case 6:// return
                     return;
-                    break;
             }
         }
 
@@ -248,35 +242,82 @@ public class ModifyData
         */
     }
     // case 5 change password
-    private static void ChangePassword()
+    private static void ChangePassword(AccountModel acc)
     {
-        /*
-        bool valid_password = false;
-        while (valid_password == false)
+
+        bool changingPassword = true;
+        do
         {
-            Console.Write("Enter old password: ");
-            string oldPassword = Console.ReadLine();
-            Console.Write("Enter new password: ");
-            string newPassword = Console.ReadLine();
-            if (oldPassword == account.Password)
+            Console.Clear();
+            Console.WriteLine("Please enter your current password:");
+
+            string oldPass = HelperPresentation.ReadPassword();
+
+            if (oldPass != acc.Password)
             {
-                string passwordChange = accountsLogic.ChangePassword(account.Id, oldPassword, newPassword);
-                Console.WriteLine(passwordChange);
-                if (passwordChange == "Password changed successfully")
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Incorrect Password entered.");
+                Console.ResetColor();
+                Console.WriteLine("Press [Enter] to try again or [Escape] to cancel.");
+
+                // Check if the user wants to try again or cancel
+                ConsoleKey key = Console.ReadKey(true).Key;
+                if (key == ConsoleKey.Escape)
                 {
-                    valid_password = true;
+                    changingPassword = false;
+                    break;
                 }
+                continue;
+            }
+
+            // Old password is correct, go to new pass
+            Console.Clear();
+            Console.WriteLine("Please enter your new password:");
+
+            string newPassword;
+            string checkNewPass;
+            do
+            {
+                newPassword = HelperPresentation.ReadPassword();
+                checkNewPass = AccountsLogic.CheckCreatePassword(newPassword);
+
+                if (checkNewPass != "Password has been set.")
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine(checkNewPass);
+                    Console.ResetColor();
+                    Console.WriteLine("Please try again:");
+                }
+            } while (checkNewPass != "Password has been set.");
+
+            Console.WriteLine("Please re-enter your new password to confirm:");
+            string confirmPassword = HelperPresentation.ReadPassword();
+
+            if (newPassword == confirmPassword)
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("New Password has been set successfully.");
+                Console.ResetColor();
+
+                // Update account
+                acc.Password = newPassword;
+                accountsLogic.UpdateList(acc);
+                break;
             }
             else
             {
-                Console.WriteLine("Please enter a valid password");
-            }
-        }
-        */
-    }
-    // case 6 return
-    private static void Return()
-    {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Passwords do not match.");
+                Console.ResetColor();
 
+                bool tryAgain = HelperPresentation.YesOrNo("Would you like to try setting a new password again?");
+                if (!tryAgain)
+                {
+                    changingPassword = false;
+                    break;
+                }
+            }
+
+        } while (changingPassword);
     }
 }
