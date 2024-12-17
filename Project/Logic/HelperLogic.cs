@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 
-public class HelperLogic
+public static class HelperLogic
 {
     // check if given string is actually an integer, return true if is int
     public static bool CheckIfStringIsInt(string toCheck)

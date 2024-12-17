@@ -22,7 +22,7 @@ static class UserLogin
             string email = Console.ReadLine();
 
             Console.WriteLine("Please enter your password");
-            string password = ReadPassword();
+            string password = HelperPresentation.ReadPassword();
 
             acc = accountsLogic.CheckLogin(email, password);
             Locked = accountsLogic.CancelLogin(acc, email);
@@ -37,7 +37,7 @@ static class UserLogin
                 if (reactivate)
                 {
                     System.Console.WriteLine("Re-enter password.");
-                    password = ReadPassword();
+                    password = HelperPresentation.ReadPassword();
                     accountsLogic.ActivateAccount(email);
                     acc = accountsLogic.CheckLogin(email, password);
                 }
@@ -110,37 +110,5 @@ static class UserLogin
         }
         }
     }
-
-    private static string ReadPassword()
-    {
-        StringBuilder passwordBuilder = new StringBuilder();
-        while (true)
-        {
-            // Read a key from the console without writing it
-            var keyInfo = Console.ReadKey(intercept: true);
-
-            // Check if enter is pressed
-            if (keyInfo.Key == ConsoleKey.Enter)
-            {
-                break;
-            }
-            // delete a character
-            else if (keyInfo.Key == ConsoleKey.Backspace && passwordBuilder.Length > 0)
-            {
-                // remove character
-                passwordBuilder.Length--;
-
-                // Move the cursor back, overwrite with space, and move back again
-                Console.Write("\b \b");
-            }
-            // add character
-            else if (!char.IsControl(keyInfo.KeyChar))
-            {
-                passwordBuilder.Append(keyInfo.KeyChar);
-                Console.Write("*");
-            }
-        }
-        Console.WriteLine();
-        return passwordBuilder.ToString();
-    }
+    
 }

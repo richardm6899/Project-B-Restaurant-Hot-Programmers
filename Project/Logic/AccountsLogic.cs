@@ -46,15 +46,7 @@ public class AccountsLogic
 
     }
 
-    public virtual AccountModel GetById(int id)
-    {
-        return _accounts.Find(i => i.Id == id);
-    }
 
-    public virtual AccountModel GetByEmail(string email)
-    {
-        return _accounts.Find(i => i.EmailAddress == email);
-    }
 
     public AccountModel CheckLogin(string email, string password)
     {
@@ -84,10 +76,6 @@ public class AccountsLogic
         return false;
     }
 
-    public List<AccountModel> GetAccounts()
-    {
-        return _accounts;
-    }
     // if email already used returns true else false
     public bool CheckEmailInJson(string email)
     {
@@ -257,9 +245,9 @@ public class AccountsLogic
         }
     }
 
-    public bool deactivateAccount(int clientid)
+    public bool deactivateAccount(int clientID)
     {
-        AccountModel account = GetById(clientid);
+        AccountModel account = GetById(clientID);
         if (account == null)
         {
             return false;
@@ -289,9 +277,9 @@ public class AccountsLogic
         return false;
     }
 
-    public bool deleteAccount(int clientid)
+    public bool deleteAccount(int clientID)
     {
-        AccountModel account = GetById(clientid);
+        AccountModel account = GetById(clientID);
         if (account == null)
         {
             return false;
@@ -328,12 +316,12 @@ public class AccountsLogic
     // Returns true or false if account is null or not null. True meaning its Locked, so account won't be able to log in
     public bool CancelLogin(AccountModel logged_in_account, string email)
     {
-        
+
         if (logged_in_account != null)
         {
-            if(logged_in_account.Locked == false)
+            if (logged_in_account.Locked == false)
             {
-                
+
                 logged_in_account.FailedLoginAttempts = 0;
                 logged_in_account.Locked = false;
                 UpdateList(logged_in_account);
@@ -345,44 +333,44 @@ public class AccountsLogic
                 return logged_in_account.Locked; // true
             }
         }
-         
+
         else // logged_in_account is null
         {
-            AccountModel? accountfound = _accounts.Find(a => a.EmailAddress == email && a.Status == "Activated");
-            if (accountfound != null) // there is an existing account with the email
+            AccountModel? accountFound = _accounts.Find(a => a.EmailAddress == email && a.Status == "Activated");
+            if (accountFound != null) // there is an existing account with the email
             {
-                if(accountfound.Locked == false)
+                if (accountFound.Locked == false)
                 {
-                    accountfound.FailedLoginAttempts++;
-                    if (accountfound.FailedLoginAttempts >= 3)
+                    accountFound.FailedLoginAttempts++;
+                    if (accountFound.FailedLoginAttempts >= 3)
                     {
-                        accountfound.Locked = true;
-                        accountfound.LastLogin = DateTime.Now;
-                        UpdateList(accountfound);
-                        return accountfound.Locked; // true
+                        accountFound.Locked = true;
+                        accountFound.LastLogin = DateTime.Now;
+                        UpdateList(accountFound);
+                        return accountFound.Locked; // true
                     }
                     else
                     {
-                        UpdateList(accountfound);
-                        return accountfound.Locked; // false
+                        UpdateList(accountFound);
+                        return accountFound.Locked; // false
                     }
                 }
                 else
                 {
-                        if (CalculateRemainingSeconds(accountfound, email) <= 0)
-                        {
-                        accountfound.Locked = false;
-                        accountfound.LastLogin = DateTime.Now;
-                        UpdateList(accountfound);
-                        return accountfound.Locked; //false
-                        }
-                        else
-                        {
-                            return accountfound.Locked;// true
-                        }
+                    if (CalculateRemainingSeconds(accountFound, email) <= 0)
+                    {
+                        accountFound.Locked = false;
+                        accountFound.LastLogin = DateTime.Now;
+                        UpdateList(accountFound);
+                        return accountFound.Locked; //false
+                    }
+                    else
+                    {
+                        return accountFound.Locked;// true
+                    }
                 }
             }
-            else // accountfound is null
+            else // accountFound is null
             {
                 if (Locked == false)
                 {
@@ -411,9 +399,9 @@ public class AccountsLogic
         int remainingSeconds = 0;
         if (account != null)
         {
-        
-        TimeSpan timeSinceLock = DateTime.Now - account.LastLogin;
-        remainingSeconds = 30 - (int)timeSinceLock.TotalSeconds;
+
+            TimeSpan timeSinceLock = DateTime.Now - account.LastLogin;
+            remainingSeconds = 30 - (int)timeSinceLock.TotalSeconds;
             if (account.Locked)
             {
                 if (remainingSeconds <= 0)
@@ -433,19 +421,19 @@ public class AccountsLogic
             return remainingSeconds;
 
         }
-        else // acount is null
+        else // account is null
         {
-        AccountModel? accountfound = _accounts.Find(a => a.EmailAddress == email && a.Status == "Activated");
-        if (accountfound != null)
-        {
-        TimeSpan timeSinceLock = DateTime.Now - accountfound.LastLogin;
-        remainingSeconds = 30 - (int)timeSinceLock.TotalSeconds;
-            if (Locked)
+            AccountModel? accountFound = _accounts.Find(a => a.EmailAddress == email && a.Status == "Activated");
+            if (accountFound != null)
+            {
+                TimeSpan timeSinceLock = DateTime.Now - accountFound.LastLogin;
+                remainingSeconds = 30 - (int)timeSinceLock.TotalSeconds;
+                if (Locked)
                 {
                     if (remainingSeconds <= 0)
                     {
-                        accountfound.FailedLoginAttempts = 0;
-                        accountfound.Locked = false;
+                        accountFound.FailedLoginAttempts = 0;
+                        accountFound.Locked = false;
                         remainingSeconds = 0;
                         return remainingSeconds;
                     }
@@ -455,12 +443,12 @@ public class AccountsLogic
                     }
                 }
                 return remainingSeconds;
-        }
-        else
-        {
-        TimeSpan timeSinceLock = DateTime.Now - LastLogin;
-        remainingSeconds = 30 - (int)timeSinceLock.TotalSeconds;
-            if (Locked)
+            }
+            else
+            {
+                TimeSpan timeSinceLock = DateTime.Now - LastLogin;
+                remainingSeconds = 30 - (int)timeSinceLock.TotalSeconds;
+                if (Locked)
                 {
                     if (remainingSeconds <= 0)
                     {
@@ -475,7 +463,7 @@ public class AccountsLogic
                     }
                 }
                 return remainingSeconds;
-        }
+            }
         }
     }
 
@@ -594,4 +582,47 @@ public class AccountsLogic
             _ => 31,
         };
     }
+
+
+    // -------------------- get account (by) ---------------------------------
+
+    // ge all accounts
+    public List<AccountModel> GetAccounts()
+    {
+        return _accounts;
+    }
+
+
+    public virtual AccountModel GetById(int id)
+    {
+        return _accounts.Find(i => i.Id == id);
+    }
+
+
+    public virtual AccountModel GetByEmail(string email)
+    {
+        return _accounts.Find(i => i.EmailAddress == email);
+    }
+
+    public List<AccountModel> GetAccountByNameOrEmail(string? filter = null)
+    {
+        List<AccountModel> accounts = new();
+        if (filter == null)
+        {
+            return _accounts;
+        }
+
+        foreach(AccountModel acc in _accounts)
+        {
+            if(acc.FullName == filter || acc.EmailAddress == filter)
+            {
+                accounts.Add(acc);
+            }
+        }
+        
+        return accounts;
+    }
+
+
+    //----------------- not used -------------------------------
 }
