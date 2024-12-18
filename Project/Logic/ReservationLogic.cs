@@ -9,7 +9,7 @@ public class ReservationLogic
     public List<ReceiptModel> _receipts { get; set; }
     public List<ReservationModel> _reservations { get; set; }
     public List<TableModel> _tables { get; set; }
-    public List<TableModel> AvailableTables { get; set; } //for available table check
+    public static List<TableModel> AvailableTables = new();//for available table check
     private AccountsLogic accountsLogic = new AccountsLogic();
 
 
@@ -19,7 +19,7 @@ public class ReservationLogic
         _tables = TableAccess.LoadAllTables();
         _reservations = ReservationAccess.LoadAllReservations();
         _receipts = ReceiptAccess.LoadAllReceipts();
-        AvailableTables = new(); // available tables is always empty at first
+        // available tables is always empty at first
     }
     // create reservation -----------------------------------------
     // create table with given  info and checks
@@ -683,8 +683,6 @@ public class ReservationLogic
                 bookedTableIds.Add(table.Id); // Add the table's ID to the set
             }
         }
-
-
         // Remove all tables from AvailableTables that have matching IDs in bookedTableIds
         AvailableTables.RemoveAll(table => bookedTableIds.Contains(table.Id));
 
@@ -722,7 +720,7 @@ public class ReservationLogic
 
         return MaxTimeSlotDays;
     }
-    public List<int> ChooseSeats(int amount)
+    public static List<int> ChooseSeats(int amount)
     {
 
         //initialize availableTables for hot hotseats
@@ -748,24 +746,23 @@ public class ReservationLogic
 
         int new_id = _reservations.Count + 1;
         List<ReservationModel> reservationList = new();
+        ReservationModel reservation = new(new_id, tableid, name, clientID, howMany, date, typeofreservation, timeslot, foodOrdered);
         foreach (var tableID in tableid)
         {
-            ReservationModel reservation = new(new_id, tableid, name, clientID, 1, date, typeofreservation, timeslot, foodOrdered);
             // add reservation to table.reservation list
             AssignTable(tableID, reservation);
-            reservationList.Add(reservation);
-            AccountModel acc = accountsLogic.GetById(clientID);
-            if (acc.ReservationIDs == null)
-            {
-                acc.ReservationIDs = new List<int>(); // Initialize the list
-            }
-            acc.ReservationIDs.Add(reservation.Id);
-            accountsLogic.UpdateList(acc);
 
-
-            TableAccess.WriteAllTables(_tables);
         }
+        reservationList.Add(reservation);
+        AccountModel acc = accountsLogic.GetById(clientID);
+        if (acc.ReservationIDs == null)
+        {
+            acc.ReservationIDs = new List<int>(); // Initialize the list
+        }
+        acc.ReservationIDs.Add(reservation.Id);
+        accountsLogic.UpdateList(acc);
         _reservations.Add(reservationList[0]);
+        TableAccess.WriteAllTables(_tables);
         ReservationAccess.WriteAllReservations(_reservations);
         return reservationList;
 
@@ -794,6 +791,35 @@ public class ReservationLogic
         }
         return returntables;
     }
+    public void ModifyReservation<T>(ReservationModel reservation, T item)
+    {
+        // modify amount int
+        // modify timeslot string
+        // modify Date DateTime
+        foreach (var res in _reservations)
+        {
+            if (res.Id == reservation.Id)
+            {
+                if (item is int howmany)
+                {
+                    reservation.HowMany = howmany;
+                }
+                else if (item is DateTime date)
+                {
+                    reservation.Date = date;
+                }
+                else if (item is string timeSlot)
+                {
+                    reservation.TimeSlot = timeSlot;
+                }
+
+            }
+        }
+        ReservationAccess.WriteAllReservations(_reservations);
+
+
+    }
+
 
 }
 
