@@ -1242,7 +1242,7 @@ static class Reservation
                         {
                             timeSlot = TimeSlot();
                             reservationlogic.ModifyReservation(reservation, timeSlot);
-                            System.Console.WriteLine("TimeSlot Modified");
+                            System.Console.WriteLine("TimeSlot Modified.");
                             System.Console.WriteLine("[enter]");
                             System.Console.ReadLine();
                             // // order: 
