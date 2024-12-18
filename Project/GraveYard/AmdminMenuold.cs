@@ -1,110 +1,44 @@
-class AdminMenu
-{
-    static private ReservationLogic reservationLogic = new ReservationLogic();
-    static private AccountsLogic accountsLogic = new();
-    public static void Start(AccountModel acc)
-    {
+// Console.WriteLine("Welcome to the admin menu.");
+// System.Console.WriteLine("-----------------------------------------");
+// Console.WriteLine("Welcome back " + acc.FullName);
+// System.Console.WriteLine("-----------------------------------------");
+// System.Console.WriteLine("Enter 1 to make a reservation.");
+// System.Console.WriteLine("Enter 2 to cancel a reservation.");
+// System.Console.WriteLine("Enter 3 to see all reservations and close day.");
+// System.Console.WriteLine("Enter 4 to see the food menu.");
+// System.Console.WriteLine("Enter 5 to edit food menu.");
+// System.Console.WriteLine("Enter 6 to see the drinks menu");
+// System.Console.WriteLine("Enter 7 to see the restaurant info.");
+// System.Console.WriteLine("Enter 8 to see your accounts data.");
+// System.Console.WriteLine("Enter 9 to look at finances.");
+// System.Console.WriteLine("Enter 10 to make en account");
+// System.Console.WriteLine("Enter 11 to delete or deactivate an account.");
+// System.Console.WriteLine("Enter 12 to log out");
 
-        string[] options = {
-            "Make a Reservation",
-            "Cancel a Reservation",
-            "See all Reservations",
-            "Close a day",
-            "See Food Menu",
-            "Edit Food Menu",
-            "See Drinks Menu",
-            "See Restaurant Info",
-            "See Accounts Data",
-            "Look at Finances",
-            "Make an Account",
-            "Delete or Deactivate an Account",
-            "Log Out",
-        };
 
-        bool adminMenu = true;
+/*
+// make reservation
+    case "1":
+        System.Console.WriteLine("Make reservation:");
+        // when you want to make a reservation as admin you have to ask all info of the person that wants to make said reservation
+        // don't add the info of the admin to the reservation.
+        AdminMakeReservation.Start(acc);
+        System.Console.WriteLine("Not implemented yet");
 
-        while (adminMenu)
-        {
-            int selectedIndex = 0;
+        break;
 
-            Console.Clear();
-
-            string mainPrompt = @$"Welcome to the client menu.
------------------------------------------
-Welcome back {acc.FullName}
------------------------------------------";
-
-            selectedIndex = HelperPresentation.ChooseOption(mainPrompt, options, selectedIndex);
+    // cancel reservation
+    case "2":
+        System.Console.WriteLine("Cancel reservation");
+        Reservation.AdminCancelReservation();
+        // admin can cancel all reservations
 
 
 
-            switch (selectedIndex)
-            {
-                // make reservation
-                case 0:
-                    AdminMakeReservation.Start(acc);
-                    break;
-                // cancel reservation
-                case 1:
-                    Reservation.AdminCancelReservation();
-                    break;
-                // see reservations
-                case 2:
-                    System.Console.WriteLine("All reservations: ");
-                    System.Console.WriteLine(reservationLogic.DisplayAllReservations());
-                    System.Console.WriteLine("[enter]");
-                    System.Console.ReadLine();
-                    break;
-                // close restaurant for the day
-                case 3:
-                    CloseRestaurant();
-                    break;
-                // see food menu
-                case 4:
-                    FoodMenuDisplay.Start();
-                    break;
-                // edit food menu
-                case 5:
-                    FoodMenuDisplay.EditFoodMenuMenu();
-                    break;
-                // see drink menu
-                case 6:
-                    DrinkMenuDisplay.Start();
-                    break;
-                // see restaurant info
-                case 7:
-                    RestaurantInfo.Start();
-                    break;
-                // see accounts data
-                case 8:
-                    AccountData(acc);
-                    break;
-                // look at finances
-                case 9:
-                    Finances.Finance();
-                    break;
-                // make an account
-                case 10:
-                    System.Console.WriteLine("Not implemented yet.");
-                    System.Console.WriteLine("Press [enter] to continue.");
-                    Console.ReadKey();
-                    break;
-                // delete or deactivate an account
-                case 11:
-                    DeleteDeactivate(acc);
-                    break;
-                // log out
-                case 12:
-                    acc = null;
-                    Menu.Start();
-                    break;
-            }
-        }
-    }
-    // case 3
-    private static void CloseRestaurant()
-    {
-        Console.Clear();
+        break;
+
+    // see all reservations
+    case "3":
         string reservationsForDay = Reservation.AdminShowReservations();
         System.Console.WriteLine("[enter]");
         if (reservationsForDay != "")
@@ -140,12 +74,36 @@ Welcome back {acc.FullName}
             System.Console.WriteLine("Closure cancelled.");
         }
         System.Console.ReadLine();
-    }
+        break;
+    //  see the food menu
+    case "4":
+        // add question with what allergies to look at if admin wants to look at allergies
+        FoodMenuDisplay.Start();
+        break;
 
-    // 8
-    private static void AccountData(AccountModel acc)
-    {
-        Console.Clear();
+    // edit food menu
+    case "5":
+        System.Console.WriteLine("Editing the food menu.");
+        FoodMenuDisplay.EditFoodMenuMenu();
+        System.Console.WriteLine("[enter]");
+        System.Console.ReadLine();
+
+        break;
+
+    // see drinks
+    case "6":
+        DrinkMenuDisplay.Start();
+
+        break;
+
+    // see restaurant info
+    case "7":
+        RestaurantInfo.Start();
+
+        break;
+
+    //  show account data
+    case "8":
         System.Console.WriteLine("Your accounts data: ");
         // full name
         System.Console.WriteLine("Name: " + acc.FullName);
@@ -156,11 +114,28 @@ Welcome back {acc.FullName}
         // pass
         System.Console.WriteLine("Password: " + acc.Password);
         Console.ReadLine();
-    }
 
-    // case 11
-    private static void DeleteDeactivate(AccountModel acc)
-    {
+        break;
+
+    // look at finances
+    case "9":
+        System.Console.WriteLine("Look at restaurant finances.");
+        Finances.Finance();
+
+        break;
+
+    // make an account
+    case "10":
+        System.Console.WriteLine("Create an account:");
+        System.Console.WriteLine("Not implemented yet.");
+        System.Console.WriteLine("[enter]");
+        System.Console.ReadLine();
+        // AdminLogic newAdmin = new("Jane Doe", "admin@test2.nl", "TestAdmin2", "123456789", 23);
+        // newAdmin.CreateAdmin();
+        break;
+
+    // deactivate or delete an account
+    case "11":
         bool deactivatingDeleting = true;
         do
         {
@@ -306,5 +281,18 @@ Welcome back {acc.FullName}
                     break;
             }
         } while (deactivatingDeleting);
-    }
-}
+        break;
+
+
+    // log out
+    case "12":
+        acc = null;
+        Menu.Start();
+        break;
+
+    default:
+        System.Console.WriteLine("Invalid input");
+        System.Console.WriteLine("[enter]");
+        Console.ReadLine();
+        break;
+*/ 

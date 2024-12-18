@@ -172,8 +172,7 @@ public class FoodMenuLogic
                 break;
             // filter by
             case 2:
-                Console.WriteLine("Not inplemented yet");
-                //FoodMenuDisplay.DisplayByAllergy();
+                FoodMenuDisplay.DisplayByAllergy();
                 break;
             // return to where the user came from
             case 3:
