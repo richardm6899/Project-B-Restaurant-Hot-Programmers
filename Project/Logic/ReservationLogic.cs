@@ -530,7 +530,7 @@ public class ReservationLogic
     {
         foreach (var reservation in _reservations)
         {
-            if (reservation.Date.Date == date.Date)
+            if (reservation.Date == date)
             {
 
                 reservation.Status = "Canceled";
