@@ -7,6 +7,7 @@ class ClientMenu
         string[] options =
         {
             "Make a Reservation.",
+            "Modify a Reservation.",
             "Cancel a reservation.",
             "See your Reservations.",
             "See the food menu.",
@@ -36,45 +37,48 @@ Welcome back {acc.FullName}
                     MakeReservation(acc);
                     break;
 
-                // cancel reservation
                 case 1:
+                    // modify reservation
+                    ModifyReservation(acc);
+                    break;
+                // cancel reservation
+                case 2:
+
                     CancelReservation(acc);
                     break;
-
                 // see accounts reservation
-                case 2:
+                case 3:
                     SeeReservations(acc);
                     break;
 
                 //  see the food menu
-                case 3:
+                case 4:
                     FoodMenuDisplay.StartFoodMenu();
                     break;
 
                 // see restaurant info
-                case 4:
+                case 5:
                     RestaurantInfo.Start();
                     break;
 
                 //  show account data
-                case 5:
+                case 6:
                     SeeData(acc);
                     break;
-
                 // log out
-                case 6:
-                    ModifyData.Start(acc);
-                    break;
 
                 case 7:
+                    ModifyData.Start(acc);
+                    break;
+                case 8:
                     Messages(acc);
                     break;
 
-                case 8:
-                    DeleteDeactivate(acc);
-                    break;
 
                 case 9:
+                    DeleteDeactivate(acc);
+                    break;
+                case 10:
                     acc = null;
                     clientMenu = false;
                     Menu.Start();
@@ -94,6 +98,11 @@ Welcome back {acc.FullName}
     {
         System.Console.WriteLine("Make reservation:");
         Reservation.MakeReservation(acc.FullName, acc.Id, acc.PhoneNumber, acc.EmailAddress);
+    }
+    private static void ModifyReservation(AccountModel acc)
+    {
+        System.Console.WriteLine("Modify reservation:");
+        Reservation.ModifyReservation(acc.Id);
     }
 
     // case 1 cancel reservation
