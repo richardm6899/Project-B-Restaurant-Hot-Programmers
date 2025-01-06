@@ -169,4 +169,168 @@ static class HelperPresentation
     }
 
     public static string DateTimeToReadableDate(DateTime dateTime) => dateTime.ToString("dd MMMM, yyy");
+
+    public static int NavigateBirthdayGrid<T>(T[] options, int columns, string prompt, int limit = 0)
+    {
+        int currentIndex = 0;
+        limit = (limit == 0 || limit > options.Length) ? options.Length : limit; // Limit the options
+        int rows = (limit + columns - 1) / columns; // Calculate number of rows
+
+        while (true)
+        {
+            Console.Clear();
+            System.Console.WriteLine(prompt);
+            // Print grid
+            for (int r = 0; r < rows; r++)
+            {
+                for (int c = 0; c < columns; c++)
+                {
+                    int index = r * columns + c;
+                    if (index < limit)
+                    {
+                        if (index == currentIndex)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            // Adjust width for alignment
+                            Console.Write($"{options[index],-10}");
+                            Console.ResetColor();
+                        }
+                        else
+                        {
+                            Console.Write($"{options[index],-10}");
+                        }
+                    }
+                }
+                Console.WriteLine();
+            }
+
+            // move highlighted year, month, day
+            var key = Console.ReadKey(true).Key;
+            switch (key)
+            {
+                case ConsoleKey.UpArrow:
+                    currentIndex = (currentIndex - columns + limit) % limit;
+                    break;
+                case ConsoleKey.DownArrow:
+                    currentIndex = (currentIndex + columns) % limit;
+                    break;
+                case ConsoleKey.LeftArrow:
+                    currentIndex = (currentIndex - 1 + limit) % limit;
+                    break;
+                case ConsoleKey.RightArrow:
+                    currentIndex = (currentIndex + 1) % limit;
+                    break;
+                case ConsoleKey.Enter:
+                    return currentIndex;
+            }
+        }
+    }
+    public static List<string>? SelectAllergies(List<string> availableAllergies)
+    {
+        List<string> selectedAllergies = new();
+        int selectedIndex = 0;
+        bool selecting = true;
+
+        while (selecting)
+        {
+            Console.Clear();
+            Console.WriteLine("Select allergies to avoid (press Enter to select, 'Done' to confirm):");
+
+            // show all allergies, highlight the one the user is on
+            for (int i = 0; i < availableAllergies.Count; i++)
+            {
+                if (i == selectedIndex)
+                {
+                    // Highlight the current option
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write("> ");
+                }
+                else
+                {
+                    Console.Write("  ");
+                }
+
+                // Mark selected allergies
+                if (selectedAllergies.Contains(availableAllergies[i]))
+                {
+                    Console.WriteLine($"{availableAllergies[i]} [Selected]");
+                }
+                else
+                {
+                    Console.WriteLine(availableAllergies[i]);
+                }
+
+                Console.ResetColor();
+            }
+
+            // make a done option
+            if (selectedIndex == availableAllergies.Count)
+            {
+                Console.ForegroundColor = ConsoleColor.Blue;
+                Console.WriteLine("> Done");
+                Console.ResetColor();
+            }
+            else
+            {
+                Console.WriteLine("  Done");
+            }
+
+            // make a return option
+            if (selectedIndex == availableAllergies.Count + 1)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("> Return");
+                Console.ResetColor();
+            }
+            else
+            {
+                Console.WriteLine("  Return");
+            }
+
+            // user input, arrow keys
+            var key = Console.ReadKey(true).Key;
+
+            if (key == ConsoleKey.UpArrow)
+            {
+                selectedIndex = (selectedIndex == 0) ? availableAllergies.Count + 1 : selectedIndex - 1;
+            }
+            else if (key == ConsoleKey.DownArrow)
+            {
+                selectedIndex = (selectedIndex == availableAllergies.Count + 1) ? 0 : selectedIndex + 1;
+            }
+            else if (key == ConsoleKey.Enter)
+            {
+                // Toggle allergy selection or confirm selection
+                if (selectedIndex == availableAllergies.Count)
+                {
+                    // when done is clicked, exit loop
+                    selecting = false;
+                }
+                else if (selectedIndex == availableAllergies.Count + 1)
+                {
+                    // Return option chosen
+                    Console.WriteLine("Returning to the previous menu...");
+                    Console.ReadKey();
+                    // Indicate that the user canceled the selection
+                    return null;
+                }
+
+                else
+                {
+                    string allergy = availableAllergies[selectedIndex];
+                    // if already selected, and gets selected again, item is removed
+                    if (selectedAllergies.Contains(allergy))
+                    {
+                        selectedAllergies.Remove(allergy);
+                    }
+                    else
+                    {
+                        // allergy is added
+                        selectedAllergies.Add(allergy);
+                    }
+                }
+            }
+        }
+        return selectedAllergies;
+    }
 }

@@ -142,9 +142,7 @@ class DrinkMenuLogic
         while (lookingAtDrinks)
         {
             Console.Clear();
-            Console.ResetColor();
-            System.Console.WriteLine("Welcome to the drinks menu.");
-            HelperPresentation.DisplayOptions(options, selectedIndex);
+            HelperPresentation.ChooseOption("Welcome to the drinks menu.", options, selectedIndex);
 
             ConsoleKeyInfo keyInfo = Console.ReadKey(true);
             ConsoleKey key = keyInfo.Key;
@@ -174,9 +172,7 @@ class DrinkMenuLogic
         while (lookingAtDrinks)
         {
             Console.Clear();
-            Console.ResetColor();
-            System.Console.WriteLine("Welcome to the types menu.");
-            HelperPresentation.DisplayOptions(options, selectedIndex);
+            HelperPresentation.ChooseOption("Welcome to the types menu.", options, selectedIndex);
 
             ConsoleKeyInfo keyInfo = Console.ReadKey(true);
             ConsoleKey key = keyInfo.Key;
@@ -218,113 +214,5 @@ class DrinkMenuLogic
             default:
                 return new List<DrinkMenuModel>(); // Fallback for unexpected cases
         }
-    }
-
-    public static List<string> SelectAllergies(List<string> availableAllergies)
-    {
-        List<string> selectedAllergies = new();
-        int selectedIndex = 0;
-        bool selecting = true;
-
-        while (selecting)
-        {
-            Console.Clear();
-            Console.WriteLine("Select allergies to avoid (press Enter to select, 'Done' to confirm):");
-
-            // show all allergies, highlight the one the user is on
-            for (int i = 0; i < availableAllergies.Count; i++)
-            {
-                if (i == selectedIndex)
-                {
-                    // Highlight the current option
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.Write("> ");
-                }
-                else
-                {
-                    Console.Write("  ");
-                }
-
-                // Mark selected allergies
-                if (selectedAllergies.Contains(availableAllergies[i]))
-                {
-                    Console.WriteLine($"{availableAllergies[i]} [Selected]");
-                }
-                else
-                {
-                    Console.WriteLine(availableAllergies[i]);
-                }
-
-                Console.ResetColor();
-            }
-
-            // make a done option
-            if (selectedIndex == availableAllergies.Count)
-            {
-                Console.ForegroundColor = ConsoleColor.Blue;
-                Console.WriteLine("> Done");
-                Console.ResetColor();
-            }
-            else
-            {
-                Console.WriteLine("  Done");
-            }
-
-            // make a return option
-            if (selectedIndex == availableAllergies.Count + 1)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("> Return");
-                Console.ResetColor();
-            }
-            else
-            {
-                Console.WriteLine("  Return");
-            }
-
-            // user input, arrow keys
-            var key = Console.ReadKey(true).Key;
-
-            if (key == ConsoleKey.UpArrow)
-            {
-                selectedIndex = (selectedIndex == 0) ? availableAllergies.Count + 1 : selectedIndex - 1;
-            }
-            else if (key == ConsoleKey.DownArrow)
-            {
-                selectedIndex = (selectedIndex == availableAllergies.Count + 1) ? 0 : selectedIndex + 1;
-            }
-            else if (key == ConsoleKey.Enter)
-            {
-                // Toggle allergy selection or confirm selection
-                if (selectedIndex == availableAllergies.Count)
-                {
-                    // when done is clicked, exit loop
-                    selecting = false;
-                }
-                else if (selectedIndex == availableAllergies.Count + 1)
-                {
-                    // Return option chosen
-                    Console.WriteLine("Returning to the previous menu...");
-                    Console.ReadKey();
-                    return null; // Indicate that the user canceled the selection
-                }
-
-                else
-                {
-                    string allergy = availableAllergies[selectedIndex];
-                    // if already selected, and gets selected again, item is removed
-                    if (selectedAllergies.Contains(allergy))
-                    {
-                        selectedAllergies.Remove(allergy);
-                    }
-                    else
-                    {
-                        // allergy is added
-                        selectedAllergies.Add(allergy);
-                    }
-                }
-            }
-        }
-        return selectedAllergies;
     }
 }

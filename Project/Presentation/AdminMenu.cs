@@ -42,14 +42,17 @@ Welcome back {acc.FullName}
             {
                 // make reservation
                 case 0:
+                    Console.Clear();
                     AdminMakeReservation.Start(acc);
                     break;
                 // cancel reservation
                 case 1:
+                    Console.Clear();
                     Reservation.AdminCancelReservation();
                     break;
                 // see reservations
                 case 2:
+                    Console.Clear();
                     System.Console.WriteLine("All reservations: ");
                     System.Console.WriteLine(reservationLogic.DisplayAllReservations());
                     System.Console.WriteLine("[enter]");
@@ -57,44 +60,54 @@ Welcome back {acc.FullName}
                     break;
                 // close restaurant for the day
                 case 3:
+                    Console.Clear();
                     CloseRestaurant();
                     break;
                 // see food menu
                 case 4:
+                    Console.Clear();
                     FoodMenuDisplay.Start();
                     break;
                 // edit food menu
                 case 5:
+                    Console.Clear();
                     FoodMenuDisplay.EditFoodMenuMenu();
                     break;
                 // see drink menu
                 case 6:
+                    Console.Clear();
                     DrinkMenuDisplay.Start();
                     break;
                 // see restaurant info
                 case 7:
+                    Console.Clear();
                     RestaurantInfo.Start();
                     break;
                 // see accounts data
                 case 8:
+                    Console.Clear();
                     AccountData(acc);
                     break;
                 // look at finances
                 case 9:
+                    Console.Clear();
                     Finances.Finance();
                     break;
                 // make an account
                 case 10:
+                    Console.Clear();
                     System.Console.WriteLine("Not implemented yet.");
                     System.Console.WriteLine("Press [enter] to continue.");
                     Console.ReadKey();
                     break;
                 // delete or deactivate an account
                 case 11:
+                    Console.Clear();
                     DeleteDeactivate(acc);
                     break;
                 // log out
                 case 12:
+                    Console.Clear();
                     acc = null;
                     Menu.Start();
                     break;
@@ -163,7 +176,7 @@ Welcome back {acc.FullName}
     {
         string[] options = {
             "See all activated accounts,",
-            "See aal Client accounts",
+            "See all Client accounts",
             "See all staff accounts",
             "See all finance accounts",
             "Choose account to Delete",
@@ -362,7 +375,7 @@ Status: {selectedAccount.Status}");
                     {
                         break;
                     }
-                    
+
                     if (string.IsNullOrWhiteSpace(filterDeactivate))
                     {
                         filterDeactivate = null;
@@ -439,6 +452,9 @@ Status: {selectedAccount.Status}");
                         }
                         Console.ReadKey();
                     }
+                    break;
+                case 6:
+                    if (acc != null) { AdminMenu.Start(acc); }
                     break;
 
             }
