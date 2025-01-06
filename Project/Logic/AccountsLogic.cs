@@ -492,74 +492,18 @@ public class AccountsLogic
         }
 
         // Year selection (10 columns)
-        int selectedYear = years[NavigateBirthdayGrid(years, 10, "Select your birth year:")];
+        int selectedYear = years[HelperPresentation.NavigateBirthdayGrid(years, 10, "Select your birth year:")];
 
         // Month selection (4 columns)
-        int selectedMonth = NavigateBirthdayGrid(months, 4, $"{selectedYear} \nSelect your birth month:") + 1;
+        int selectedMonth = HelperPresentation.NavigateBirthdayGrid(months, 4, $"{selectedYear} \nSelect your birth month:") + 1;
 
         // Day selection (7 columns)
         int maxDays = GetDaysInMonth(selectedMonth, selectedYear);
-        int selectedDay = days[NavigateBirthdayGrid(days, 7, $"{selectedYear} {months[selectedMonth - 1]}\nSelect your birth day:", maxDays)];
+        int selectedDay = days[HelperPresentation.NavigateBirthdayGrid(days, 7, $"{selectedYear} {months[selectedMonth - 1]}\nSelect your birth day:", maxDays)];
 
         return new DateTime(selectedYear, selectedMonth, selectedDay);
     }
 
-
-    private static int NavigateBirthdayGrid<T>(T[] options, int columns, string prompt, int limit = 0)
-    {
-        int currentIndex = 0;
-        limit = (limit == 0 || limit > options.Length) ? options.Length : limit; // Limit the options
-        int rows = (limit + columns - 1) / columns; // Calculate number of rows
-
-        while (true)
-        {
-            Console.Clear();
-            System.Console.WriteLine(prompt);
-            // Print grid
-            for (int r = 0; r < rows; r++)
-            {
-                for (int c = 0; c < columns; c++)
-                {
-                    int index = r * columns + c;
-                    if (index < limit)
-                    {
-                        if (index == currentIndex)
-                        {
-                            Console.ForegroundColor = ConsoleColor.Green;
-                            // Adjust width for alignment
-                            Console.Write($"{options[index],-10}");
-                            Console.ResetColor();
-                        }
-                        else
-                        {
-                            Console.Write($"{options[index],-10}");
-                        }
-                    }
-                }
-                Console.WriteLine();
-            }
-
-            // move highlighted year, month, day
-            var key = Console.ReadKey(true).Key;
-            switch (key)
-            {
-                case ConsoleKey.UpArrow:
-                    currentIndex = (currentIndex - columns + limit) % limit;
-                    break;
-                case ConsoleKey.DownArrow:
-                    currentIndex = (currentIndex + columns) % limit;
-                    break;
-                case ConsoleKey.LeftArrow:
-                    currentIndex = (currentIndex - 1 + limit) % limit;
-                    break;
-                case ConsoleKey.RightArrow:
-                    currentIndex = (currentIndex + 1) % limit;
-                    break;
-                case ConsoleKey.Enter:
-                    return currentIndex;
-            }
-        }
-    }
 
     // Method to get the days in a month
     private static int GetDaysInMonth(int month, int year)

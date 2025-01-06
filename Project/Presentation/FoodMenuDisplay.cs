@@ -299,7 +299,7 @@ public class FoodMenuDisplay
         System.Console.WriteLine("Allergies");
         // all allergies in the json
         List<string> allergies = foodMenuLogic.GetAllAllergies();
-        List<string> selectedAllergies = DrinkMenuLogic.SelectAllergies(allergies);
+        List<string> selectedAllergies = HelperPresentation.SelectAllergies(allergies);
         List<FoodMenuModel> foods = foodMenuLogic.GetMenuExcludingAllergies(selectedAllergies);
         if (foods == null)
         {
