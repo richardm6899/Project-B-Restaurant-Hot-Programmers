@@ -20,9 +20,6 @@ class MainMenuLogic
                 RestaurantInfo.Start();
                 break;
             case 4: // Quit
-                Console.WriteLine("Goodbye...");
-                Console.WriteLine("[press Enter to quit]");
-                Console.ReadLine();
                 return false; // Exit the loop
         }
         return true; // Keep running the menu

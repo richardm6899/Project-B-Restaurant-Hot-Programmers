@@ -225,7 +225,7 @@ static class HelperPresentation
             }
         }
     }
-    public static List<string> SelectAllergies(List<string> availableAllergies)
+    public static List<string>? SelectAllergies(List<string> availableAllergies)
     {
         List<string> selectedAllergies = new();
         int selectedIndex = 0;
@@ -311,7 +311,8 @@ static class HelperPresentation
                     // Return option chosen
                     Console.WriteLine("Returning to the previous menu...");
                     Console.ReadKey();
-                    return null; // Indicate that the user canceled the selection
+                    // Indicate that the user canceled the selection
+                    return null;
                 }
 
                 else
