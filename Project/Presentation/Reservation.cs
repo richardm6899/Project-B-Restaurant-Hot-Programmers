@@ -1102,6 +1102,15 @@ static class Reservation
                 Console.Clear();
                 return default;
             }
+            else if (UncheckedDate == "Return" && modify == true)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                System.Console.WriteLine(UncheckedDate);
+                Console.ResetColor();
+                System.Console.WriteLine("[enter]");
+                System.Console.ReadLine();
+                return default;
+            }
             else
             {
                 Console.ForegroundColor = ConsoleColor.Red;
@@ -1109,6 +1118,7 @@ static class Reservation
                 Console.ResetColor();
                 System.Console.WriteLine("[enter]");
                 System.Console.ReadLine();
+
             }
         }
         return default;
@@ -1195,7 +1205,7 @@ static class Reservation
                     if (reservation != null && reservations.Select(res => res.Id).Contains(reservation.Id))
                     {
                         List<TableModel> tables = reservationlogic.GetTablesByReservation(reservation);
-                        string[] choiceArr = { "Amount of people", "Timeslot", "Date", "Food and drinks" };
+                        string[] choiceArr = { "Amount of people", "Timeslot", "Date", "Food and drinks", "Return" };
                         string choice1 = Choice("What would you like to modify of this reservation", choiceArr);
 
                         if (choice1 == "Amount of people")
@@ -1215,12 +1225,7 @@ static class Reservation
                             ModifyFoodAndDrinks(reservation);
                         }
                     }
-                    else
-                    {
-                        System.Console.WriteLine("Invalid id given");
-                        System.Console.WriteLine("[Enter]");
-                        System.Console.ReadLine();
-                    }
+
                 }
                 else
                 {
@@ -1248,6 +1253,8 @@ static class Reservation
         DateTime Date = default;
         string type = "";
         int amount = 0;
+        int minCapacity;
+        int maxCapacity;
         while (modify)
         {
             if (progress == 0)
@@ -1271,8 +1278,18 @@ static class Reservation
             }
             else if (progress == 10)
             {
-
-                if (amount < tables[0].MinCapacity || amount > tables[0].MaxCapacity)
+                // if you have a hotseat and go to 1 gonna be bad cause table max min cap == 1
+                if (reservation.TypeOfReservation == "HotSeat")
+                {
+                    minCapacity = reservation.HowMany;
+                    maxCapacity = reservation.HowMany;
+                }
+                else
+                {
+                    minCapacity = tables[0].MinCapacity;
+                    maxCapacity = tables[0].MaxCapacity;
+                }
+                if (amount < minCapacity || amount > maxCapacity)
                 {
                     if (amount < 7) // hotseats only  if above 6
                     {
@@ -1290,16 +1307,28 @@ static class Reservation
                         else
                         {
                             progress = 20;
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            System.Console.WriteLine($"{type} reservation chosen");
+                            Console.ResetColor();
+                            System.Console.WriteLine("[enter]");
+                            System.Console.ReadLine();
+
                         }
                     }
                     else if (amount > 6)
                     {
+
+
                         type = "HotSeat";
                         progress = 20;
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        System.Console.WriteLine($"{type} reservation chosen");
+                        Console.ResetColor();
+                        System.Console.WriteLine("[enter]");
+                        System.Console.ReadLine();
+
+
                     }
-                    System.Console.WriteLine($"{type} reservation chosen");
-                    System.Console.WriteLine("[enter]");
-                    System.Console.ReadLine();
 
 
                 }
@@ -1314,11 +1343,14 @@ static class Reservation
                 else
                 {
                     reservationlogic.ModifyReservation(reservation, amount);
+                    Console.ForegroundColor = ConsoleColor.Green;
                     System.Console.WriteLine("Amount of people Modified");
+                    Console.ResetColor();
                     System.Console.WriteLine("[enter]");
-                    ReceiptModel receipt = reservationlogic.ModifyReceipt(reservation, null);
-                    System.Console.WriteLine(reservationlogic.DisplayReceipt(receipt, [accountsLogic.GetById(reservation.ClientID).Allergies]));
-
+                    List<(FoodMenuModel, int)> foodcart = reservationlogic.GetReceiptById(reservation.Id).OrderedFood ?? [];//receipts 
+                    List<string> Allergies = accountsLogic.GetById(reservation.ClientID).Allergies ?? [];
+                    ReceiptModel receipt = reservationlogic.ModifyReceipt(reservation, foodcart);
+                    System.Console.WriteLine(reservationlogic.DisplayReceipt(receipt, [Allergies]));
                     System.Console.ReadLine();
                     Console.Clear();
                     return;
@@ -1330,9 +1362,10 @@ static class Reservation
             {
                 timeSlot = Reservation.TimeSlot();
                 System.Console.WriteLine("----------------------------------------");
+
                 if (timeSlot == "Return")
                 {
-                    progress = 0;
+                    progress = 10;
                 }
                 else if (timeSlot == "Quit")
                 {
@@ -1347,15 +1380,22 @@ static class Reservation
             // // date (calender)
             else if (progress == 30)
             {
+                // i want all the tables to be removed from the tables and then added again when done with this part
+
+                reservationlogic.TemporarilyUnassignTable(reservation.Id);
                 Date = Reservation.ChooseDate(timeSlot, amount, type, true);
+
                 if (Date != default)
                 {
                     progress = 40;
+
                 }
-                else
+                else if (Date == default)
                 {
                     progress = 20;
+                    reservationlogic.AssignTables(reservation.TableID, reservation);
                 }
+
 
             }
             else if (progress == 40)
@@ -1363,12 +1403,14 @@ static class Reservation
                 // // choose table
                 if (type == "Regular")
                 {
-                    int madereservation = RegularModifyReservation(reservation, Date, reservation.TimeSlot, amount, type, reservation.FoodOrdered);
+                    int madereservation = RegularModifyReservation(reservation, Date, timeSlot, amount, type, reservation.FoodOrdered);
                     if (50 == madereservation)
                     {
                         // print reservation and make sure all receipt is modified aswell
 
+
                         break;
+
                     }
                     else if (30 == madereservation)
                     {
@@ -1378,9 +1420,10 @@ static class Reservation
                 }
                 else if (type == "HotSeat")
                 {
-                    int madereservation = HotSeatModifyReservation(reservation, Date, reservation.TimeSlot, amount, type, reservation.FoodOrdered);
+                    int madereservation = HotSeatModifyReservation(reservation, Date, timeSlot, amount, type, reservation.FoodOrdered);
                     if (50 == madereservation)
                     {
+
                         // print reservation and make sure all receipt is modified aswell
                         break;
 
@@ -1392,7 +1435,7 @@ static class Reservation
                 }
 
             }
-        
+
         }
     }
 
@@ -1409,8 +1452,6 @@ static class Reservation
         while (modify)
         {
 
-
-
             // // order: 
             // // timeslot
             if (progress == 20)
@@ -1418,13 +1459,24 @@ static class Reservation
                 timeSlot = Reservation.TimeSlot();
                 if (timeSlot == "Return")
                 {
+                    Console.ForegroundColor = ConsoleColor.Red;
                     System.Console.WriteLine("Cant go back");
+                    Console.ResetColor();
                     System.Console.WriteLine("[enter]");
                     Console.ReadLine();
                 }
                 else if (timeSlot == "Quit")
                 {
                     break;
+                }
+                else if (timeSlot == reservation.TimeSlot)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    System.Console.WriteLine("You have already chosen this timeslot");
+                    Console.ResetColor();
+                    System.Console.WriteLine("[enter]");
+                    Console.ReadLine();
+
                 }
                 else
                 {
@@ -1435,15 +1487,20 @@ static class Reservation
             // // date (calender)
             else if (progress == 30)
             {
+                reservationlogic.TemporarilyUnassignTable(reservation.Id);
                 Date = Reservation.ChooseDate(timeSlot, amount, type, true);
+
                 if (Date != default)
                 {
                     progress = 40;
+
                 }
-                else
+                else if (Date == default)
                 {
                     progress = 20;
+                    reservationlogic.AssignTables(reservation.TableID, reservation);
                 }
+
 
             }
             else if (progress == 40)
@@ -1451,7 +1508,7 @@ static class Reservation
                 // // choose table
                 if (type == "Regular")
                 {
-                    int madereservation = RegularModifyReservation(reservation, Date, reservation.TimeSlot, amount, type, reservation.FoodOrdered);
+                    int madereservation = RegularModifyReservation(reservation, Date, timeSlot, amount, type, reservation.FoodOrdered);
                     if (50 == madereservation)
                     {
                         // print reservation and make sure all receipt is modified aswell
@@ -1466,7 +1523,7 @@ static class Reservation
                 }
                 else if (type == "HotSeat")
                 {
-                    int madereservation = HotSeatModifyReservation(reservation, Date, reservation.TimeSlot, amount, type, reservation.FoodOrdered);
+                    int madereservation = HotSeatModifyReservation(reservation, Date, timeSlot, amount, type, reservation.FoodOrdered);
                     if (50 == madereservation)
                     {
                         // print reservation and make sure all receipt is modified aswell
@@ -1499,17 +1556,20 @@ static class Reservation
             // // date (calender)
             if (progress == 30)
             {
+
+                reservationlogic.TemporarilyUnassignTable(reservation.Id);
                 Date = Reservation.ChooseDate(timeSlot, amount, type, true);
+
                 if (Date != default)
                 {
                     progress = 40;
+
                 }
-                else
+                else if (Date == default)
                 {
-                    System.Console.WriteLine("Cant go back");
-                    System.Console.WriteLine("[enter]");
-                    Console.ReadLine();
+                    break;
                 }
+
 
             }
             else if (progress == 40)
@@ -1517,7 +1577,7 @@ static class Reservation
                 // // choose table
                 if (type == "Regular")
                 {
-                    int madereservation = RegularModifyReservation(reservation, Date, reservation.TimeSlot, amount, type, reservation.FoodOrdered);
+                    int madereservation = RegularModifyReservation(reservation, Date,timeSlot, amount, type, reservation.FoodOrdered);
                     if (50 == madereservation)
                     {
                         // print reservation and make sure all receipt is modified aswell
@@ -1532,7 +1592,7 @@ static class Reservation
                 }
                 else if (type == "HotSeat")
                 {
-                    int madereservation = HotSeatModifyReservation(reservation, Date, reservation.TimeSlot, amount, type, reservation.FoodOrdered);
+                    int madereservation = HotSeatModifyReservation(reservation, Date, timeSlot, amount, type, reservation.FoodOrdered);
                     if (50 == madereservation)
                     {
                         // print reservation and make sure all receipt is modified aswell
@@ -1560,8 +1620,8 @@ static class Reservation
             if (reservation.FoodOrdered)
             {
 
-                List<(FoodMenuModel, int)> foodcart = reservationlogic.GetReceiptById(reservation.Id).OrderedFood ?? new List<(FoodMenuModel, int)>();//receipts 
-                List<string> Allergies = accountsLogic.GetById(reservation.ClientID).Allergies ?? new  List<string>();
+                List<(FoodMenuModel, int)> foodcart = reservationlogic.GetReceiptById(reservation.Id).OrderedFood ?? [];//receipts 
+                List<string> Allergies = accountsLogic.GetById(reservation.ClientID).Allergies ?? [];
                 var (foodCart, allergies) = FoodOrderMenu.ModifyFood(foodcart, [Allergies]);
                 // // choose table
                 System.Console.WriteLine("Reservation Modified");
@@ -1623,9 +1683,10 @@ static class Reservation
                 System.Console.WriteLine("Reservation Modified");
                 System.Console.WriteLine("-----------------------------------------");
                 System.Console.WriteLine("This is your receipt");
-
-                ReceiptModel receipt = reservationlogic.ModifyReceipt(reservation, null);
-                System.Console.WriteLine(reservationlogic.DisplayReceipt(receipt, null));
+                List<(FoodMenuModel, int)> foodcart = reservationlogic.GetReceiptById(reservation.Id).OrderedFood ?? [];//receipts 
+                List<string> Allergies = accountsLogic.GetById(reservation.ClientID).Allergies ?? [];
+                ReceiptModel receipt = reservationlogic.ModifyReceipt(reservation, foodcart);
+                System.Console.WriteLine(reservationlogic.DisplayReceipt(receipt, [Allergies]));
                 System.Console.WriteLine("[enter]");
                 Console.ReadLine();
                 ReservationLogic.AvailableTables.Clear();
@@ -1655,8 +1716,11 @@ static class Reservation
             System.Console.WriteLine("-----------------------------------------");
             System.Console.WriteLine("This is your receipt");
 
-            ReceiptModel receipt = reservationlogic.ModifyReceipt(reservation, null);
-            System.Console.WriteLine(reservationlogic.DisplayReceipt(receipt, null));
+            List<(FoodMenuModel, int)> foodcart = reservationlogic.GetReceiptById(reservation.Id).OrderedFood ?? [];//receipts 
+            List<string> Allergies = accountsLogic.GetById(reservation.ClientID).Allergies ?? [];
+            ReceiptModel receipt = reservationlogic.ModifyReceipt(reservation, foodcart);
+            System.Console.WriteLine(reservationlogic.DisplayReceipt(receipt, [Allergies]));
+
             System.Console.WriteLine("[enter]");
             Console.ReadLine();
             ReservationLogic.AvailableTables.Clear();

@@ -89,7 +89,27 @@ public class ReservationLogic
 
         }
     }
-
+    public void AssignTables(List<int> tableIDs, ReservationModel reservation)
+    {
+        foreach (var tableID in tableIDs)
+        {
+            AssignTable(tableID, reservation);
+        }
+    }
+    public List<TableModel> TemporarilyUnassignTable(int reservation_id)
+    {
+        foreach (var table in _tables)
+        {
+            for (int i = 0; i < table.Reservations.Count; i++)
+            {
+                if (table.Reservations[i].Id == reservation_id)
+                {
+                    table.Reservations.RemoveAt(i);
+                }
+            }
+        }
+        return _tables;
+    }
     public TableModel GetTableById(int table_id)
     {
         foreach (var table in _tables)
@@ -177,6 +197,8 @@ public class ReservationLogic
         TableAccess.WriteAllTables(_tables);
 
     }
+
+
 
 
     // printable stuff --------------------------------------------------
@@ -447,6 +469,8 @@ public class ReservationLogic
             return_string += $" Ordered:                             \n";
             foreach (var (item, quantity) in receipt.OrderedFood)
             {
+
+
                 float itemTotal = item.Price * quantity; // Calculate total price for this item
                 totalCost += itemTotal; // Add to the total cost
 
@@ -480,6 +504,8 @@ public class ReservationLogic
             return return_string;
 
         }
+
+
         else
         {
             string return_string = "";
@@ -503,6 +529,7 @@ public class ReservationLogic
 
             return return_string;
         }
+
     }
     public ReceiptModel GetReceiptById(int reservationid)
     {
@@ -821,8 +848,6 @@ public class ReservationLogic
                 {
                     reservation.TimeSlot = timeSlot;
                 }
-
-
             }
         }
         foreach (var table in _tables)
@@ -844,8 +869,6 @@ public class ReservationLogic
                     {
                         res.TimeSlot = timeSlot;
                     }
-
-
                 }
             }
         }
