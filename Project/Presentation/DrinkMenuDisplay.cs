@@ -10,10 +10,31 @@ class DrinkMenuDisplay
             "Filter by allergies",
             "Return"
         };
-        DrinkMenuLogic.GetOptionMain(options);
-        return;
+
+        int selectedIndex = 0;
+        selectedIndex = HelperPresentation.ChooseOption("Welcome to the drinks menu.", options, selectedIndex);
+
+        switch (selectedIndex)
+        {
+            // whole menu
+            case 0:
+                DisplayWholeMenu();
+                break;
+            // by type
+            case 1:
+                DisplayByType();
+                break;
+            // by allergies
+            case 2:
+                DisplayByAllergy();
+                break;
+            // return
+            case 3:
+                return;
+        }
     }
 
+    // case 0
     public static void DisplayWholeMenu()
     {
         List<DrinkMenuModel> drinks = drinkMenuLogic.GetAllMenuItems();
@@ -25,6 +46,7 @@ class DrinkMenuDisplay
         Console.ReadKey();
     }
 
+    // case 1
     public static void DisplayByType()
     {
         System.Console.WriteLine("Types");
@@ -52,13 +74,13 @@ class DrinkMenuDisplay
         System.Console.WriteLine("Allergies");
         // all allergies in the json
         List<string> allergies = drinkMenuLogic.GetAllAllergies();
-        List<string> selectedAllergies = DrinkMenuLogic.SelectAllergies(allergies);
+        List<string> selectedAllergies = HelperPresentation.SelectAllergies(allergies);
         List<DrinkMenuModel> drinks = drinkMenuLogic.GetMenuExcludingAllergies(selectedAllergies);
         if (drinks == null)
         {
             return;
         }
-        if(drinks.Count == 0)
+        if (drinks.Count == 0)
         {
             Console.WriteLine("No menu items available based on the selected filters.");
         }

@@ -1,0 +1,32 @@
+[
+    {
+        "EventID": 1,
+        "EventName": "Hot Barbecue Party",
+        "EventDate": "0001-01-01T00:00:00",
+        "EventTime": null,
+        "Description": "An event where you and your friends can barbecue with the tools we have in storage",
+        "RemainingSlots": "0001-01-01T00:00:00",
+        "MaxCapacity": "36849255",
+        "attendees": {
+            "Name": "richard",
+            "Email": "richard@gmail.com",
+            "PeopleToAttend": 8,
+            "Cost": 100
+        }
+    },
+    {
+        "EventID": 2,
+        "EventName": "Hot Barbecue Party",
+        "EventDate": "0001-01-01T00:00:00",
+        "EventTime": "17:00 - 21:00",
+        "Description": "An event where you and your friends can barbecue with the tools we have in storage",
+        "RemainingSlots": "0001-01-01T00:00:00",
+        "MaxCapacity": "36849255",
+        "attendees": {
+            "Name": "richard",
+            "Email": "richard@gmail.com",
+            "PeopleToAttend": 8,
+            "Cost": 100
+        }
+    }
+]

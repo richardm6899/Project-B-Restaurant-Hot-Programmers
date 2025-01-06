@@ -13,6 +13,8 @@ public class FoodMenuDisplay
         return;
     }
 
+
+    //--------------------------------------------------------------------------------------------------
     public static void StartFoodMenu()
     {
         string[] options = {
@@ -21,10 +23,35 @@ public class FoodMenuDisplay
             "Filter by allergies",
             "Return"
         };
-        FoodMenuLogic.GetOptionMain(options);
-        return;
-    }
 
+        bool foodMenu = true;
+
+        while (foodMenu)
+        {
+            int selectedIndexFood = 0;
+            Console.Clear();
+            selectedIndexFood = HelperPresentation.ChooseOption("Welcome to the food menu.", options, selectedIndexFood);
+
+            switch (selectedIndexFood)
+            {
+                // look at whole menu
+                case 0:
+                    DisplayWholeMenu();
+                    break;
+                // filter by
+                case 1:
+                    TypesFilter();
+                    break;
+                // filter by
+                case 2:
+                    DisplayByAllergy();
+                    break;
+                // return to where the user came from
+                case 3:
+                    return;
+            }
+        }
+    }
 
 
     public static void AllergiesQuestion(List<string> allergies)
@@ -32,38 +59,39 @@ public class FoodMenuDisplay
         bool wrong = true;
         List<FoodMenuModel> menuItems = new List<FoodMenuModel>();
         Console.WriteLine("Welcome to the menu of Hot Seat!");
-        do{
+        do
+        {
             Console.WriteLine("Would you like to filter for allergies or types of food? (yes or no)");
-        
+
             string filteranswer = Console.ReadLine().ToLower();
 
-            switch(filteranswer)
+            switch (filteranswer)
             {
                 case "yes":
-                    
+
                     do
                     {
-                    Console.WriteLine("What filter: allergies or types?");
-                    string filter = Console.ReadLine().ToLower();
-                    switch(filter)
-                    {
-                        case "allergies":
-                           // AllergiesFilter(allergies);
-                            wrong = false;
-                            break;
-                        case "types":
-                            TypesFilter();
-                            wrong = false;
-                            break;
-                        default:
-                            Console.WriteLine("This is an invalid input");
-                            wrong = true;
-                            break;
-                            
-                    }
-                    }while(wrong);
+                        Console.WriteLine("What filter: allergies or types?");
+                        string filter = Console.ReadLine().ToLower();
+                        switch (filter)
+                        {
+                            case "allergies":
+                                // AllergiesFilter(allergies);
+                                wrong = false;
+                                break;
+                            case "types":
+                                TypesFilter();
+                                wrong = false;
+                                break;
+                            default:
+                                Console.WriteLine("This is an invalid input");
+                                wrong = true;
+                                break;
+
+                        }
+                    } while (wrong);
                     break;
-            
+
                 case "no":
                     menuItems = foodMenuLogic.GetAllMenuItems();
                     DisplayWholeMenu();
@@ -73,12 +101,12 @@ public class FoodMenuDisplay
                     Console.WriteLine("This is an invalid input");
                     wrong = true;
                     break;
-                
+
             }
-            }while(wrong);
+        } while (wrong);
 
 
-        }
+    }
 
     public static void TypesFilter()
     {
@@ -132,7 +160,7 @@ public class FoodMenuDisplay
     //         {
     //             Console.WriteLine($"-{allergy}");
     //         }
-            
+
     //         Console.WriteLine("Enter allergies to avoid (comma-separated):");
     //         string input = Console.ReadLine();
     //         if(input != null)
@@ -151,11 +179,11 @@ public class FoodMenuDisplay
     //     foodMenuLogic.DisplayWholeMenu();
     // }
 
-        public static void DisplayMenuWithFilter(List<FoodMenuModel> menuItems)
+    public static void DisplayMenuWithFilter(List<FoodMenuModel> menuItems)
     {
         if (menuItems.Any())
         {
-            
+
             // Define the desired display order
             var displayOrder = new List<string> { "Appetizer", "Main Course", "Side", "Dessert" };
 
@@ -199,9 +227,9 @@ public class FoodMenuDisplay
         List<FoodMenuModel> menuItems = foodMenuLogic.GetAllMenuItems();
         if (menuItems.Any())
         {
-            
+
             // Define the desired display order
-            var displayOrder = new List<string> { "Appetizer", "Main Course", "Side", "Dessert", "Chef's Menu"};
+            var displayOrder = new List<string> { "Appetizer", "Main Course", "Side", "Dessert", "Chef's Menu" };
 
             // Group and order menu items based on the display order
             var orderedMenu = menuItems
@@ -252,9 +280,9 @@ public class FoodMenuDisplay
                 Console.WriteLine("Add a new dish.");
                 AddDishToFoodMenu();
                 break;
-            
+
             case "2":
-                Console.WriteLine("Deleting a dish."); 
+                Console.WriteLine("Deleting a dish.");
                 DeleteDish();
                 break;
             case "3":
@@ -268,7 +296,7 @@ public class FoodMenuDisplay
         Console.WriteLine("Give the name of the dish you wanted to delete:");
         string deleteddish = Console.ReadLine();
         string isDeleted = foodMenuLogic.DeleteDishByName(deleteddish);
-        
+
         Console.WriteLine(isDeleted);
     }
 
@@ -277,20 +305,20 @@ public class FoodMenuDisplay
         string confirmanswer;
         do
         {
-        Console.WriteLine($"Type 'yes' if you are certain to delete [{item}]:");
-        Console.WriteLine($"Type 'no' if you do not want to delete [{item}]");
-        confirmanswer = Console.ReadLine();
-        switch(confirmanswer)
-        {
-            case "yes":
-                return true;
-            case "no":
-                return false;
-            default:
-                Console.WriteLine("Invalid input.");
-                break;
-        }
-        }while(confirmanswer == null);
+            Console.WriteLine($"Type 'yes' if you are certain to delete [{item}]:");
+            Console.WriteLine($"Type 'no' if you do not want to delete [{item}]");
+            confirmanswer = Console.ReadLine();
+            switch (confirmanswer)
+            {
+                case "yes":
+                    return true;
+                case "no":
+                    return false;
+                default:
+                    Console.WriteLine("Invalid input.");
+                    break;
+            }
+        } while (confirmanswer == null);
         return false;
     }
 
@@ -299,13 +327,13 @@ public class FoodMenuDisplay
         System.Console.WriteLine("Allergies");
         // all allergies in the json
         List<string> allergies = foodMenuLogic.GetAllAllergies();
-        List<string> selectedAllergies = DrinkMenuLogic.SelectAllergies(allergies);
+        List<string> selectedAllergies = HelperPresentation.SelectAllergies(allergies);
         List<FoodMenuModel> foods = foodMenuLogic.GetMenuExcludingAllergies(selectedAllergies);
         if (foods == null)
         {
             return;
         }
-        if(foods.Count == 0)
+        if (foods.Count == 0)
         {
             Console.WriteLine("No menu items available based on the selected filters.");
         }
@@ -423,10 +451,11 @@ public class FoodMenuDisplay
 
         } while (!dish_valid);
 
-        if(dish_valid == true){
+        if (dish_valid == true)
+        {
             foodMenuLogic.AddDish(name, price, description, types, allergies);
-            }
-        
-        
+        }
+
+
     }
 }

@@ -34,59 +34,84 @@ Welcome back {acc.FullName}
                 // make reservation
                 //  public static void MakeReservation(string name, int clientID, string number, string email)
                 case 0:
+                Console.Clear();
                     MakeReservation(acc);
                     break;
 
                 case 1:
                     // modify reservation
+  
+                Console.Clear();
                     ModifyReservation(acc);
+
                     break;
                 // cancel reservation
                 case 2:
 
+                Console.Clear();
                     CancelReservation(acc);
                     break;
                 // see accounts reservation
+
                 case 3:
+              Console.Clear();
+
                     SeeReservations(acc);
-                    break;
+                
 
                 //  see the food menu
+
                 case 4:
+          Console.Clear();
+
                     FoodMenuDisplay.StartFoodMenu();
-                    break;
+               
 
                 // see restaurant info
+
                 case 5:
+Console.Clear();
+
                     RestaurantInfo.Start();
-                    break;
+                
 
                 //  show account data
+
                 case 6:
+Console.Clear();
+
                     SeeData(acc);
-                    break;
+               
                 // log out
 
+
                 case 7:
+                    Console.Clear();
                     ModifyData.Start(acc);
-                    break;
+
                 case 8:
+                Console.Clear();
                     Messages(acc);
+
                     break;
-
-
                 case 9:
+
+
+                Console.Clear();
                     DeleteDeactivate(acc);
+
                     break;
+
+
+                
+                   
                 case 10:
+
+                Console.Clear();
+
                     acc = null;
                     clientMenu = false;
                     Menu.Start();
-                    break;
-
-                default:
-                    System.Console.WriteLine("Invalid input");
-                    Start(acc, accountsLogic);
                     break;
             }
         }
@@ -138,7 +163,6 @@ Welcome back {acc.FullName}
         while (seeingReservations)
         {
             int selectedIndex = 0;
-            Console.Clear();
 
             selectedIndex = HelperPresentation.ChooseOption("How would you like to see your reservations?", options, selectedIndex);
 
@@ -292,7 +316,6 @@ Type of Reservation: {selectedReservation.TypeOfReservation},");
     // case 5
     private static void SeeData(AccountModel acc)
     {
-        Console.Clear();
         Console.ForegroundColor = ConsoleColor.Red;
         System.Console.WriteLine("Your accounts data:");
         Console.ResetColor();
@@ -319,7 +342,6 @@ Password: {acc.Password}");
     // case 7
     private static void Messages(AccountModel acc)
     {
-        Console.Clear();
         System.Console.WriteLine("Messages:");
         if (MessageLogic.Inbox(acc.Id))
         {
@@ -347,17 +369,21 @@ Password: {acc.Password}");
     // case 8
     private static void DeleteDeactivate(AccountModel acc)
     {
-        Console.Clear();
+        string[] deleteDeactivateOptions = {
+            "Deactivate account",
+            "Delete account",
+            "return"
+        };
         bool deactivateDeletingAccount = true;
         while (deactivateDeletingAccount)
         {
-            System.Console.WriteLine("Enter 1 to deactivate account.");
-            System.Console.WriteLine("Enter 2 to delete account.");
-            System.Console.WriteLine("Enter 3 to return.");
-            string? userDeleteDeactivate = Console.ReadLine();
-            switch (userDeleteDeactivate)
+            int selectedIndexDeleteDeactivate = 0;
+
+            selectedIndexDeleteDeactivate = HelperPresentation.ChooseOption("What would you like to do to your account?", deleteDeactivateOptions, selectedIndexDeleteDeactivate);
+            switch (selectedIndexDeleteDeactivate)
             {
-                case "1":
+                // Deactivate
+                case 0:
                     bool userDeactivate = HelperPresentation.YesOrNo("Are you sure you want to deactivate your account?");
                     if (userDeactivate)
                     {
@@ -376,13 +402,13 @@ Password: {acc.Password}");
 
                     };
                     break;
-
-                case "2":
+                // Delete
+                case 1:
                     bool userDelete = HelperPresentation.YesOrNo("Are you sure you want to delete your account?");
                     if (userDelete)
                     {
                         System.Console.WriteLine("Please re-enter your password.");
-                        string passToCheck = Console.ReadLine();
+                        string? passToCheck = Console.ReadLine();
                         if (accountsLogic.ReCheckPassWord(acc, passToCheck))
                         {
                             accountsLogic.deleteAccount(acc.Id);
@@ -395,16 +421,11 @@ Password: {acc.Password}");
                         deactivateDeletingAccount = false;
                     };
                     break;
-
-                case "3":
-                    deactivateDeletingAccount = false;
-                    break;
-
-                default:
-                    System.Console.WriteLine("Invalid input.");
+                // return
+                case 2:
+                    if (acc != null) {ClientMenu.Start(acc, accountsLogic);}
                     break;
             }
         }
     }
-
 }
