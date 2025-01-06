@@ -15,6 +15,17 @@ class FoodOrderMenu
 
         return (FoodCart, allergies);
     }
+    public static (List<(FoodMenuModel, int)>, List<List<string>>) ModifyFood(List<(FoodMenuModel, int)> FoodCart, List<List<string>> allergies)
+    {
+        // Get all menu items
+        List<FoodMenuModel> foodMenu = foodOrderLogic.GetAllMenuItems();
+
+
+        FoodMenuModel[] foodChoices = foodMenu.ToArray();
+        OrderFoodMenu(foodChoices, FoodCart, allergies);
+
+        return (FoodCart, allergies);
+    }
 
     public static void OrderFoodMenu(FoodMenuModel[] options, List<(FoodMenuModel, int)> FoodCart, List<List<string>> allergies)
     {
@@ -70,6 +81,16 @@ class FoodOrderMenu
             else if (key == ConsoleKey.DownArrow)
             {
                 selectedIndex = (selectedIndex == options.Length + 2) ? 0 : selectedIndex + 1;
+            }
+            else if (key == ConsoleKey.Backspace)
+            {
+                if (selectedIndex < options.Length)
+                {
+                    var selectedDish = options[selectedIndex];
+                    FoodOrderLogic.RemoveFromCart(FoodCart, selectedDish);
+
+
+                }
             }
             else if (key == ConsoleKey.Enter)
             {
@@ -278,6 +299,7 @@ class FoodOrderMenu
             Console.WriteLine($"Description: {item.Description}");
             Console.WriteLine(new string('-', 40));
             index++;
+            
         }
     }
 

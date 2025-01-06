@@ -7,6 +7,7 @@ class ClientMenu
         string[] options =
         {
             "Make a Reservation.",
+            "Modify a Reservation.",
             "Cancel a reservation.",
             "See your Reservations.",
             "See the food menu.",
@@ -37,54 +38,77 @@ Welcome back {acc.FullName}
                     MakeReservation(acc);
                     break;
 
-                // cancel reservation
                 case 1:
+                    // modify reservation
+  
+                Console.Clear();
+                    ModifyReservation(acc);
+
+                    break;
+                // cancel reservation
+                case 2:
+
                 Console.Clear();
                     CancelReservation(acc);
                     break;
-
                 // see accounts reservation
-                case 2:
-                Console.Clear();
+
+                case 3:
+              Console.Clear();
+
                     SeeReservations(acc);
-                    break;
+                
 
                 //  see the food menu
-                case 3:
-                Console.Clear();
+
+                case 4:
+          Console.Clear();
+
                     FoodMenuDisplay.StartFoodMenu();
-                    break;
+               
 
                 // see restaurant info
-                case 4:
-                Console.Clear();
+
+                case 5:
+Console.Clear();
+
                     RestaurantInfo.Start();
-                    break;
+                
 
                 //  show account data
-                case 5:
-                Console.Clear();
-                    SeeData(acc);
-                    break;
 
-                // log out
                 case 6:
-                Console.Clear();
-                    ModifyData.Start(acc);
-                    break;
+Console.Clear();
+
+                    SeeData(acc);
+               
+                // log out
+
 
                 case 7:
-                Console.Clear();
-                    Messages(acc);
-                    break;
+                    Console.Clear();
+                    ModifyData.Start(acc);
 
                 case 8:
                 Console.Clear();
+                    Messages(acc);
+
+                    break;
+                case 9:
+
+
+                Console.Clear();
                     DeleteDeactivate(acc);
+
                     break;
 
-                case 9:
+
+                
+                   
+                case 10:
+
                 Console.Clear();
+
                     acc = null;
                     clientMenu = false;
                     Menu.Start();
@@ -99,6 +123,11 @@ Welcome back {acc.FullName}
     {
         System.Console.WriteLine("Make reservation:");
         Reservation.MakeReservation(acc.FullName, acc.Id, acc.PhoneNumber, acc.EmailAddress);
+    }
+    private static void ModifyReservation(AccountModel acc)
+    {
+        System.Console.WriteLine("Modify reservation:");
+        Reservation.ModifyReservation(acc.Id);
     }
 
     // case 1 cancel reservation

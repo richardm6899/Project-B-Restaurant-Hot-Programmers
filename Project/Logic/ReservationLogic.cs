@@ -89,7 +89,27 @@ public class ReservationLogic
 
         }
     }
-
+    public void AssignTables(List<int> tableIDs, ReservationModel reservation)
+    {
+        foreach (var tableID in tableIDs)
+        {
+            AssignTable(tableID, reservation);
+        }
+    }
+    public List<TableModel> TemporarilyUnassignTable(int reservation_id)
+    {
+        foreach (var table in _tables)
+        {
+            for (int i = 0; i < table.Reservations.Count; i++)
+            {
+                if (table.Reservations[i].Id == reservation_id)
+                {
+                    table.Reservations.RemoveAt(i);
+                }
+            }
+        }
+        return _tables;
+    }
     public TableModel GetTableById(int table_id)
     {
         foreach (var table in _tables)
@@ -159,22 +179,28 @@ public class ReservationLogic
 
         return null;
     }
-    // unassign reservation from table by reservation id
-    public ReservationModel UnassignTable(int reservation_id)
+
+    public void UnassignTable(int reservation_id)
     {
         foreach (var table in _tables)
         {
-            foreach (var reservation in table.Reservations)
+            for (int i = 0; i < table.Reservations.Count; i++)
             {
-                if (reservation_id == reservation.Id)
+                if (table.Reservations[i].Id == reservation_id)
                 {
-                    table.Reservations.Remove(reservation);
-                    return reservation;
+
+                    table.Reservations.RemoveAt(i);
+
                 }
             }
         }
-        return null;
+        TableAccess.WriteAllTables(_tables);
+
     }
+
+
+
+
     // printable stuff --------------------------------------------------
     public string displayTable(int table_id)
     {
@@ -269,6 +295,9 @@ public class ReservationLogic
         }
         return reservations;
     }
+
+    // return reservations that date is more than or equal 48 hours from today
+
 
     public List<ReservationModel> DisplayAllReservationsByStatusAndID(int id, string status)
     {
@@ -440,6 +469,8 @@ public class ReservationLogic
             return_string += $" Ordered:                             \n";
             foreach (var (item, quantity) in receipt.OrderedFood)
             {
+
+
                 float itemTotal = item.Price * quantity; // Calculate total price for this item
                 totalCost += itemTotal; // Add to the total cost
 
@@ -473,6 +504,8 @@ public class ReservationLogic
             return return_string;
 
         }
+
+
         else
         {
             string return_string = "";
@@ -496,12 +529,13 @@ public class ReservationLogic
 
             return return_string;
         }
+
     }
-    public ReceiptModel GetReceiptById(int id)
+    public ReceiptModel GetReceiptById(int reservationid)
     {
         foreach (var receipt in _receipts)
         {
-            if (receipt.ReservationId == id)
+            if (receipt.ReservationId == reservationid)
             {
                 return receipt;
             }
@@ -800,8 +834,10 @@ public class ReservationLogic
         {
             if (res.Id == reservation.Id)
             {
+
                 if (item is int howmany)
                 {
+
                     reservation.HowMany = howmany;
                 }
                 else if (item is DateTime date)
@@ -812,6 +848,51 @@ public class ReservationLogic
                 {
                     reservation.TimeSlot = timeSlot;
                 }
+            }
+        }
+        foreach (var table in _tables)
+        {
+            foreach (var res in table.Reservations)
+            {
+                if (res.Id == reservation.Id)
+                {
+
+                    if (item is int howmany)
+                    {
+                        res.HowMany = howmany;
+                    }
+                    else if (item is DateTime date)
+                    {
+                        res.Date = date;
+                    }
+                    else if (item is string timeSlot)
+                    {
+                        res.TimeSlot = timeSlot;
+                    }
+                }
+            }
+        }
+        ReservationAccess.WriteAllReservations(_reservations);
+
+        TableAccess.WriteAllTables(_tables);
+    }
+
+    public void ModifyReservation(ReservationModel reservation, List<int> TableID, int Howmany, DateTime Date, string Timeslot, string typeofreservation, bool FoodOrdered)
+    {
+        // modify amount int
+        // modify timeslot string
+        // modify Date DateTime
+        foreach (var res in _reservations)
+        {
+            if (res.Id == reservation.Id)
+            {
+
+                reservation.TableID = TableID;
+                reservation.HowMany = Howmany;
+                reservation.Date = Date;
+                reservation.TimeSlot = Timeslot;
+                reservation.TypeOfReservation = typeofreservation;
+                reservation.FoodOrdered = FoodOrdered;
 
             }
         }
@@ -819,7 +900,47 @@ public class ReservationLogic
 
 
     }
+    public void ModifyReservationTable(ReservationModel reservation, List<int> tableID)
+    {
 
+        // Unassign collected reservations
+        UnassignTable(reservation.Id);
+        // Assign new tables
+        foreach (var table_id in tableID)
+        {
+            AssignTable(table_id, reservation);
+        }
+
+
+        // Write updated reservations to storage
+        TableAccess.WriteAllTables(_tables);
+    }
+    public List<ReservationModel> ModifyableReservations(int client_id)
+    {
+
+        return _reservations.Where(reservation => reservation.Status == "Ongoing" &&
+        reservation.ClientID == client_id &&
+        reservation.Date.Date >= DateTime.Today.AddHours(48))
+        .ToList();
+    }
+    public ReceiptModel ModifyReceipt(ReservationModel reservation, List<(FoodMenuModel, int)>? foodOrdered)
+    {
+        ReceiptModel receipt = GetReceiptById(reservation.Id);
+        if (receipt == null)
+        {
+            return null;
+        }
+        receipt.Date = reservation.Date;
+        receipt.TimeSlot = reservation.TimeSlot;
+        receipt.TableID = string.Join(",", reservation.TableID);
+        receipt.TypeOfReservation = reservation.TypeOfReservation;
+        if (foodOrdered != null)
+        {
+            receipt.OrderedFood = foodOrdered;
+        }
+        ReceiptAccess.WriteAllReceipts(_receipts);
+        return receipt;
+    }
 
 }
 

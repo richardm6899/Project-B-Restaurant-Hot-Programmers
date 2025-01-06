@@ -1,4 +1,5 @@
 
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Globalization;
 using System.Runtime.CompilerServices;
@@ -18,6 +19,7 @@ static class Reservation
 {
     static private ReservationLogic reservationlogic = new();
     static private RestaurantLogic restaurantLogic = new();
+    static private AccountsLogic accountsLogic = new();
 
     // displays table restaurant
 
@@ -70,8 +72,201 @@ static class Reservation
             }
         }
     }
+    private static void Regular(string name, int clientID, string number, string email)
+    {
+        int cost = 50;
+        string typeofreservation;
+        DateTime Date = default;
+        string TimeSlot = "";
+        int HowMany = 0;
+        int progress = 0;
+        bool running = true;
+        while (running)
+        {
+            // user gets asked with how many people are and check is done
+            if (progress == 0)
+            {
+                HowMany = Reservation.HowManyCheck("Regular");
+                if (HowMany > 0)
+                {
+                    progress = 20;
+                }
+                else if (HowMany == 0)
+                {
 
-    public static void ResOrderFood(List<int> TableID, string name, int clientID, int HowMany, DateTime Date, string typeofreservation, string TimeSlot, string number, string email, int cost)
+                    break;
+                }
+
+
+            }
+
+
+            // user gets to choose timeslot of reservation
+            else if (progress == 20)
+            {
+                TimeSlot = Reservation.TimeSlot();
+                System.Console.WriteLine("----------------------------------------");
+                if (TimeSlot == "Return")
+                {
+                    progress = 0;
+                }
+                else if (TimeSlot == "Quit")
+                {
+                    break;
+                }
+                else
+                {
+                    progress = 40;
+                }
+            }
+
+
+            else if (progress == 40)
+            {
+                Date = Reservation.ChooseDate(TimeSlot, HowMany, "Regular", false);
+                if (Date != default)
+                {
+                    progress = 60;
+                }
+                else
+                {
+                    progress = 20;
+                }
+
+            }
+
+            // available table check
+            // happens down here to not override other methods (DisplayCalendarReservation)
+
+            else if (progress == 60)
+            {
+                AvailableTablesRegular(Date, TimeSlot, HowMany);
+                // User gets shown restaurant and is shown what tables 
+                System.Console.WriteLine("Where would you like to sit.\nChoose the table id of the table.");
+
+                List<int> TableID = [Reservation.DisplayRestaurant(Date, TimeSlot, HowMany)];
+
+
+
+                if (TableID[0] != 0)
+                {
+
+                    bool TableChoice = DisplayChosenSeats(TableID);
+                    System.Console.WriteLine("-----------------------------------------");
+                    System.Console.WriteLine(reservationlogic.displayTable(TableID[0]));
+
+
+                    if (TableChoice)
+                    {
+                        Reservation.ResOrderFood(TableID, name, clientID, HowMany, Date, "Regular", TimeSlot, number, email, cost);
+
+                        ReservationLogic.AvailableTables.Clear();
+                        Console.Clear();
+                        break;
+
+
+
+                    }
+
+
+                }
+                else
+                {
+                    progress = 40;
+                }
+
+            }
+
+
+        }
+
+    }
+
+    private static void HotSeat(string name, int clientID, string number, string email)
+    {
+        ReservationAccess.LoadAllReservations();
+        TableAccess.LoadAllTables();
+        reservationlogic.AddHotSeatsAvailableTables();
+        bool running = true;
+        int progress = 0;
+        int cost = 60;
+
+        DateTime Date = default;
+        string TimeSlot = "";
+        int HowMany = 0;
+        // user gets to choose timeslot of reservation
+        // user gets asked with how many people are and check is done
+        while (running)
+        {
+            if (progress == 0)
+            {
+                HowMany = Reservation.HowManyCheck("HotSeat");
+                if (HowMany > 0)
+                {
+                    progress = 20;
+                }
+                else if (HowMany == 0)
+                {
+
+                    break;
+                }
+            }
+            // user gets to choose timeslot of reservation
+            else if (progress == 20)
+            {
+                TimeSlot = Reservation.TimeSlot();
+                System.Console.WriteLine("----------------------------------------");
+                if (TimeSlot == "Return")
+                {
+                    progress = 0;
+                }
+                else if (TimeSlot == "Quit")
+                {
+                    break;
+                }
+                else
+                {
+                    progress = 40;
+                }
+            }
+            else if (progress == 40)
+            {
+                Date = Reservation.ChooseDate(TimeSlot, HowMany, "HotSeat", false);
+                if (Date != default)
+                {
+                    progress = 60;
+                }
+                else
+                {
+                    progress = 20;
+                }
+
+            }
+
+            else if (progress == 60)
+            {
+
+                AvailableTablesHotSeat(Date, TimeSlot);
+
+                List<int> tableIDs = ReservationLogic.ChooseSeats(HowMany);
+                bool TableChoice = DisplayChosenSeats(tableIDs);
+                if (TableChoice)
+                {
+                    Reservation.ResOrderFood(tableIDs, name, clientID, HowMany, Date, "HotSeat", TimeSlot, number, email, cost);
+
+                    ReservationLogic.AvailableTables.Clear();
+                    Console.Clear();
+                    break;
+                }
+                else if (TableChoice == false)
+                {
+
+                    progress = 40;
+                }
+            }
+        }
+    }
+    private static void ResOrderFood(List<int> TableID, string name, int clientID, int HowMany, DateTime Date, string typeofreservation, string TimeSlot, string number, string email, int cost)
     {
         string foodorder = "Would you like to order food in advance?";
         System.Console.WriteLine("-----------------------------------------");
@@ -297,6 +492,7 @@ static class Reservation
         }
     }
 
+    // could be put somehwere else
     public static string AdminShowReservations()
     {
         List<string> ongoingReservations = reservationlogic.DisplayAllOngoingReservations();
@@ -349,7 +545,7 @@ static class Reservation
     }
 
 
-    // Reservation hotseat/regular-------------------
+    // Reservation Calender/Restaurant Display-------------------
     private static void PrintCalendar(int year, int month, int selectedDay, List<DateTime> maxCapDays, List<DateTime> maxTimeSlot)
     {
 
@@ -425,7 +621,7 @@ static class Reservation
     }
     // calender logic
 
-    public static string DisplayCalendarReservation(string timeslotid, int amount, string typeofreservation)
+    private static string DisplayCalendarReservation(string timeslotid, int amount, string typeofreservation, bool modify)
     {
 
         List<DateTime> maxCapDays = reservationlogic.MaxCapDays();
@@ -470,7 +666,10 @@ static class Reservation
                     return "Sorry, We are closed on this day";
                 }
 
-
+                else if (Convert.ToDateTime(returnDate) < DateTime.Today.AddHours(48) && modify)
+                {
+                    return "You can only modify a reservation for 48 hours in advance";
+                }
                 else
                 {
                     return returnDate;
@@ -479,7 +678,7 @@ static class Reservation
             }
             if (key == ConsoleKey.Escape)
             {
-                return "20";
+                return "Return";
             }// Return selected date
             // Return a default value to indicate cancellation
 
@@ -509,95 +708,8 @@ static class Reservation
         }
         return "";
     }
-    public static bool DisplayChosenSeats(List<int> chosenseats)
-    {
-        // Initialize restaurant layout using a List of Lists
-        var RestaurantLayout = new List<List<string>>
-    {
-        new() {"[  K  ]","[  K  ]","[  K  ]","[R:1  ]","[R:2  ]","[  T  ]","[  T  ]","[H:16 ]","[H:17 ]"},
-        new() {"[R:3  ]","[R:4  ]","[R:5  ]","[R:6  ]","[R:7  ]","[     ]","[     ]","[R:14 ]","[H:18 ]",},
-        new() {"[R:8  ]","[R:9  ]","[R:10 ]","[     ]","[     ]","[     ]","[     ]","[R:15 ]","[H:19 ]" },
-        new() {"[R:11 ]","[R:12 ]","[R:13 ]","[  E  ]","[  E  ]","[H:23 ]","[H:22 ]","[H:21 ]","[H:20 ]" }
-    };
 
-        bool running = true;
-        while (running)
-        {
-            // Console.Clear();
-
-            // Render the layout
-            Console.ForegroundColor = ConsoleColor.DarkYellow;
-            System.Console.WriteLine("You will be seated at the yellow seat(s)");
-            Console.ForegroundColor = ConsoleColor.Red;
-            System.Console.WriteLine("[X] These Tables are already booked for this timeslot");
-            Console.ForegroundColor = ConsoleColor.White;
-            System.Console.WriteLine("---------------------------------------------------------");
-            for (int row = 0; row < RestaurantLayout.Count; row++)
-            {
-                for (int col = 0; col < RestaurantLayout[row].Count; col++)
-                {
-                    string table = RestaurantLayout[row][col];
-
-                    if (table.Contains("H"))
-                    {
-                        string id = table.Split(":")[1].Trim(']').Trim();
-                        if (chosenseats.Contains(Convert.ToInt32(id)))
-                        {
-                            Console.ForegroundColor = ConsoleColor.DarkYellow;
-                        }
-                        else
-                        {
-                            Console.ForegroundColor = ConsoleColor.Red;
-                            table = "[  X  ]";
-                        }
-                        Console.Write(table);
-                    }
-                    else if (table.Contains("R"))
-                    {
-                        string id = table.Split(":")[1].Trim(']').Trim(); ;
-                        if (chosenseats.Contains(Convert.ToInt32(id)))
-                        {
-                            Console.ForegroundColor = ConsoleColor.DarkYellow;
-                        }
-                        else
-                        {
-                            Console.ForegroundColor = ConsoleColor.Red;
-                            table = "[  X  ]";
-                        }
-                        Console.Write(table);
-                    }
-                    else
-                    {
-                        Console.ForegroundColor = ConsoleColor.Gray;
-                        Console.Write(table);
-                    }
-
-                    Console.ResetColor();
-                    Console.Write(" "); // Add spacing between items
-                }
-                Console.WriteLine(); // Move to the next row
-            }
-
-            // Instructions
-            Console.WriteLine("\n-------------------------------------------------------");
-            System.Console.WriteLine("Hit Enter if you want to confirm your seat, hit Escape to choose an other preferences");
-
-            // Read key input
-            var key = Console.ReadKey(true).Key;
-
-
-            // Exit on Esc
-            if (key == ConsoleKey.Escape)
-                return false;
-            if (key == ConsoleKey.Enter)
-            {
-                return true;
-            }
-
-        }
-        return true;
-    }
-    public static string Choice(string prompt, string[] opt)
+    private static string Choice(string prompt, string[] opt)
     {
         int selectedIndex = 0;  // Start with "Yes" as the default selection
         string[] options = opt;
@@ -644,7 +756,7 @@ static class Reservation
         }
     }
 
-    public static void DisplayOptions(string[] options, int selectedIndex)
+    private static void DisplayOptions(string[] options, int selectedIndex)
     {
         for (int i = 0; i < options.Length; i++)
         {
@@ -661,16 +773,18 @@ static class Reservation
             }
         }
     }
-    public static int DisplayRestaurant()
+    private static int DisplayRestaurant(DateTime Date, string timeslot, int amount)
     {
         // Initialize restaurant layout using a List of Lists
         var RestaurantLayout = new List<List<string>>
     {
-        new() {"[  K  ]","[  K  ]","[  K  ]","[R:1  ]","[R:2  ]","[  T  ]","[  T  ]","[H:16 ]","[H:17 ]"},
-        new() {"[R:3  ]","[R:4  ]","[R:5  ]","[R:6  ]","[R:7  ]","[     ]","[     ]","[R:14 ]","[H:18 ]",},
-        new() {"[R:8  ]","[R:9  ]","[R:10 ]","[     ]","[     ]","[     ]","[     ]","[R:15 ]","[H:19 ]" },
-        new() {"[R:11 ]","[R:12 ]","[R:13 ]","[  E  ]","[  E  ]","[H:23 ]","[H:22 ]","[H:21 ]","[H:20 ]" }
+        new() {"[  K  ]","[  K  ]","[  K  ]","[  K  ]","[  K  ]","[  K  ]","[  K  ]","[H:23 ]","[  T  ]"},
+        new() {"[H:16 ]","[H:17 ]","[H:18 ]","[H:19 ]","[H:20 ]","[H:21 ]","[H:22 ]","[R:14 ]","[     ]",},
+        new() {"[     ]","[     ]","[     ]","[     ]","[     ]","[     ]","[     ]","[R:15 ]","[     ]" },
+        new() {"[R:1  ]","[R:2  ]","[R:3  ]","[R:4  ]","[     ]","[R:9  ]","[     ]","[     ]","[     ]" },
+        new() {"[R:5  ]","[R:6  ]","[R:7  ]","[R:8  ]","[  E  ]","[R:10 ]","[R:11 ]","[R:12 ]","[R:13 ]" }
     };
+
 
         List<string> availableTableIDs = new List<string>() { };
         foreach (var table in ReservationLogic.AvailableTables)
@@ -691,8 +805,11 @@ static class Reservation
             Console.ForegroundColor = ConsoleColor.Magenta;
             System.Console.WriteLine("(H)otSeats Cost an extra 10 € on top of your 50 € deposit");
             Console.ForegroundColor = ConsoleColor.Red;
-            System.Console.WriteLine("[X] These Tables are already booked for this timeslot");
+            System.Console.WriteLine("[X] These Tables are not available for this timeslot");
             Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine($"Amount of people [{amount}]");
+            Console.WriteLine($"Timeslot [{timeslot}]");
+            Console.WriteLine($"Date [{Date.ToShortDateString()}]");
             System.Console.WriteLine("---------------------------------------------------------");
             for (int row = 0; row < RestaurantLayout.Count; row++)
             {
@@ -782,10 +899,99 @@ static class Reservation
         }
         return 0;
     }
+    private static bool DisplayChosenSeats(List<int> chosenseats)
+    {
+        // Initialize restaurant layout using a List of Lists
+        var RestaurantLayout = new List<List<string>>
+    {
+        new() {"[  K  ]","[  K  ]","[  K  ]","[  K  ]","[  K  ]","[  K  ]","[  K  ]","[H:23 ]","[  T  ]"},
+        new() {"[H:16 ]","[H:17 ]","[H:18 ]","[H:19 ]","[H:20 ]","[H:21 ]","[H:22 ]","[R:14 ]","[     ]",},
+        new() {"[     ]","[     ]","[     ]","[     ]","[     ]","[     ]","[     ]","[R:15 ]","[     ]" },
+        new() {"[R:1  ]","[R:2  ]","[R:3  ]","[R:4  ]","[     ]","[R:9  ]","[     ]","[     ]","[     ]" },
+        new() {"[R:5  ]","[R:6  ]","[R:7  ]","[R:8  ]","[  E  ]","[R:10 ]","[R:11 ]","[R:12 ]","[R:13 ]" }
+    };
+
+        bool running = true;
+        while (running)
+        {
+            Console.Clear();
+
+            // Render the layout
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            System.Console.WriteLine("You will be seated at the yellow seat(s)");
+            Console.ForegroundColor = ConsoleColor.Red;
+            System.Console.WriteLine("[X] These Tables are already booked for this timeslot");
+            Console.ForegroundColor = ConsoleColor.White;
+            System.Console.WriteLine("---------------------------------------------------------");
+            for (int row = 0; row < RestaurantLayout.Count; row++)
+            {
+                for (int col = 0; col < RestaurantLayout[row].Count; col++)
+                {
+                    string table = RestaurantLayout[row][col];
+
+                    if (table.Contains("H"))
+                    {
+                        string id = table.Split(":")[1].Trim(']').Trim();
+                        if (chosenseats.Contains(Convert.ToInt32(id)))
+                        {
+                            Console.ForegroundColor = ConsoleColor.DarkYellow;
+                        }
+                        else
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            table = "[  X  ]";
+                        }
+                        Console.Write(table);
+                    }
+                    else if (table.Contains("R"))
+                    {
+                        string id = table.Split(":")[1].Trim(']').Trim(); ;
+                        if (chosenseats.Contains(Convert.ToInt32(id)))
+                        {
+                            Console.ForegroundColor = ConsoleColor.DarkYellow;
+                        }
+                        else
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            table = "[  X  ]";
+                        }
+                        Console.Write(table);
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.Write(table);
+                    }
+
+                    Console.ResetColor();
+                    Console.Write(" "); // Add spacing between items
+                }
+                Console.WriteLine(); // Move to the next row
+            }
+
+            // Instructions
+            Console.WriteLine("\n-------------------------------------------------------");
+            System.Console.WriteLine("Hit Enter if you want to confirm your seat, hit Escape to choose an other preferences");
+
+            // Read key input
+            var key = Console.ReadKey(true).Key;
+
+
+            // Exit on Esc
+            if (key == ConsoleKey.Escape)
+                return false;
+            if (key == ConsoleKey.Enter)
+            {
+                return true;
+            }
+
+        }
+        return true;
+    }
 
     // reservation steps
     // how many check -----------------
-    public static int HowManyCheck(string typeofreservation)
+    private static int HowManyCheck(string typeofreservation)
     {
         string[] nums = [];
         if (typeofreservation == "Regular")
@@ -799,8 +1005,9 @@ static class Reservation
         string HowManycheck = Choice("\nFor how many people? We have a max of 6 per table.\n----------------------------------------", nums);
         if (int.TryParse(HowManycheck, out int HowMany))
         {
-
+            Console.ForegroundColor = ConsoleColor.Green;
             System.Console.WriteLine($"{HowMany} person(s) to be seated");
+            Console.ResetColor();
             System.Console.WriteLine("[enter]");
             Console.ReadLine();
             Console.Clear();
@@ -810,6 +1017,7 @@ static class Reservation
         }
         else if (HowManycheck == "Quit")
         {
+
             System.Console.WriteLine("Goodbye....");
             System.Console.WriteLine("[enter]");
             Console.ReadLine();
@@ -819,7 +1027,7 @@ static class Reservation
         return 0;
 
     }
-    public static string TimeSlot()
+    private static string TimeSlot()
     {
         string[] timeslots = ["Lunch (12:00 - 14:00)", "Dinner 1 (17:00 - 19:00)", "Dinner 2 (19:00 - 21:00)", "Dinner 3 (21:00 - 23:00)", "Return", "Quit"];
         string TimeSlot = Choice("\nWhat TimeSlot would you prefer: \n----------------------------------------\nPress 'Return' to go back to choosing amount of people.\n", timeslots);
@@ -840,7 +1048,9 @@ static class Reservation
         else
         {
             //    check if valid time slot
+            Console.ForegroundColor = ConsoleColor.Green;
             System.Console.WriteLine($"Time slot {TimeSlot} chosen.");
+            Console.ResetColor();
             System.Console.WriteLine("[enter]");
             System.Console.ReadLine();
             Console.Clear();
@@ -849,24 +1059,23 @@ static class Reservation
 
         }
     }
-    public static DateTime ChooseDate(string TimeSlot, int HowMany, string type)
+    private static DateTime ChooseDate(string TimeSlot, int HowMany, string type, bool modify)
     {
         // calender gets shown with all available dates 
         bool DateCheck = true;
         while (DateCheck)
         {
-            System.Console.WriteLine(@"'You can only book 3 months in advanced'");
-            // check if valid date
 
-            string UncheckedDate = DisplayCalendarReservation(TimeSlot, HowMany, type);
+            string UncheckedDate = DisplayCalendarReservation(TimeSlot, HowMany, type, modify);
             if (DateTime.TryParse(UncheckedDate, out DateTime Date))
             {
                 //checks if user filled in date not before today and not farther than 3 months in the future
                 // can be more personalised in terms of what the user filled in wrong by making returns numbers
                 if (reservationlogic.IsValidDate(Date))
                 {
-
-                    System.Console.WriteLine(Date + "chosen");
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    System.Console.WriteLine(Date.ToShortDateString() + " chosen");
+                    Console.ResetColor();
                     System.Console.WriteLine("[enter]");
                     System.Console.ReadLine();
                     return Date;
@@ -875,120 +1084,47 @@ static class Reservation
                 }
                 else
                 {
+                    Console.ForegroundColor = ConsoleColor.Red;
                     System.Console.WriteLine("Invalid date entered. Try again");
+                    Console.ResetColor();
                     System.Console.WriteLine("[enter]");
                     System.Console.ReadLine();
                 }
             }
             // if it is equal to 20 means that they want to go back to timeslot chocie
-            else if (int.TryParse(UncheckedDate, out int num) && num == 20)
+            else if (UncheckedDate == "Return" && modify == false)
             {
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
                 System.Console.WriteLine("Going back to timeslot choice");
+                Console.ResetColor();
                 System.Console.WriteLine("[enter]");
                 System.Console.ReadLine();
                 Console.Clear();
                 return default;
             }
-            else
+            else if (UncheckedDate == "Return" && modify == true)
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 System.Console.WriteLine(UncheckedDate);
+                Console.ResetColor();
                 System.Console.WriteLine("[enter]");
                 System.Console.ReadLine();
+                return default;
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                System.Console.WriteLine(UncheckedDate);
+                Console.ResetColor();
+                System.Console.WriteLine("[enter]");
+                System.Console.ReadLine();
+
             }
         }
         return default;
     }
-    public static void HotSeat(string name, int clientID, string number, string email)
-    {
-        ReservationAccess.LoadAllReservations();
-        TableAccess.LoadAllTables();
-        reservationlogic.AddHotSeatsAvailableTables();
-        bool running = true;
-        int progress = 0;
-        int cost = 60;
 
-        DateTime Date = default;
-        string TimeSlot = "";
-        int HowMany = 0;
-        // user gets to choose timeslot of reservation
-        // user gets asked with how many people are and check is done
-        while (running)
-        {
-            if (progress == 0)
-            {
-                HowMany = Reservation.HowManyCheck("HotSeat");
-                if (HowMany > 0)
-                {
-                    progress = 20;
-                }
-                else if (HowMany == 0)
-                {
-
-                    break;
-                }
-            }
-            // user gets to choose timeslot of reservation
-            else if (progress == 20)
-            {
-                TimeSlot = Reservation.TimeSlot();
-                System.Console.WriteLine("----------------------------------------");
-                if (TimeSlot == "Return")
-                {
-                    progress = 0;
-                }
-                else if (TimeSlot == "Quit")
-                {
-                    break;
-                }
-                else
-                {
-                    progress = 40;
-                }
-            }
-            else if (progress == 40)
-            {
-                Date = Reservation.ChooseDate(TimeSlot, HowMany, "HotSeat");
-                if (Date != default)
-                {
-                    progress = 60;
-                }
-                else
-                {
-                    progress = 20;
-                }
-
-            }
-
-            else if (progress == 60)
-            {
-
-                AvailableTablesHotSeat(Date, TimeSlot);
-                foreach (var i in ReservationLogic.AvailableTables)
-                {
-                    System.Console.WriteLine(i.Id);
-                }
-                List<int> tableIDs = ReservationLogic.ChooseSeats(HowMany);
-                bool TableChoice = DisplayChosenSeats(tableIDs);
-                if (TableChoice)
-                {
-                    Reservation.ResOrderFood(tableIDs, name, clientID, HowMany, Date, "HotSeat", TimeSlot, number, email, cost);
-
-                    ReservationLogic.AvailableTables.Clear();
-                    Console.Clear();
-                    break;
-                }
-                else if (TableChoice == false)
-                {
-
-                    progress = 40;
-                }
-
-            }
-
-
-        }
-    }
-    public static int AvailableTablesHotSeat(DateTime Date, string TimeSlot)
+    private static int AvailableTablesHotSeat(DateTime Date, string TimeSlot)
     {
         ReservationLogic.AvailableTables.Clear();
         reservationlogic.AddHotSeatsAvailableTables();
@@ -996,116 +1132,9 @@ static class Reservation
         return ReservationLogic.AvailableTables.Count;
 
     }
-    public static void Regular(string name, int clientID, string number, string email)
-    {
-        int cost = 50;
-        string typeofreservation;
-        DateTime Date = default;
-        string TimeSlot = "";
-        int HowMany = 0;
-        int progress = 0;
-        bool running = true;
-        while (running)
-        {
-            // user gets asked with how many people are and check is done
-            if (progress == 0)
-            {
-                HowMany = Reservation.HowManyCheck("Regular");
-                if (HowMany > 0)
-                {
-                    progress = 20;
-                }
-                else if (HowMany == 0)
-                {
-
-                    break;
-                }
 
 
-            }
-
-
-            // user gets to choose timeslot of reservation
-            else if (progress == 20)
-            {
-                TimeSlot = Reservation.TimeSlot();
-                System.Console.WriteLine("----------------------------------------");
-                if (TimeSlot == "Return")
-                {
-                    progress = 0;
-                }
-                else if (TimeSlot == "Quit")
-                {
-                    break;
-                }
-                else
-                {
-                    progress = 40;
-                }
-            }
-
-
-            else if (progress == 40)
-            {
-                Date = Reservation.ChooseDate(TimeSlot, HowMany, "Regular");
-                if (Date != default)
-                {
-                    progress = 60;
-                }
-                else
-                {
-                    progress = 20;
-                }
-
-            }
-
-            // available table check
-            // happens down here to not override other methods (DisplayCalendarReservation)
-
-            else if (progress == 60)
-            {
-                AvailableTablesRegular(Date, TimeSlot, HowMany);
-                // User gets shown restaurant and is shown what tables 
-                System.Console.WriteLine("Where would you like to sit.\nChoose the table id of the table.");
-
-                List<int> TableID = [Reservation.DisplayRestaurant()];
-
-                bool TableIdValid = true;
-
-                if (TableIdValid)
-                {
-
-                    bool TableChoice = DisplayChosenSeats(TableID);
-                    System.Console.WriteLine("-----------------------------------------");
-                    System.Console.WriteLine(reservationlogic.displayTable(TableID[0]));
-
-
-                    if (TableChoice)
-                    {
-                        Reservation.ResOrderFood(TableID, name, clientID, HowMany, Date, "Regular", TimeSlot, number, email, cost);
-
-                        ReservationLogic.AvailableTables.Clear();
-                        Console.Clear();
-                        break;
-
-
-
-                    }
-                    else if (TableChoice == false)
-                    {
-                        progress = 40;
-                    }
-
-                }
-
-            }
-
-
-        }
-
-    }
-
-    public static int AvailableTablesRegular(DateTime Date, string TimeSlot, int HowMany)
+    private static int AvailableTablesRegular(DateTime Date, string TimeSlot, int HowMany)
     {
         ReservationLogic.AvailableTables.Clear();
         reservationlogic.AddRegularSeats(HowMany);
@@ -1145,136 +1174,58 @@ static class Reservation
     // // ask floor to make a function that displays all reservations and details and returns an id of the reservation that i want to modify
 
 
-    public static void ModifyReservation(string name, int clientID, string number, string email)
+    public static void ModifyReservation(int clientID)
     {
+
         bool running = true;
-        int progressamount = 0;
-        int progresstimeslot = 0;
-        int progressdate = 0;
-        string timeSlot = "";
-        DateTime Date;
         while (running)
         {
-
-            string[] choicearr1 = ["Yes", "No"];
+            string[] choicearr1 = { "Yes", "No" };
             string choice = Choice("Would you like to modify your reservation", choicearr1);
             if (choice == "Yes")
             {
-                if (reservationlogic.DisplayReservations(clientID) != "")
+
+                List<ReservationModel> reservations = reservationlogic.ModifyableReservations(clientID);
+                if (reservations.Count > 0)
                 {
 
-                    System.Console.WriteLine(reservationlogic.DisplayReservations(clientID));
-                    System.Console.WriteLine("Which reservation would you like to modify\nEnter ID:");
-                    System.Console.WriteLine("-----------------------------------------------------");
-                    int reservationID = Convert.ToInt32(System.Console.ReadLine());
-
-
-                    if (reservationlogic.GetReservationById(reservationID) != null)
+                    List<string> ReservationsInformation = new();
+                    foreach (ReservationModel res in reservations)
                     {
-                        // arrange reservtion and tables if hot seat reservation
-                        ReservationModel reservation = reservationlogic.GetReservationById(reservationID);
-                        List<TableModel> tables = reservationlogic.GetTablesByReservation(reservation);
+                        ReservationsInformation.Add($"Reservation ID: {res.Id}\nHow many People: {res.HowMany}\nDate: {res.Date}\nTime slot: {res.TimeSlot}\nStatus: {res.Status}\n");
+                    }
+                    int IndexSelectedReservation = HelperPresentation.ChooseItem("Select reservation for more information:", ReservationsInformation, 0);
 
-                        string[] choiceArr = ["Amount of people", "Timeslot", "Date", "Food and drinks"];
+                    ReservationModel reservation = reservations[IndexSelectedReservation];
+
+                    System.Console.WriteLine("Selected Reservation: ");
+                    System.Console.WriteLine($@"Reservation ID: {reservation.Id}");
+
+
+                    if (reservation != null && reservations.Select(res => res.Id).Contains(reservation.Id))
+                    {
+                        List<TableModel> tables = reservationlogic.GetTablesByReservation(reservation);
+                        string[] choiceArr = { "Amount of people", "Timeslot", "Date", "Food and drinks", "Return" };
                         string choice1 = Choice("What would you like to modify of this reservation", choiceArr);
+
                         if (choice1 == "Amount of people")
                         {
-                            System.Console.WriteLine("choice amount of people you want to sit with.");
-                            string[] amountarr = ["1", "2", "3", "4", "5", "6", "7", "8", "Quit"];
-                            string newAmount = Choice("Choose new amount: ", amountarr);
-                            //  check if new amount is bigger or smaller than table capacity
-
-                            System.Console.WriteLine("----------------------------------------------- 1");
-                            if (Convert.ToInt32(newAmount) < tables[0].MinCapacity || Convert.ToInt32(newAmount) > tables[0].MaxCapacity)
-                            {
-                                System.Console.WriteLine("Whole lotta change bound to happen");
-                                System.Console.WriteLine("[Enter]");
-                                System.Console.ReadLine();
-                                // // order: 
-                                // // timeslot 
-                                while(progressamount == 0)
-                                {
-                                    timeSlot = TimeSlot();
-                                    System.Console.WriteLine("----------------------------------------");
-                                    if (timeSlot == "Return")
-                                    {
-                                        System.Console.WriteLine("Not possible");
-                                    }
-                                    else if (timeSlot == "Quit")
-                                    {
-                                        break;
-                                    }
-                                    else
-                                    {
-                                        progressamount = 10;
-                                    }
-                                }
-                                // date (calender)
-                                while(progressamount == 10)
-                                {
-                                    Date = Reservation.ChooseDate(timeSlot, Convert.ToInt32(newAmount), "Regular");
-                                    if (Date != default)
-                                    {
-                                        progressamount = 0;
-                                    }
-                                    else
-                                    {
-                                        progressamount = 20;
-                                    }
-                                }
-
-                                // // choose table
-                                // // confirmation -- show receipt and write to all jsons
-
-
-
-                            }
-                            else
-                            {
-                                reservationlogic.ModifyReservation(reservation, Convert.ToInt32(newAmount));
-                                System.Console.WriteLine("Amount of people Modified");
-                                System.Console.WriteLine("[enter]");
-                                System.Console.ReadLine();
-
-                            }
+                            ModifyAmountOfPeople(reservation, tables);
                         }
                         else if (choice1 == "Timeslot")
                         {
-                            timeSlot = TimeSlot();
-                            reservationlogic.ModifyReservation(reservation, timeSlot);
-                            System.Console.WriteLine("TimeSlot Modified.");
-                            System.Console.WriteLine("[enter]");
-                            System.Console.ReadLine();
-                            // // order: 
-                            // // date (calender)
-                            // // choose table
-                            // // confirmation -- show receipt and write to all jsons
-
-
+                            ModifyTimeslot(reservation);
                         }
                         else if (choice1 == "Date")
                         {
-                            // // order: 
-                            // // choose table
-                            // // confirmation -- show receipt and write to all jsons
-                            DateTime date = ChooseDate(reservation.TimeSlot, reservation.HowMany, reservation.TypeOfReservation);
-                            reservationlogic.ModifyReservation(reservation, date);
-                            System.Console.WriteLine("TimeSlot Modified");
-                            System.Console.WriteLine("[enter]");
-                            System.Console.ReadLine();
+                            ModifyDate(reservation);
                         }
                         else if (choice1 == "Food and drinks")
                         {
-
+                            ModifyFoodAndDrinks(reservation);
                         }
                     }
-                    else
-                    {
-                        System.Console.WriteLine("Invalid id given");
-                        System.Console.WriteLine("[Enter]");
-                        System.Console.ReadLine();
 
-                    }
                 }
                 else
                 {
@@ -1293,4 +1244,502 @@ static class Reservation
             }
         }
     }
+
+    private static void ModifyAmountOfPeople(ReservationModel reservation, List<TableModel> tables)
+    {
+        int progress = 0;
+        bool modify = true;
+        string timeSlot = "";
+        DateTime Date = default;
+        string type = "";
+        int amount = 0;
+        int minCapacity;
+        int maxCapacity;
+        while (modify)
+        {
+            if (progress == 0)
+            {
+                System.Console.WriteLine("Choose the amount of people you want to sit with.");
+                string[] amountarr = { "1", "2", "3", "4", "5", "6", "7", "8", "Quit" };
+                string newAmount = Choice("Choose new amount: ", amountarr);
+                if (int.TryParse(newAmount, out amount))
+                {
+                    progress = 10;
+
+                }
+                else if (newAmount == "Quit")
+                {
+                    System.Console.WriteLine("Goodbye....");
+                    System.Console.WriteLine("[enter]");
+                    System.Console.ReadLine();
+                    break;
+                }
+
+            }
+            else if (progress == 10)
+            {
+                // if you have a hotseat and go to 1 gonna be bad cause table max min cap == 1
+                if (reservation.TypeOfReservation == "HotSeat")
+                {
+                    minCapacity = reservation.HowMany;
+                    maxCapacity = reservation.HowMany;
+                }
+                else
+                {
+                    minCapacity = tables[0].MinCapacity;
+                    maxCapacity = tables[0].MaxCapacity;
+                }
+                if (amount < minCapacity || amount > maxCapacity)
+                {
+                    if (amount < 7) // hotseats only  if above 6
+                    {
+                        System.Console.WriteLine("Looks like you're going to need  choose another timeslot ,date and seat for your reservation");
+                        string[] TypeOfReservation = ["Regular", "HotSeat", "Return", "Cancel"];
+                        type = Choice("What type of reservation would you like to make", TypeOfReservation);
+                        if (type == "Return")
+                        {
+                            progress = 0;
+                        }
+                        else if (type == "Cancel")
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            progress = 20;
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            System.Console.WriteLine($"{type} reservation chosen");
+                            Console.ResetColor();
+                            System.Console.WriteLine("[enter]");
+                            System.Console.ReadLine();
+
+                        }
+                    }
+                    else if (amount > 6)
+                    {
+
+
+                        type = "HotSeat";
+                        progress = 20;
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        System.Console.WriteLine($"{type} reservation chosen");
+                        Console.ResetColor();
+                        System.Console.WriteLine("[enter]");
+                        System.Console.ReadLine();
+
+
+                    }
+
+
+                }
+                else if (amount == reservation.HowMany)
+                {
+                    System.Console.WriteLine("Amount of people is the same as the current reservation.");
+                    System.Console.WriteLine("[enter]");
+                    System.Console.ReadLine();
+                    progress = 0;
+
+                }
+                else
+                {
+                    reservationlogic.ModifyReservation(reservation, amount);
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    System.Console.WriteLine("Amount of people Modified");
+                    Console.ResetColor();
+                    System.Console.WriteLine("[enter]");
+                    List<(FoodMenuModel, int)> foodcart = reservationlogic.GetReceiptById(reservation.Id).OrderedFood ?? [];//receipts 
+                    List<string> Allergies = accountsLogic.GetById(reservation.ClientID).Allergies ?? [];
+                    ReceiptModel receipt = reservationlogic.ModifyReceipt(reservation, foodcart);
+                    System.Console.WriteLine(reservationlogic.DisplayReceipt(receipt, [Allergies]));
+                    System.Console.ReadLine();
+                    Console.Clear();
+                    return;
+                }
+            }
+            // // order: 
+            // // timeslot
+            else if (progress == 20)
+            {
+                timeSlot = Reservation.TimeSlot();
+                System.Console.WriteLine("----------------------------------------");
+
+                if (timeSlot == "Return")
+                {
+                    progress = 10;
+                }
+                else if (timeSlot == "Quit")
+                {
+                    break;
+                }
+                else
+                {
+                    progress = 30;
+                }
+
+            }
+            // // date (calender)
+            else if (progress == 30)
+            {
+                // i want all the tables to be removed from the tables and then added again when done with this part
+
+                reservationlogic.TemporarilyUnassignTable(reservation.Id);
+                Date = Reservation.ChooseDate(timeSlot, amount, type, true);
+
+                if (Date != default)
+                {
+                    progress = 40;
+
+                }
+                else if (Date == default)
+                {
+                    progress = 20;
+                    reservationlogic.AssignTables(reservation.TableID, reservation);
+                }
+
+
+            }
+            else if (progress == 40)
+            {
+                // // choose table
+                if (type == "Regular")
+                {
+                    int madereservation = RegularModifyReservation(reservation, Date, timeSlot, amount, type, reservation.FoodOrdered);
+                    if (50 == madereservation)
+                    {
+                        // print reservation and make sure all receipt is modified aswell
+
+
+                        break;
+
+                    }
+                    else if (30 == madereservation)
+                    {
+                        progress = 30;
+                    }
+                    // modify recept or just make another one
+                }
+                else if (type == "HotSeat")
+                {
+                    int madereservation = HotSeatModifyReservation(reservation, Date, timeSlot, amount, type, reservation.FoodOrdered);
+                    if (50 == madereservation)
+                    {
+
+                        // print reservation and make sure all receipt is modified aswell
+                        break;
+
+                    }
+                    else if (30 == madereservation)
+                    {
+                        progress = 30;
+                    }
+                }
+
+            }
+
+        }
+    }
+
+
+
+    private static void ModifyTimeslot(ReservationModel reservation)
+    {
+        int progress = 20;
+        bool modify = true;
+        string timeSlot = "";
+        DateTime Date = default;
+        string type = reservation.TypeOfReservation;
+        int amount = reservation.HowMany;
+        while (modify)
+        {
+
+            // // order: 
+            // // timeslot
+            if (progress == 20)
+            {
+                timeSlot = Reservation.TimeSlot();
+                if (timeSlot == "Return")
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    System.Console.WriteLine("Cant go back");
+                    Console.ResetColor();
+                    System.Console.WriteLine("[enter]");
+                    Console.ReadLine();
+                }
+                else if (timeSlot == "Quit")
+                {
+                    break;
+                }
+                else if (timeSlot == reservation.TimeSlot)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    System.Console.WriteLine("You have already chosen this timeslot");
+                    Console.ResetColor();
+                    System.Console.WriteLine("[enter]");
+                    Console.ReadLine();
+
+                }
+                else
+                {
+                    progress = 30;
+                }
+
+            }
+            // // date (calender)
+            else if (progress == 30)
+            {
+                reservationlogic.TemporarilyUnassignTable(reservation.Id);
+                Date = Reservation.ChooseDate(timeSlot, amount, type, true);
+
+                if (Date != default)
+                {
+                    progress = 40;
+
+                }
+                else if (Date == default)
+                {
+                    progress = 20;
+                    reservationlogic.AssignTables(reservation.TableID, reservation);
+                }
+
+
+            }
+            else if (progress == 40)
+            {
+                // // choose table
+                if (type == "Regular")
+                {
+                    int madereservation = RegularModifyReservation(reservation, Date, timeSlot, amount, type, reservation.FoodOrdered);
+                    if (50 == madereservation)
+                    {
+                        // print reservation and make sure all receipt is modified aswell
+
+                        break;
+                    }
+                    else if (30 == madereservation)
+                    {
+                        progress = 30;
+                    }
+                    // modify recept or just make another one
+                }
+                else if (type == "HotSeat")
+                {
+                    int madereservation = HotSeatModifyReservation(reservation, Date, timeSlot, amount, type, reservation.FoodOrdered);
+                    if (50 == madereservation)
+                    {
+                        // print reservation and make sure all receipt is modified aswell
+                        break;
+
+                    }
+                    else if (30 == madereservation)
+                    {
+                        progress = 30;
+                    }
+                }
+
+            }
+            // // confirmation -- show receipt and write to all json
+        }
+    }
+
+
+    private static void ModifyDate(ReservationModel reservation)
+    {
+        int progress = 30;
+        bool modify = true;
+        string timeSlot = reservation.TimeSlot;
+        DateTime Date = default;
+        string type = reservation.TypeOfReservation;
+        int amount = reservation.HowMany;
+        while (modify)
+        {
+
+            // // date (calender)
+            if (progress == 30)
+            {
+
+                reservationlogic.TemporarilyUnassignTable(reservation.Id);
+                Date = Reservation.ChooseDate(timeSlot, amount, type, true);
+
+                if (Date != default)
+                {
+                    progress = 40;
+
+                }
+                else if (Date == default)
+                {
+                    break;
+                }
+
+
+            }
+            else if (progress == 40)
+            {
+                // // choose table
+                if (type == "Regular")
+                {
+                    int madereservation = RegularModifyReservation(reservation, Date,timeSlot, amount, type, reservation.FoodOrdered);
+                    if (50 == madereservation)
+                    {
+                        // print reservation and make sure all receipt is modified aswell
+
+                        break;
+                    }
+                    else if (30 == madereservation)
+                    {
+                        progress = 30;
+                    }
+                    // modify recept or just make another one
+                }
+                else if (type == "HotSeat")
+                {
+                    int madereservation = HotSeatModifyReservation(reservation, Date, timeSlot, amount, type, reservation.FoodOrdered);
+                    if (50 == madereservation)
+                    {
+                        // print reservation and make sure all receipt is modified aswell
+                        break;
+
+                    }
+                    else if (30 == madereservation)
+                    {
+                        progress = 30;
+                    }
+                }
+
+            }
+            // // confirmation -- show receipt and write to all json
+        }
+    }
+
+    private static void ModifyFoodAndDrinks(ReservationModel reservation)
+    {
+        // Implement logic to modify food and drinks
+
+        bool modify = true;
+        while (modify)
+        {
+            if (reservation.FoodOrdered)
+            {
+
+                List<(FoodMenuModel, int)> foodcart = reservationlogic.GetReceiptById(reservation.Id).OrderedFood ?? [];//receipts 
+                List<string> Allergies = accountsLogic.GetById(reservation.ClientID).Allergies ?? [];
+                var (foodCart, allergies) = FoodOrderMenu.ModifyFood(foodcart, [Allergies]);
+                // // choose table
+                System.Console.WriteLine("Reservation Modified");
+                System.Console.WriteLine("-----------------------------------------");
+                System.Console.WriteLine("This is your receipt");
+
+                ReceiptModel receipt = reservationlogic.ModifyReceipt(reservation, foodCart);
+                System.Console.WriteLine(reservationlogic.DisplayReceipt(receipt, allergies));
+                System.Console.WriteLine("[enter]");
+                Console.ReadLine();
+                break;
+
+
+            }
+            else
+            {
+
+                string[] yn = { "Yes", "No" };
+                string choice = Choice("You had no food ordered.\nWould you like to add food to your reservation", yn);
+                if (choice == "Yes")
+                {
+                    reservation.FoodOrdered = true;
+                    ReservationAccess.WriteAllReservations(reservationlogic._reservations);
+
+                }
+                else
+                {
+                    System.Console.WriteLine("Goodbye....");
+                    System.Console.WriteLine("[enter]");
+                    System.Console.ReadLine();
+                    break;
+                }
+            }
+        }
+    }
+
+    private static int RegularModifyReservation(ReservationModel reservation, DateTime Date, string TimeSlot, int HowMany, string type, bool foodOrdered)
+    {
+
+        AvailableTablesRegular(Date, TimeSlot, HowMany);
+        // User gets shown restaurant and is shown what tables 
+        System.Console.WriteLine("Where would you like to sit.\nChoose the table id of the table.");
+
+        List<int> TableID = [DisplayRestaurant(Date, TimeSlot, HowMany)];
+
+
+        if (TableID[0] > 0)
+        {
+
+            bool TableChoice = DisplayChosenSeats(TableID);
+            System.Console.WriteLine("-----------------------------------------");
+            System.Console.WriteLine(reservationlogic.displayTable(TableID[0]));
+
+
+            if (TableChoice)
+            {
+                reservationlogic.ModifyReservation(reservation, TableID, HowMany, Date, TimeSlot, type, foodOrdered);
+                reservationlogic.ModifyReservationTable(reservation, TableID);
+                System.Console.WriteLine("Reservation Modified");
+                System.Console.WriteLine("-----------------------------------------");
+                System.Console.WriteLine("This is your receipt");
+                List<(FoodMenuModel, int)> foodcart = reservationlogic.GetReceiptById(reservation.Id).OrderedFood ?? [];//receipts 
+                List<string> Allergies = accountsLogic.GetById(reservation.ClientID).Allergies ?? [];
+                ReceiptModel receipt = reservationlogic.ModifyReceipt(reservation, foodcart);
+                System.Console.WriteLine(reservationlogic.DisplayReceipt(receipt, [Allergies]));
+                System.Console.WriteLine("[enter]");
+                Console.ReadLine();
+                ReservationLogic.AvailableTables.Clear();
+                return 50;
+
+            }
+            else if (TableChoice == false)
+            {
+                return 30;
+            }
+
+        }
+        return 30;
+    }
+    private static int HotSeatModifyReservation(ReservationModel reservation, DateTime Date, string TimeSlot, int HowMany, string type, bool foodOrdered)
+    {
+        AvailableTablesHotSeat(Date, TimeSlot);
+
+        List<int> tableIDs = ReservationLogic.ChooseSeats(HowMany);
+        bool TableChoice = DisplayChosenSeats(tableIDs);
+        if (TableChoice)
+        {
+
+            reservationlogic.ModifyReservation(reservation, tableIDs, HowMany, Date, TimeSlot, type, foodOrdered);
+            reservationlogic.ModifyReservationTable(reservation, tableIDs);
+            System.Console.WriteLine("Reservation Modified");
+            System.Console.WriteLine("-----------------------------------------");
+            System.Console.WriteLine("This is your receipt");
+
+            List<(FoodMenuModel, int)> foodcart = reservationlogic.GetReceiptById(reservation.Id).OrderedFood ?? [];//receipts 
+            List<string> Allergies = accountsLogic.GetById(reservation.ClientID).Allergies ?? [];
+            ReceiptModel receipt = reservationlogic.ModifyReceipt(reservation, foodcart);
+            System.Console.WriteLine(reservationlogic.DisplayReceipt(receipt, [Allergies]));
+
+            System.Console.WriteLine("[enter]");
+            Console.ReadLine();
+            ReservationLogic.AvailableTables.Clear();
+
+            return 50;
+
+
+
+        }
+        else if (TableChoice == false)
+        {
+            return 30;
+        }
+
+        return 30;
+    }
+
+
+
+
 }
+
