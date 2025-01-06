@@ -52,6 +52,7 @@ class FoodOrderLogic
             //If the item is already in the cart, increase the quantity
             cart.Remove(existingItem);
             cart.Add((item, existingItem.Item2 + 1));
+
         }
         else
         {
@@ -59,9 +60,33 @@ class FoodOrderLogic
             cart.Add((item, 1));
         }
     }
-
-    public void AddCartToReceipt(List<(FoodMenuModel, int)> cart )
+    public static void RemoveFromCart(List<(FoodMenuModel, int)> cart, FoodMenuModel item)
     {
-        
+        //Retrieves the first element in the cart if nothing retrieves the default outcome
+        var existingItem = cart.FirstOrDefault(f => f.Item1 == item);
+        if (existingItem.Item1 != null)
+        {
+            //If the item is already in the cart, increase the quantity
+            cart.Remove(existingItem);
+
+            cart.Add((item, existingItem.Item2 > 0 ? existingItem.Item2 - 1 : 0));
+            // when quantity == 0 
+            if (existingItem.Item2 == 0)
+            {
+                cart.Remove(existingItem);
+            }
+
+
+        }
+        else
+        {
+            //remove the item with quantity of 0
+            cart.Remove((item, existingItem.Item2 > 0 ? existingItem.Item2 - 1 : 0));
+        }
+    }
+
+    public void AddCartToReceipt(List<(FoodMenuModel, int)> cart)
+    {
+
     }
 }

@@ -504,11 +504,11 @@ public class ReservationLogic
             return return_string;
         }
     }
-    public ReceiptModel GetReceiptById(int id)
+    public ReceiptModel GetReceiptById(int reservationid)
     {
         foreach (var receipt in _receipts)
         {
-            if (receipt.ReservationId == id)
+            if (receipt.ReservationId == reservationid)
             {
                 return receipt;
             }
@@ -903,6 +903,10 @@ public class ReservationLogic
     public ReceiptModel ModifyReceipt(ReservationModel reservation, List<(FoodMenuModel, int)>? foodOrdered)
     {
         ReceiptModel receipt = GetReceiptById(reservation.Id);
+        if (receipt == null)
+        {
+            return null;
+        }
         receipt.Date = reservation.Date;
         receipt.TimeSlot = reservation.TimeSlot;
         receipt.TableID = string.Join(",", reservation.TableID);

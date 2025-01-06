@@ -1,4 +1,5 @@
 
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Globalization;
 using System.Runtime.CompilerServices;
@@ -903,7 +904,7 @@ static class Reservation
         // Initialize restaurant layout using a List of Lists
         var RestaurantLayout = new List<List<string>>
     {
-         new() {"[  K  ]","[  K  ]","[  K  ]","[  K  ]","[  K  ]","[  K  ]","[  K  ]","[H:23 ]","[  T  ]"},
+        new() {"[  K  ]","[  K  ]","[  K  ]","[  K  ]","[  K  ]","[  K  ]","[  K  ]","[H:23 ]","[  T  ]"},
         new() {"[H:16 ]","[H:17 ]","[H:18 ]","[H:19 ]","[H:20 ]","[H:21 ]","[H:22 ]","[R:14 ]","[     ]",},
         new() {"[     ]","[     ]","[     ]","[     ]","[     ]","[     ]","[     ]","[R:15 ]","[     ]" },
         new() {"[R:1  ]","[R:2  ]","[R:3  ]","[R:4  ]","[     ]","[R:9  ]","[     ]","[     ]","[     ]" },
@@ -1004,7 +1005,7 @@ static class Reservation
         string HowManycheck = Choice("\nFor how many people? We have a max of 6 per table.\n----------------------------------------", nums);
         if (int.TryParse(HowManycheck, out int HowMany))
         {
-            Console.ForegroundColor = ConsoleColor.Green;   
+            Console.ForegroundColor = ConsoleColor.Green;
             System.Console.WriteLine($"{HowMany} person(s) to be seated");
             Console.ResetColor();
             System.Console.WriteLine("[enter]");
@@ -1016,7 +1017,7 @@ static class Reservation
         }
         else if (HowManycheck == "Quit")
         {
-          
+
             System.Console.WriteLine("Goodbye....");
             System.Console.WriteLine("[enter]");
             Console.ReadLine();
@@ -1064,7 +1065,7 @@ static class Reservation
         bool DateCheck = true;
         while (DateCheck)
         {
-          
+
             string UncheckedDate = DisplayCalendarReservation(TimeSlot, HowMany, type, modify);
             if (DateTime.TryParse(UncheckedDate, out DateTime Date))
             {
@@ -1391,7 +1392,7 @@ static class Reservation
                 }
 
             }
-            // // confirmation -- show receipt and write to all json
+        
         }
     }
 
@@ -1553,8 +1554,50 @@ static class Reservation
     {
         // Implement logic to modify food and drinks
 
+        bool modify = true;
+        while (modify)
+        {
+            if (reservation.FoodOrdered)
+            {
 
+                List<(FoodMenuModel, int)> foodcart = reservationlogic.GetReceiptById(reservation.Id).OrderedFood ?? new List<(FoodMenuModel, int)>();//receipts 
+                List<string> Allergies = accountsLogic.GetById(reservation.ClientID).Allergies ?? new  List<string>();
+                var (foodCart, allergies) = FoodOrderMenu.ModifyFood(foodcart, [Allergies]);
+                // // choose table
+                System.Console.WriteLine("Reservation Modified");
+                System.Console.WriteLine("-----------------------------------------");
+                System.Console.WriteLine("This is your receipt");
+
+                ReceiptModel receipt = reservationlogic.ModifyReceipt(reservation, foodCart);
+                System.Console.WriteLine(reservationlogic.DisplayReceipt(receipt, allergies));
+                System.Console.WriteLine("[enter]");
+                Console.ReadLine();
+                break;
+
+
+            }
+            else
+            {
+
+                string[] yn = { "Yes", "No" };
+                string choice = Choice("You had no food ordered.\nWould you like to add food to your reservation", yn);
+                if (choice == "Yes")
+                {
+                    reservation.FoodOrdered = true;
+                    ReservationAccess.WriteAllReservations(reservationlogic._reservations);
+
+                }
+                else
+                {
+                    System.Console.WriteLine("Goodbye....");
+                    System.Console.WriteLine("[enter]");
+                    System.Console.ReadLine();
+                    break;
+                }
+            }
+        }
     }
+
     private static int RegularModifyReservation(ReservationModel reservation, DateTime Date, string TimeSlot, int HowMany, string type, bool foodOrdered)
     {
 
@@ -1582,16 +1625,11 @@ static class Reservation
                 System.Console.WriteLine("This is your receipt");
 
                 ReceiptModel receipt = reservationlogic.ModifyReceipt(reservation, null);
-                System.Console.WriteLine(reservationlogic.DisplayReceipt(receipt, [accountsLogic.GetById(reservation.ClientID).Allergies]));
+                System.Console.WriteLine(reservationlogic.DisplayReceipt(receipt, null));
                 System.Console.WriteLine("[enter]");
                 Console.ReadLine();
                 ReservationLogic.AvailableTables.Clear();
-
-
                 return 50;
-
-
-
 
             }
             else if (TableChoice == false)
@@ -1618,7 +1656,7 @@ static class Reservation
             System.Console.WriteLine("This is your receipt");
 
             ReceiptModel receipt = reservationlogic.ModifyReceipt(reservation, null);
-            System.Console.WriteLine(reservationlogic.DisplayReceipt(receipt, [accountsLogic.GetById(reservation.ClientID).Allergies]));
+            System.Console.WriteLine(reservationlogic.DisplayReceipt(receipt, null));
             System.Console.WriteLine("[enter]");
             Console.ReadLine();
             ReservationLogic.AvailableTables.Clear();

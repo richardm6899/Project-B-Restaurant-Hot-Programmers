@@ -46,14 +46,14 @@ public class TestReservationLogic
         Assert.AreEqual(reservationlogic.GetTableById(reservationlogic._tables.Last().Id), table);
 
     }
-    // [TestMethod]
-    // public void TestGetReservationByID()
-    // {
-    //     ReservationLogic reservationlogic = new();
-    //     ReservationModel reservation = reservationlogic.Create_reservation(10, "Yapper", 10, 10, DateTime.Today, "Regular", null);
-    //     Assert.AreEqual(reservationlogic.GetReservationById(reservationlogic._reservations.Last().Id).Id, reservation.Id);
+    [TestMethod]
+    public void TestGetReservationByID()
+    {
+        ReservationLogic reservationlogic = new();
+        ReservationModel reservation = reservationlogic.Create_reservation(10, "Yapper", 10, 10, DateTime.Today, "Regular", null, false);
+        Assert.AreEqual(reservationlogic.GetReservationById(reservationlogic._reservations.Last().Id).Id, reservation.Id);
 
-    // }
+    }
 
     [TestMethod]
     // today
@@ -98,40 +98,40 @@ public class TestReservationLogic
 
     }
 
-    // [TestMethod]
-    //:)
-    // public void RemoveReservationByID_ValidreservationId_RemovedReservation()
-    // {
-    //     //arrange
-    //     ReservationLogic reservationlogic = new();
+    [TestMethod]
+    // :)
+    public void RemoveReservationByID_ValidreservationId_RemovedReservation()
+    {
+        //arrange
+        ReservationLogic reservationlogic = new();
 
-    //     TableModel table = reservationlogic.Createtable(10, 9, 10, "Regular");
-    //     // create reservation and assign to table
-    //     ReservationModel reservation = reservationlogic.Create_reservation(table.Id, "Yapper", 10, 10, DateTime.Today, "Regular", null);
+        TableModel table = reservationlogic.Createtable(10, 9, 10, "Regular");
+        // create reservation and assign to table
+        ReservationModel reservation = reservationlogic.Create_reservation(table.Id, "Yapper", 10, 10, DateTime.Today, "Regular", null, false);
 
-    //     //act
-    //     reservationlogic.RemoveReservationByID(reservation.Id);
+        //act
+        reservationlogic.RemoveReservationByID(reservation.Id);
 
-    //     //assert
-    //     Assert.AreEqual(false, table.Reservations.Contains(reservation));
-    // }
-    // [TestMethod]
-    // //:(
-    // public void RemoveReservationByID_ValidreservationId_null()
-    // {
-    //     //arrange
-    //     ReservationLogic reservationlogic = new();
+        //assert
+        Assert.AreEqual(false, table.Reservations.Contains(reservation));
+    }
+    [TestMethod]
+    //:(
+    public void RemoveReservationByID_ValidreservationId_null()
+    {
+        //arrange
+        ReservationLogic reservationlogic = new();
 
-    //     TableModel table = reservationlogic.Createtable(10, 9, 10, "Regular");
-    //     // create reservation and assign to table
-    //     ReservationModel reservation = reservationlogic.Create_reservation(table.Id, "Yapper", 10, 10, DateTime.Today, "Regular", null);
+        TableModel table = reservationlogic.Createtable(10, 9, 10, "Regular");
+        // create reservation and assign to table
+        ReservationModel reservation = reservationlogic.Create_reservation(table.Id, "Yapper", 10, 10, DateTime.Today, "Regular", null, false);
 
-    //     //act
-    //     ReservationModel remove = reservationlogic.RemoveReservationByID(2000);
+        //act
+        ReservationModel remove = reservationlogic.RemoveReservationByID(2000000000);
 
-    //     //assert
-    //     Assert.AreEqual(null, remove);
-    // }
+        //assert
+        Assert.AreEqual(null, remove);
+    }
 
     [TestMethod]
     // type of reservation --------
@@ -207,8 +207,265 @@ public class TestReservationLogic
     //     //assert
     //     Assert.AreEqual(null, TimeSlot);
     // }
-}
 
+
+    [TestMethod]
+    // UnassignTable
+    // :)
+    public void UnassignTable_ValidReservationID_RemovedReservation()
+    {
+        //arrange
+        ReservationLogic reservationlogic = new();
+
+        TableModel table = reservationlogic.Createtable(10, 9, 10, "Regular");
+        // create reservation and assign to table
+        ReservationModel reservation = reservationlogic.Create_reservation(table.Id, "Yapper", 10, 10, DateTime.Today, "Regular", null, false);
+
+        //act
+        reservationlogic.UnassignTable(reservation.Id);
+
+        //assert
+
+        Assert.AreEqual(true, table.Reservations.Count == 0);
+    }
+    [TestMethod]
+    // UnassignTable
+    // :(
+    public void UnassignTable_InvalidReservationID_RemovedReservation()
+    {
+        //arrange
+        ReservationLogic reservationlogic = new();
+
+        TableModel table = reservationlogic.Createtable(10, 9, 10, "Regular");
+        // create reservation and assign to table
+        ReservationModel reservation = reservationlogic.Create_reservation(table.Id, "Yapper", 10, 10, DateTime.Today, "Regular", null, false);
+
+        //act
+        reservationlogic.UnassignTable(0);
+
+        //assert
+        Assert.AreEqual(true, table.Reservations.Count == 1);
+    }
+
+
+    [TestMethod]
+    public void CreateReceipt()
+    {
+        //arrange
+        ReservationLogic reservationlogic = new();
+
+        TableModel table = reservationlogic.Createtable(10, 9, 10, "Regular");
+        // create reservation and assign to table
+        ReservationModel reservation = reservationlogic.Create_reservation(table.Id, "Yapper", 10, 10, DateTime.Today, "Regular", null, false);
+
+        //act
+        ReceiptModel receipt = reservationlogic.CreateReceipt(reservation, 100, "10", "haha", [], [table.Id]);
+
+        //assert
+        Assert.AreEqual(reservationlogic._receipts.Last().Id, receipt.Id);
+    }
+
+    [TestMethod]
+    public void GetReceiptById_ValidreservationID_Receipt()
+    // :)
+    {
+        //arrange
+        ReservationLogic reservationlogic = new();
+
+        TableModel table = reservationlogic.Createtable(10, 9, 10, "Regular");
+        // create reservation and assign to table
+        ReservationModel reservation = reservationlogic.Create_reservation(table.Id, "Yapper", 10, 10, DateTime.Today, "Regular", null, false);
+        ReceiptModel receipt = reservationlogic.CreateReceipt(reservation, 100, "10", "haha", [], [table.Id]);
+
+        //act
+        ReceiptModel getReceipt = reservationlogic.GetReceiptById(reservation.Id);
+
+        //assert
+        Assert.AreEqual(receipt.Id, getReceipt.Id);
+    }
+    [TestMethod]
+    public void GetReceiptById_InvalidReservationID_Null()
+    // :(
+    {
+        //arrange
+        ReservationLogic reservationlogic = new();
+
+        TableModel table = reservationlogic.Createtable(10, 9, 10, "Regular");
+        // create reservation and assign to table
+        ReservationModel reservation = reservationlogic.Create_reservation(table.Id, "Yapper", 10, 10, DateTime.Today, "Regular", null, false);
+        ReceiptModel receipt = reservationlogic.CreateReceipt(reservation, 100, "10", "haha", [], [table.Id]);
+
+        //act
+        ReceiptModel getReceipt = reservationlogic.GetReceiptById(0);
+
+        //assert
+        Assert.AreEqual(null, getReceipt);
+    }
+
+    // [TestMethod]
+    // public void CheckDate()
+    // {
+    //     //arrange
+    //     ReservationLogic reservationlogic = new();
+
+    //     //act
+    //     bool check = reservationlogic.CheckDate(DateTime.Today);
+
+    //     //assert
+    //     Assert.AreEqual(true, check);
+    // }
+
+
+    [TestMethod]
+    public void Create_reservationHotSeat()
+    {
+        //arrange
+        ReservationLogic reservationlogic = new();
+
+        TableModel table = reservationlogic.Createtable(10, 9, 10, "HotSeat");
+        // create reservation and assign to table
+        ReservationModel reservation = reservationlogic.Create_reservation(table.Id, "Yapper", 10, 10, DateTime.Today, "HotSeat", null, false);
+
+        //act
+        ReceiptModel receipt = reservationlogic.CreateReceipt(reservation, 100, "10", "haha", [], [table.Id]);
+
+        //assert
+        Assert.AreEqual(reservationlogic._receipts.Last().Id, receipt.Id);
+    }
+    [TestMethod]
+    public void CreateReceiptHotSeat()
+    {
+        //arrange
+        ReservationLogic reservationlogic = new();
+
+        TableModel table = reservationlogic.Createtable(10, 9, 10, "HotSeat");
+        // create reservation and assign to table
+        ReservationModel reservation = reservationlogic.Create_reservation(table.Id, "Yapper", 10, 10, DateTime.Today, "HotSeat", null, false);
+
+        //act
+        ReceiptModel receipt = reservationlogic.CreateReceipt(reservation, 100, "10", "haha", [], [table.Id]);
+
+        //assert
+        Assert.AreEqual(reservationlogic._receipts.Last().Id, receipt.Id);
+    }
+
+    [TestMethod]
+
+    public void GetTablesByReservation()
+    {
+        //arrange
+        ReservationLogic reservationlogic = new();
+
+        TableModel table = reservationlogic.Createtable(10, 9, 10, "HotSeat");
+        // create reservation and assign to table
+        ReservationModel reservation = reservationlogic.Create_reservation(table.Id, "Yapper", 10, 10, DateTime.Today, "HotSeat", null, false);
+
+        //act
+        List<TableModel> tables = reservationlogic.GetTablesByReservation(reservation);
+
+        //assert
+        Assert.AreEqual(table, tables[0]);
+    }
+
+    [TestMethod]
+    // :)
+    public void ModifyReservation_ValidInput_InfoChanged()
+    {
+        //arrange
+        ReservationLogic reservationlogic = new();
+
+        TableModel table = reservationlogic.Createtable(10, 9, 10, "HotSeat");
+        // create reservation and assign to table
+        ReservationModel reservation = reservationlogic.Create_reservation(table.Id, "Yapper", 10, 10, DateTime.Today, "HotSeat", null, false);
+
+        //act
+        reservationlogic.ModifyReservation(reservation, 10);
+        reservationlogic.ModifyReservation(reservation, DateTime.Today);
+        reservationlogic.ModifyReservation(reservation, "ola");
+
+        //assert
+        Assert.AreEqual(10, reservation.HowMany);
+        Assert.AreEqual(DateTime.Today, reservation.Date);
+        Assert.AreEqual("ola", reservation.TimeSlot);
+
+    }
+
+    [TestMethod]
+    // :)
+    public void ModifyReservation_InValidInput_InfoNotChanged()
+    {
+        //arrange
+        ReservationLogic reservationlogic = new();
+
+        TableModel table = reservationlogic.Createtable(10, 9, 10, "HotSeat");
+        // create reservation and assign to table
+        ReservationModel reservation = reservationlogic.Create_reservation(table.Id, "Yapper", 10, 10, DateTime.Today, "HotSeat", null, false);
+
+        //act
+        reservationlogic.ModifyReservation(reservation, 10.10);
+        reservationlogic.ModifyReservation(reservation, 'h');
+        reservationlogic.ModifyReservation(reservation, true);
+
+
+        //assert
+        Assert.AreEqual(reservation.HowMany, reservation.HowMany);
+        Assert.AreEqual(reservation.Date, reservation.Date);
+        Assert.AreEqual(reservation.TimeSlot, reservation.TimeSlot);
+
+    }
+
+    [TestMethod]
+    public void ModifyReservation()
+    {
+        //arrange
+        ReservationLogic reservationlogic = new();
+
+        TableModel table = reservationlogic.Createtable(10, 9, 10, "HotSeat");
+        // create reservation and assign to table
+        ReservationModel reservation = reservationlogic.Create_reservation(table.Id, "Yapper", 10, 10, DateTime.Today, "HotSeat", null, false);
+
+        //act
+        reservationlogic.ModifyReservation(reservation, [0], 0, DateTime.Today, "0", "0", false);
+
+
+        //assert
+        Assert.AreEqual(true, reservation.TableID.Contains(0));
+        Assert.AreEqual(0, reservation.HowMany);
+        Assert.AreEqual(DateTime.Today, reservation.Date);
+        Assert.AreEqual("0", reservation.TimeSlot);
+        Assert.AreEqual("0", reservation.TypeOfReservation);
+        Assert.AreEqual(false, reservation.FoodOrdered);
+    }
+
+
+//     [TestMethod]
+//     // ModifyReceipt
+//     public void ModifyReceipt()
+//     {
+//         // /arrange
+//         ReservationLogic reservationlogic = new();
+
+//         TableModel table = reservationlogic.Createtable(10, 9, 10, "HotSeat");
+//         // create reservation and assign to table
+//         ReservationModel reservation = reservationlogic.Create_reservation(table.Id, "Yapper", 10, 10, DateTime.Today, "HotSeat", "Yesterdat", false);
+//         reservationlogic.ModifyReservation(reservation, [0], 0, DateTime.Today, "0", "0", false);
+
+//         //act
+//         ReceiptModel receipt = reservationlogic.ModifyReceipt(reservation, null);
+//         // assert
+//         Assert.AreEqual(receipt.ReservationId,reservation.Id);
+//         Assert.AreEqual(receipt.ClientId,reservation.ClientID);
+//         Assert.AreEqual(receipt.Date, DateTime.Today);
+//         Assert.AreEqual(receipt.TimeSlot, "0");
+//         Assert.AreEqual(receipt.TypeOfReservation, "0");
+//         Assert.AreEqual(receipt.TableID, "0");
+       
+
+
+
+
+//     }
+}
 
 
 
