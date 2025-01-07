@@ -1,0 +1,16 @@
+[
+    {
+        "attendeeId": 1,
+        "clientId": 1,
+        "PeopleToAttend": 8,
+        "Cost": 100,
+        "eventId": 1
+    },
+    {
+        "attendeeId": 2,
+        "clientId": 2,
+        "PeopleToAttend": 5,
+        "Cost": 70,
+        "eventId": 2
+    }
+]

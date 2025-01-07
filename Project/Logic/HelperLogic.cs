@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 
-public class HelperLogic
+public static class HelperLogic
 {
     // check if given string is actually an integer, return true if is int
     public static bool CheckIfStringIsInt(string toCheck)
@@ -46,8 +46,17 @@ public class HelperLogic
     5. +\.: checks if there is a "." but because "." is a special character a "\" is needed 
     6. [^@\s]: same as 2. and 4. but checks after the "."
     7. +$: ends the match
-    */ 
+    */
 
+
+    public static string CreateFullName(string first, string infix, string last)
+    {
+        if (infix == null || infix == "")
+        {
+            return $"{first} {last}";
+        }
+        else return $"{first} {infix} {last}";
+    }
     // moved to HelperPresentation, but tested here
     // public static string DateTimeToReadableDate(DateTime dateTime) => dateTime.ToString("dd MMMM, yyyy");
 }

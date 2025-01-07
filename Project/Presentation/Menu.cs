@@ -11,15 +11,15 @@ static class Menu
             "Quit"
         };
         bool running_start = true;
-        int selectedIndex = 0;
+
         while (running_start)
         {
-
-            // Console.Clear(); Commented because it intervenes with how the user sees how much time he needs to wait to log in
+            int selectedIndex = 0;
+            Console.Clear();
             System.Console.WriteLine("Welcome to:");
             // ASCII art banner
             // Console.BackgroundColor = ConsoleColor.DarkBlue;
-            string mainprompt = @"
+            string mainPrompt = @"
  _    _   _____   _______       _____   ______       __      _______ 
 | |  | | |  _  | |__   __|     |  ___| |  ____|     /  \    |__   __|
 | |__| | | | | |    | |        | |___  | |____     / /\ \      | |   
@@ -28,7 +28,7 @@ static class Menu
 |_|  |_| |_____|    |_|        |_____| |______| /_/      \_\   |_|   ";
 
             // Display Menu and use arrow keys
-            MainMenuLogic.Selected(HelperPresentation.ChooseOption(mainprompt, options, selectedIndex));
+            MainMenuLogic.Selected(HelperPresentation.ChooseOption(mainPrompt, options, selectedIndex));
         }
     }
 }

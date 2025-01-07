@@ -27,7 +27,9 @@ class MainMenuLogic
                 Console.WriteLine("Goodbye...");
                 Console.WriteLine("[press Enter to quit]");
                 Console.ReadLine();
-                return false; // Exit the loop
+                break;
+
+          // Exit the loop
         }
         return true; // Keep running the menu
     }

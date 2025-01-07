@@ -1,305 +1,295 @@
 class ClientMenu
 {
     static private ReservationLogic reservationLogic = new ReservationLogic();
+    static private AccountsLogic accountsLogic = new();
     public static void Start(AccountModel acc, AccountsLogic accountsLogic)
     {
-        bool clientmenu = true;
-        while (clientmenu)
+        string[] options =
         {
-            System.Console.WriteLine("Welcome to the client menu.");
-            System.Console.WriteLine("-----------------------------------------");
-            Console.WriteLine("Welcome back " + acc.FullName);
-            System.Console.WriteLine("-----------------------------------------");
-            System.Console.WriteLine("Enter 1 to make a reservation.");
-            System.Console.WriteLine("Enter 2 to cancel a reservation.");
-            System.Console.WriteLine("Enter 3 to see your reservations.");
-            System.Console.WriteLine("Enter 4 to see the food menu.");
-            System.Console.WriteLine("Enter 5 to see the restaurant info.");
-            System.Console.WriteLine("Enter 6 to see your accounts data.");
-            System.Console.WriteLine("Enter 7 to modify your data.");
-            System.Console.WriteLine("Enter 8 to check your messages."); // check messages if reservation is cancelled
-            System.Console.WriteLine("Enter 9 to deactivate or delete account.");
-            System.Console.WriteLine("Enter 10 to log out");
+            "Make a Reservation.",
+            "Modify a Reservation.",
+            "Cancel a reservation.",
+            "See your Reservations.",
+            "See the food menu.",
+            "See the Restaurant info.",
+            "See your accounts data.",
+            "Modify your accounts data.",
+            "Check your Messages.",
+            "Deactivate or Delete your account.",
+            "Log out.",
+        };
+        bool clientMenu = true;
+        while (clientMenu)
+        {
+            int selectedIndex = 0;
+            Console.Clear();
+            string mainPrompt = @$"Welcome to the client menu.
+-----------------------------------------
+Welcome back {acc.FullName}
+-----------------------------------------";
+            selectedIndex = HelperPresentation.ChooseOption(mainPrompt, options, selectedIndex);
 
-            string user_logged_in_answer = System.Console.ReadLine();
-            switch (user_logged_in_answer)
+            switch (selectedIndex)
             {
                 // make reservation
                 //  public static void MakeReservation(string name, int clientID, string number, string email)
-                case "1":
-                    System.Console.WriteLine("Make reservation:");
-                    Reservation.MakeReservation(acc.FullName, acc.Id, acc.PhoneNumber, acc.EmailAddress);
+                case 0:
+                    Console.Clear();
+                    MakeReservation(acc);
+                    break;
 
+                case 1:
+                    // modify reservation
+
+                    Console.Clear();
+                    ModifyReservation(acc);
 
                     break;
                 // cancel reservation
-                case "2":
-                    System.Console.WriteLine("Cancel reservation");
-                    List<ReservationModel> toCheckOngoingReservations = reservationLogic.AllOngoingReservationsByID(acc.Id);
-                    if (toCheckOngoingReservations.Count() >= 0)
-                    {
-                        Reservation.CancelReservation(acc.Id);
-                    }
-                    else System.Console.WriteLine("You have no reservations on this account.");
+                case 2:
+
+                    Console.Clear();
+                    CancelReservation(acc);
                     break;
                 // see accounts reservation
-                case "3":
-                    System.Console.WriteLine("1. All reservations.");
-                    System.Console.WriteLine("2. All ongoing reservations.");
-                    System.Console.WriteLine("3. All past reservations");
-                    System.Console.WriteLine("4. All canceled reservations");
-                    System.Console.WriteLine("5. Search reservation by date.");
-                    System.Console.WriteLine("6. Return.");
-                    string user_reservation_answer = Console.ReadLine();
-                    switch (user_reservation_answer)
-                    {
-                        case "1":
 
-                            List<ReservationModel> Reservations = reservationLogic.DisplayAllReservationsByStatusAndID(acc.Id, null);
-                            foreach (ReservationModel reservation in Reservations)
-                            {
-                                Console.ForegroundColor = ConsoleColor.Red;
-                                System.Console.WriteLine("---------------------------------------------------");
-                                Console.ResetColor();
-                                System.Console.WriteLine($"Name: {reservation.Name}\nTable Id: {reservation.TableID[0]}\nAmount of people: {reservation.HowMany}\nDate: {reservation.Date.ToShortDateString()} {reservation.TimeSlot}\nStatus: {reservation.Status}\nType: {reservation.TypeOfReservation}");
-                            }
-                            Console.ReadKey();
-                            break;
-
-                        case "2":
-                            List<ReservationModel> ongoingReservations = reservationLogic.DisplayAllReservationsByStatusAndID(acc.Id, "Ongoing");
-                            if (ongoingReservations.Count() <= 0)
-                            {
-
-                                System.Console.WriteLine("You have no ongoing reservations.");
-                            }
-                            else
-                            {
-                                foreach (ReservationModel reservation in ongoingReservations)
-                                {
-                                    Console.ForegroundColor = ConsoleColor.Blue;
-                                    System.Console.WriteLine("---------------------------------------------------");
-                                    Console.ResetColor();
-                                    System.Console.WriteLine($"Name: {reservation.Name}\nTable Id: {reservation.TableID[0]}\nAmount of people: {reservation.HowMany}\nDate: {reservation.Date.ToShortDateString()} {reservation.TimeSlot}\nType: {reservation.TypeOfReservation}");
-                                }
-
-                            }
-                            Console.ReadKey();
-                            break;
-
-                        case "3":
-                            List<ReservationModel> pastReservations = reservationLogic.DisplayAllReservationsByStatusAndID(acc.Id, "Past");
-                            if (pastReservations.Count() <= 0)
-                            {
-                                System.Console.WriteLine("You have no past reservations.");
-                            }
-                            else
-                            {
-                                foreach (ReservationModel reservation in pastReservations)
-                                {
-                                    Console.ForegroundColor = ConsoleColor.Green;
-                                    System.Console.WriteLine("---------------------------------------------------");
-                                    Console.ResetColor();
-                                    System.Console.WriteLine($"Name: {reservation.Name}\nTable Id: {reservation.TableID[0]}\nAmount of people: {reservation.HowMany}\nDate: {reservation.Date.ToShortDateString()} {reservation.TimeSlot}\nType: {reservation.TypeOfReservation}");
-                                }
-
-                            }
-                            Console.ReadKey();
-                            break;
-
-                        case "4":
-                            List<ReservationModel> canceledReservations = reservationLogic.DisplayAllReservationsByStatusAndID(acc.Id, "Canceled");
-                            if (canceledReservations.Count() <= 0)
-                            {
-
-                              
-                                System.Console.WriteLine("You have no canceled reservations.");
-                            }
-                            else
-                            {
-                                foreach (ReservationModel reservation in canceledReservations)
-                                {
-                                    Console.ForegroundColor = ConsoleColor.DarkBlue;
-                                    System.Console.WriteLine("---------------------------------------------------");
-                                    Console.ResetColor();
-                                    System.Console.WriteLine($"Name: {reservation.Name}\nTable Id: {reservation.TableID[0]}\nAmount of people: {reservation.HowMany}\nDate: {reservation.Date.ToShortDateString()} {reservation.TimeSlot}\nType: {reservation.TypeOfReservation}");
-                                }
-
-                            }
-                            Console.ReadKey();
-                            break;
-
-                        case "5":
-                            bool client_searchesDate = true;
-                            do
-                            {
-                                System.Console.WriteLine("Enter date to look up dd/mm/yyyy");
-                                string UncheckedDate = Console.ReadLine();
-
-                                if (DateTime.TryParse(UncheckedDate, out DateTime date))
-                                {
-                                    List<ReservationModel> dateReservations = reservationLogic.DisplayAllReservationsByDateAndID(acc.Id, date);
-                                    foreach (ReservationModel reservation in dateReservations)
-                                    {
-                                        Console.ForegroundColor = ConsoleColor.DarkRed;
-                                        System.Console.WriteLine("---------------------------------------------------");
-                                        Console.ResetColor();
-                                        System.Console.WriteLine($"Name: {reservation.Name}\nTable Id: {reservation.TableID[0]}\nAmount of people: {reservation.HowMany}\nDate: {reservation.Date.ToShortDateString()} {reservation.TimeSlot}\nType: {reservation.TypeOfReservation}");
-                                    }
-                                    if (dateReservations.Count() == 0)
-                                    {
-                                        System.Console.WriteLine("No reservations found on this day.");
-                                    }
-                                    Console.ReadKey();
-                                    client_searchesDate = false;
-                                }
-                                else
-                                {
-                                    System.Console.WriteLine("Invalid input, please try again");
-                                }
-                            } while (client_searchesDate);
-                            break;
-
-                        case "6":
-                            break;
-
-                        default:
-                            System.Console.WriteLine("Invalid input");
-                            Start(acc, accountsLogic);
-                            break;
-
-                    }
+                case 3:
+                    Console.Clear();
+                    SeeReservations(acc);
                     break;
+
                 //  see the food menu
-                case "4":
+                case 4:
+                    Console.Clear();
                     FoodMenuDisplay.StartFoodMenu();
                     break;
+
                 // see restaurant info
-                case "5":
+                case 5:
+                    Console.Clear();
                     RestaurantInfo.Start();
                     break;
+
                 //  show account data
-                case "6":
-                    System.Console.WriteLine("Your accounts data: ");
-                    // full name
-                    System.Console.WriteLine("Name: " + acc.FullName);
-                    // age
-                    System.Console.WriteLine("Birthdate:" + acc.Birthdate.ToShortDateString());
-                    // email
-                    System.Console.WriteLine("Email: " + acc.EmailAddress);
-                    // phone numb
-                    System.Console.WriteLine("Phone number: " + acc.PhoneNumber);
-                    // pass
-                    System.Console.WriteLine("Password: " + acc.Password);
-                    // allergies
-                    if (acc.Allergies.Count() != 0)
-                    {
-                        System.Console.WriteLine("Allergies: ");
-                        foreach (string allergies in acc.Allergies)
-                        {
-                            System.Console.WriteLine(allergies);
-                        }
-                    }
-                    else System.Console.WriteLine("No allergies given");
-                    Console.ReadLine();
-
+                case 6:
+                    Console.Clear();
+                    SeeData(acc);
                     break;
+
                 // log out
-                case "7":
-                    ModifyData.Start(acc, accountsLogic);
-                    break;
-                case "8":
-                    System.Console.WriteLine("Messages:");
-                    if (MessageLogic.Inbox(acc.Id))
-                    {
-                        Console.WriteLine("You have 1 new message");
-                        Console.ReadLine();
-                        Console.WriteLine("[enter]");
-                        // foreach (var reservation in reservationLogic._reservations)
-                        // {
-                        Console.WriteLine($"Your reservation has been canceled");
-                        Console.ReadLine();
-                        Console.WriteLine("[enter]");
-                        Console.Clear();
-                        // }
-                    }
-                    else
-                    {
-                        Console.WriteLine("You have no new messages");
-                        Console.ReadLine();
-                        Console.WriteLine("[enter]");
-                        Console.Clear();
-                    }
+                case 7:
+                    Console.Clear();
+                    ModifyData.Start(acc);
                     break;
 
-                case "9":
-                    bool deactivateDeletingAccount = true;
-                    while (deactivateDeletingAccount)
-                    {
-                        System.Console.WriteLine("Enter 1 to deactivate account.");
-                        System.Console.WriteLine("Enter 2 to delete account.");
-                        System.Console.WriteLine("Enter 3 to return.");
-                        string userDeleteDeactivate = Console.ReadLine();
-                        switch (userDeleteDeactivate)
-                        {
-                            case "1":
-                                bool userDeactivate = HelperPresentation.YesOrNo("Are you sure you want to deactivate your account?");
-                                if (userDeactivate)
-                                {
-                                    System.Console.WriteLine("Please re-enter your password.");
-                                    string passToCheck = Console.ReadLine();
-                                    if (accountsLogic.ReCheckPassWord(acc, passToCheck))
-                                    {
-                                        accountsLogic.deactivateAccount(acc.Id);
-                                        System.Console.WriteLine("Account has been deactivated. You will be returned to the main menu.");
-                                        Console.ReadKey();
-                                        acc = null;
-                                        clientmenu = false;
-                                        Menu.Start();
-                                    }
-                                    System.Console.WriteLine("Incorrect password.");
-                                    deactivateDeletingAccount = false;
+                case 8:
+                    Console.Clear();
+                    Messages(acc);
 
-                                };
-                                break;
-
-                            case "2":
-                                bool userDelete = HelperPresentation.YesOrNo("Are you sure you want to delete your account?");
-                                if (userDelete)
-                                {
-                                    System.Console.WriteLine("Please re-enter your password.");
-                                    string passToCheck = Console.ReadLine();
-                                    if (accountsLogic.ReCheckPassWord(acc, passToCheck))
-                                    {
-                                        accountsLogic.deleteAccount(acc.Id);
-                                        System.Console.WriteLine("Account has been deleted. You will be returned to the main menu.");
-                                        Console.ReadKey();
-                                        acc = null;
-                                        clientmenu = false;
-                                        Menu.Start();
-                                    }
-                                    System.Console.WriteLine("Incorrect password.");
-                                    deactivateDeletingAccount = false;
-                                };
-                                break;
-
-                            case "3":
-                                deactivateDeletingAccount = false;
-                                break;
-
-                            default:
-                                System.Console.WriteLine("Invalid input.");
-                                break;
-                        }
-                    }
+                    break;
+                case 9:
+                    Console.Clear();
+                    DeleteDeactivate(acc);
                     break;
 
-
-                case "10":
+                case 10:
+                    Console.Clear();
                     acc = null;
-                    clientmenu = false;
+                    clientMenu = false;
                     Menu.Start();
                     break;
+            }
+        }
+    }
+
+
+    // case 0 make reservation
+    private static void MakeReservation(AccountModel acc)
+    {
+        System.Console.WriteLine("Make reservation:");
+        Reservation.MakeReservation(acc.FullName, acc.Id, acc.PhoneNumber, acc.EmailAddress);
+    }
+    private static void ModifyReservation(AccountModel acc)
+    {
+        System.Console.WriteLine("Modify reservation:");
+        Reservation.ModifyReservation(acc.Id);
+    }
+
+    // case 1 cancel reservation
+    private static void CancelReservation(AccountModel acc)
+    {
+        System.Console.WriteLine("Cancel reservation");
+        List<ReservationModel> toCheckOngoingReservations = reservationLogic.AllOngoingReservationsByID(acc.Id);
+        if (toCheckOngoingReservations.Count() >= 0)
+        {
+            Reservation.CancelReservation(acc.Id);
+        }
+        else System.Console.WriteLine("You have no reservations on this account.");
+
+    }
+
+    // case 2
+    private static void SeeReservations(AccountModel acc)
+    {
+        string[] options =
+        {
+            "All reservations.",
+            "All ongoing reservations.",
+            "All past reservations.",
+            "All canceled reservations.",
+            "Search reservation by date",
+            "Select reservation for more information",
+            "Return",
+
+        };
+
+        bool seeingReservations = true;
+
+        while (seeingReservations)
+        {
+            int selectedIndex = 0;
+
+            selectedIndex = HelperPresentation.ChooseOption("How would you like to see your reservations?", options, selectedIndex);
+
+            switch (selectedIndex)
+            {
+                case 0:
+
+                    List<ReservationModel> Reservations = reservationLogic.DisplayAllReservationsByStatusAndID(acc.Id, null);
+                    foreach (ReservationModel reservation in Reservations)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        System.Console.WriteLine("---------------------------------------------------");
+                        Console.ResetColor();
+                        System.Console.WriteLine($"Name: {reservation.Name}\nTable Id: {reservation.TableID[0]}\nAmount of people: {reservation.HowMany}\nDate: {reservation.Date.ToShortDateString()} {reservation.TimeSlot}\nStatus: {reservation.Status}\nType: {reservation.TypeOfReservation}");
+                    }
+                    Console.ReadKey();
+                    break;
+
+                case 1:
+                    List<ReservationModel> ongoingReservations = reservationLogic.DisplayAllReservationsByStatusAndID(acc.Id, "Ongoing");
+                    if (ongoingReservations.Count() <= 0)
+                    {
+                        System.Console.WriteLine("You have no ongoing reservations.");
+                        Console.ReadKey();
+                        break;
+                    }
+                    foreach (ReservationModel reservation in ongoingReservations)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                        System.Console.WriteLine("---------------------------------------------------");
+                        Console.ResetColor();
+                        System.Console.WriteLine($"Name: {reservation.Name}\nTable Id: {reservation.TableID[0]}\nAmount of people: {reservation.HowMany}\nDate: {reservation.Date.ToShortDateString()} {reservation.TimeSlot}\nType: {reservation.TypeOfReservation}");
+                    }
+                    Console.ReadKey();
+                    break;
+
+                case 2:
+                    List<ReservationModel> pastReservations = reservationLogic.DisplayAllReservationsByStatusAndID(acc.Id, "Past");
+                    if (pastReservations.Count() <= 0)
+                    {
+                        System.Console.WriteLine("You have no past reservations.");
+                        Console.ReadKey();
+                        break;
+                    }
+                    foreach (ReservationModel reservation in pastReservations)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        System.Console.WriteLine("---------------------------------------------------");
+                        Console.ResetColor();
+                        System.Console.WriteLine($"Name: {reservation.Name}\nTable Id: {reservation.TableID[0]}\nAmount of people: {reservation.HowMany}\nDate: {reservation.Date.ToShortDateString()} {reservation.TimeSlot}\nType: {reservation.TypeOfReservation}");
+                    }
+                    Console.ReadKey();
+                    break;
+
+                case 3:
+                    List<ReservationModel> canceledReservations = reservationLogic.DisplayAllReservationsByStatusAndID(acc.Id, "Canceled");
+                    if (canceledReservations.Count() <= 0)
+                    {
+                        System.Console.WriteLine("You have no canceled reservations.");
+                        Console.ReadKey();
+                        break;
+                    }
+                    foreach (ReservationModel reservation in canceledReservations)
+                    {
+                        Console.ForegroundColor = ConsoleColor.DarkBlue;
+                        System.Console.WriteLine("---------------------------------------------------");
+                        Console.ResetColor();
+                        System.Console.WriteLine($"Name: {reservation.Name}\nTable Id: {reservation.TableID[0]}\nAmount of people: {reservation.HowMany}\nDate: {reservation.Date.ToShortDateString()} {reservation.TimeSlot}\nType: {reservation.TypeOfReservation}");
+                    }
+                    Console.ReadKey();
+                    break;
+
+                case 4:
+                    bool client_searchesDate = true;
+                    do
+                    {
+                        System.Console.WriteLine("Enter date to look up dd/mm/yyyy");
+                        string? UncheckedDate = Console.ReadLine();
+
+                        if (DateTime.TryParse(UncheckedDate, out DateTime date))
+                        {
+                            List<ReservationModel> dateReservations = reservationLogic.DisplayAllReservationsByDateAndID(acc.Id, date);
+                            foreach (ReservationModel reservation in dateReservations)
+                            {
+                                Console.ForegroundColor = ConsoleColor.DarkRed;
+                                System.Console.WriteLine("---------------------------------------------------");
+                                Console.ResetColor();
+                                System.Console.WriteLine($"Name: {reservation.Name}\nTable Id: {reservation.TableID[0]}\nAmount of people: {reservation.HowMany}\nDate: {reservation.Date.ToShortDateString()} {reservation.TimeSlot}\nType: {reservation.TypeOfReservation}");
+                            }
+                            if (dateReservations.Count() == 0)
+                            {
+                                System.Console.WriteLine("No reservations found on this day.");
+                            }
+                            Console.ReadKey();
+                            client_searchesDate = false;
+                        }
+                        else
+                        {
+                            System.Console.WriteLine("Invalid input, please try again");
+                        }
+                    } while (client_searchesDate);
+                    break;
+
+                case 5:
+                    int reservationSelectedIndex = 0;
+                    List<ReservationModel> allReservations = reservationLogic.DisplayAllReservationsByStatusAndID(acc.Id, null);
+                    List<string> ReservationsInformation = new();
+                    foreach (ReservationModel reservation in allReservations)
+                    {
+                        ReservationsInformation.Add($"Reservation ID: {reservation.Id}\nHow many People: {reservation.HowMany}\nDate: {reservation.Date}\nTime slot: {reservation.TimeSlot}\nStatus: {reservation.Status}\n");
+                    }
+                    int IndexSelectedReservation = HelperPresentation.ChooseItem("Select reservation for more information:", ReservationsInformation, reservationSelectedIndex);
+
+                    ReservationModel selectedReservation = allReservations[IndexSelectedReservation];
+
+                    System.Console.WriteLine("Selected Reservation: ");
+                    System.Console.WriteLine($@"Reservation ID: {selectedReservation.Id},");
+                    System.Console.Write("Table Id/Ids: ");
+                    foreach (int ids in selectedReservation.TableID)
+                    {
+                        System.Console.Write($"{ids}, ");
+                    }
+                    System.Console.WriteLine();
+                    System.Console.WriteLine($@"Name: {selectedReservation.Name},
+ClientID: {selectedReservation.ClientID},
+How many People: {selectedReservation.HowMany},
+Date: {HelperPresentation.DateTimeToReadableDate(selectedReservation.Date)},
+Time slot: {selectedReservation.TimeSlot},
+Status: {selectedReservation.Status},
+Type of Reservation: {selectedReservation.TypeOfReservation},");
+                    if (selectedReservation.FoodOrdered)
+                    {
+                        System.Console.WriteLine("Has food been ordered: yes");
+                    }
+                    else System.Console.WriteLine("Has food been ordered: no");
+
+                    Console.ReadKey();
+                    break;
+
+                case 6:
+                    return;
+
                 default:
                     System.Console.WriteLine("Invalid input");
                     Start(acc, accountsLogic);
@@ -308,4 +298,119 @@ class ClientMenu
         }
     }
 
+    // case 5
+    private static void SeeData(AccountModel acc)
+    {
+        Console.ForegroundColor = ConsoleColor.Red;
+        System.Console.WriteLine("Your accounts data:");
+        Console.ResetColor();
+
+        System.Console.WriteLine(@$"Name: {acc.FullName}
+Birthdate: {HelperPresentation.DateTimeToReadableDate(acc.Birthdate)}
+Email: {acc.EmailAddress}
+Phone Number: {acc.PhoneNumber}
+Password: {acc.Password}");
+        if (acc.Allergies.Count() != 0)
+        {
+            System.Console.WriteLine("Allergies: ");
+            foreach (string allergies in acc.Allergies)
+            {
+                System.Console.WriteLine(allergies);
+            }
+        }
+        else System.Console.WriteLine("No allergies given");
+
+        System.Console.WriteLine("Press [enter] to continue.");
+        Console.ReadKey();
+    }
+
+    // case 7
+    private static void Messages(AccountModel acc)
+    {
+        System.Console.WriteLine("Messages:");
+        if (MessageLogic.Inbox(acc.Id))
+        {
+            Console.WriteLine("You have 1 new message");
+            Console.ReadLine();
+            Console.WriteLine("[enter]");
+            // foreach (var reservation in reservationLogic._reservations)
+            // {
+            Console.WriteLine($"Your reservation has been canceled");
+            Console.ReadLine();
+            Console.WriteLine("[enter]");
+            Console.Clear();
+            // }
+        }
+        else
+        {
+            Console.WriteLine("You have no new messages");
+            Console.ReadLine();
+            Console.WriteLine("[enter]");
+            Console.Clear();
+        }
+    }
+
+
+    // case 8
+    private static void DeleteDeactivate(AccountModel acc)
+    {
+        string[] deleteDeactivateOptions = {
+            "Deactivate account",
+            "Delete account",
+            "return"
+        };
+        bool deactivateDeletingAccount = true;
+        while (deactivateDeletingAccount)
+        {
+            int selectedIndexDeleteDeactivate = 0;
+
+            selectedIndexDeleteDeactivate = HelperPresentation.ChooseOption("What would you like to do to your account?", deleteDeactivateOptions, selectedIndexDeleteDeactivate);
+            switch (selectedIndexDeleteDeactivate)
+            {
+                // Deactivate
+                case 0:
+                    bool userDeactivate = HelperPresentation.YesOrNo("Are you sure you want to deactivate your account?");
+                    if (userDeactivate)
+                    {
+                        System.Console.WriteLine("Please re-enter your password.");
+                        string? passToCheck = Console.ReadLine();
+                        if (accountsLogic.ReCheckPassWord(acc, passToCheck))
+                        {
+                            accountsLogic.deactivateAccount(acc.Id);
+                            System.Console.WriteLine("Account has been deactivated. You will be returned to the main menu.");
+                            Console.ReadKey();
+                            acc = null;
+                            Menu.Start();
+                        }
+                        System.Console.WriteLine("Incorrect password.");
+                        deactivateDeletingAccount = false;
+
+                    };
+                    break;
+                // Delete
+                case 1:
+                    bool userDelete = HelperPresentation.YesOrNo("Are you sure you want to delete your account?");
+                    if (userDelete)
+                    {
+                        System.Console.WriteLine("Please re-enter your password.");
+                        string? passToCheck = Console.ReadLine();
+                        if (accountsLogic.ReCheckPassWord(acc, passToCheck))
+                        {
+                            accountsLogic.deleteAccount(acc.Id);
+                            System.Console.WriteLine("Account has been deleted. You will be returned to the main menu.");
+                            Console.ReadKey();
+                            acc = null;
+                            Menu.Start();
+                        }
+                        System.Console.WriteLine("Incorrect password.");
+                        deactivateDeletingAccount = false;
+                    };
+                    break;
+                // return
+                case 2:
+                    if (acc != null) { ClientMenu.Start(acc, accountsLogic); }
+                    break;
+            }
+        }
+    }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
@@ -46,18 +46,11 @@ public class AccountsLogic
 
     }
 
-    public virtual AccountModel GetById(int id)
-    {
-        return _accounts.Find(i => i.Id == id);
-    }
 
-    public virtual AccountModel GetByEmail(string email)
-    {
-        return _accounts.Find(i => i.EmailAddress == email);
-    }
 
     public AccountModel CheckLogin(string email, string password)
     {
+        _accounts = AccountsAccess.LoadAll();
         if (email == null || password == null)
         {
             return null;
@@ -83,10 +76,6 @@ public class AccountsLogic
         return false;
     }
 
-    public List<AccountModel> GetAccounts()
-    {
-        return _accounts;
-    }
     // if email already used returns true else false
     public bool CheckEmailInJson(string email)
     {
@@ -164,6 +153,8 @@ public class AccountsLogic
         return passMessage;
     }
 
+
+
     public string ChangeName(int id, string newFullName)
     {
 
@@ -180,25 +171,6 @@ public class AccountsLogic
         }
     }
 
-    // public string ChangeAge(int id, int age)
-    // {
-    //     if (age < 18 || age > 150)
-    //     {
-    //         return "Age must be between 18 and 150";
-    //     }
-
-    //     AccountModel account = GetById(id);
-    //     if (account != null)
-    //     {
-    //         account.Age = age;
-    //         UpdateList(account);
-    //         return "Age changed successfully";
-    //     }
-    //     else
-    //     {
-    //         return "Account not found";
-    //     }
-    // }
 
     public string ChangeAllergies(int id, List<string> newAllergies)
     {
@@ -248,39 +220,24 @@ public class AccountsLogic
         }
     }
 
-    public string ChangeEmail(int id, string newEmail)
-    {
-        if (string.IsNullOrWhiteSpace(newEmail))
-        {
-            return "Email is required";
-        }
 
+    public void ChangeEmail(int id, string newEmail)
+    {
         AccountModel account = GetById(id);
         if (account != null)
         {
-            if (!CheckEmailInJson(newEmail))
-            {
-                account.EmailAddress = newEmail;
-                UpdateList(account);
-                return "Email changed successfully";
-            }
-            else
-            {
-                return "Email already exists";
-            }
-        }
-        else
-        {
-            return "Account not found";
+            account.EmailAddress = newEmail;
+            UpdateList(account);
         }
     }
+
 
     public string UserInfo(int id)
     {
         AccountModel account = GetById(id);
         if (account != null)
         {
-            return $"Your accounts data:\nName: {account.FullName}\nEmail: {account.EmailAddress}\nPhone Number: {account.PhoneNumber}\nAllergies: {string.Join(", ", account.Allergies)}";
+            return $"Your accounts data:\nName: {account.FullName}\nBirthdate: {HelperPresentation.DateTimeToReadableDate(account.Birthdate)}\nEmail: {account.EmailAddress}\nPhone Number: {account.PhoneNumber}\nAllergies: {string.Join(", ", account.Allergies)}\nPassword: {account.Password}";
         }
         else
         {
@@ -288,9 +245,9 @@ public class AccountsLogic
         }
     }
 
-    public bool deactivateAccount(int clientid)
+    public bool deactivateAccount(int clientID)
     {
-        AccountModel account = GetById(clientid);
+        AccountModel account = GetById(clientID);
         if (account == null)
         {
             return false;
@@ -320,9 +277,9 @@ public class AccountsLogic
         return false;
     }
 
-    public bool deleteAccount(int clientid)
+    public bool deleteAccount(int clientID)
     {
-        AccountModel account = GetById(clientid);
+        AccountModel account = GetById(clientID);
         if (account == null)
         {
             return false;
@@ -359,12 +316,12 @@ public class AccountsLogic
     // Returns true or false if account is null or not null. True meaning its Locked, so account won't be able to log in
     public bool CancelLogin(AccountModel logged_in_account, string email)
     {
-        
+
         if (logged_in_account != null)
         {
-            if(logged_in_account.Locked == false)
+            if (logged_in_account.Locked == false)
             {
-                
+
                 logged_in_account.FailedLoginAttempts = 0;
                 logged_in_account.Locked = false;
                 UpdateList(logged_in_account);
@@ -376,44 +333,44 @@ public class AccountsLogic
                 return logged_in_account.Locked; // true
             }
         }
-         
+
         else // logged_in_account is null
         {
-            AccountModel? accountfound = _accounts.Find(a => a.EmailAddress == email && a.Status == "Activated");
-            if (accountfound != null) // there is an existing account with the email
+            AccountModel? accountFound = _accounts.Find(a => a.EmailAddress == email && a.Status == "Activated");
+            if (accountFound != null) // there is an existing account with the email
             {
-                if(accountfound.Locked == false)
+                if (accountFound.Locked == false)
                 {
-                    accountfound.FailedLoginAttempts++;
-                    if (accountfound.FailedLoginAttempts >= 3)
+                    accountFound.FailedLoginAttempts++;
+                    if (accountFound.FailedLoginAttempts >= 3)
                     {
-                        accountfound.Locked = true;
-                        accountfound.LastLogin = DateTime.Now;
-                        UpdateList(accountfound);
-                        return accountfound.Locked; // true
+                        accountFound.Locked = true;
+                        accountFound.LastLogin = DateTime.Now;
+                        UpdateList(accountFound);
+                        return accountFound.Locked; // true
                     }
                     else
                     {
-                        UpdateList(accountfound);
-                        return accountfound.Locked; // false
+                        UpdateList(accountFound);
+                        return accountFound.Locked; // false
                     }
                 }
                 else
                 {
-                        if (CalculateRemainingSeconds(accountfound, email) <= 0)
-                        {
-                        accountfound.Locked = false;
-                        accountfound.LastLogin = DateTime.Now;
-                        UpdateList(accountfound);
-                        return accountfound.Locked; //false
-                        }
-                        else
-                        {
-                            return accountfound.Locked;// true
-                        }
+                    if (CalculateRemainingSeconds(accountFound, email) <= 0)
+                    {
+                        accountFound.Locked = false;
+                        accountFound.LastLogin = DateTime.Now;
+                        UpdateList(accountFound);
+                        return accountFound.Locked; //false
+                    }
+                    else
+                    {
+                        return accountFound.Locked;// true
+                    }
                 }
             }
-            else // accountfound is null
+            else // accountFound is null
             {
                 if (Locked == false)
                 {
@@ -442,9 +399,9 @@ public class AccountsLogic
         int remainingSeconds = 0;
         if (account != null)
         {
-        
-        TimeSpan timeSinceLock = DateTime.Now - account.LastLogin;
-        remainingSeconds = 30 - (int)timeSinceLock.TotalSeconds;
+
+            TimeSpan timeSinceLock = DateTime.Now - account.LastLogin;
+            remainingSeconds = 30 - (int)timeSinceLock.TotalSeconds;
             if (account.Locked)
             {
                 if (remainingSeconds <= 0)
@@ -464,19 +421,19 @@ public class AccountsLogic
             return remainingSeconds;
 
         }
-        else // acount is null
+        else // account is null
         {
-        AccountModel? accountfound = _accounts.Find(a => a.EmailAddress == email && a.Status == "Activated");
-        if (accountfound != null)
-        {
-        TimeSpan timeSinceLock = DateTime.Now - accountfound.LastLogin;
-        remainingSeconds = 30 - (int)timeSinceLock.TotalSeconds;
-            if (Locked)
+            AccountModel? accountFound = _accounts.Find(a => a.EmailAddress == email && a.Status == "Activated");
+            if (accountFound != null)
+            {
+                TimeSpan timeSinceLock = DateTime.Now - accountFound.LastLogin;
+                remainingSeconds = 30 - (int)timeSinceLock.TotalSeconds;
+                if (Locked)
                 {
                     if (remainingSeconds <= 0)
                     {
-                        accountfound.FailedLoginAttempts = 0;
-                        accountfound.Locked = false;
+                        accountFound.FailedLoginAttempts = 0;
+                        accountFound.Locked = false;
                         remainingSeconds = 0;
                         return remainingSeconds;
                     }
@@ -486,12 +443,12 @@ public class AccountsLogic
                     }
                 }
                 return remainingSeconds;
-        }
-        else
-        {
-        TimeSpan timeSinceLock = DateTime.Now - LastLogin;
-        remainingSeconds = 30 - (int)timeSinceLock.TotalSeconds;
-            if (Locked)
+            }
+            else
+            {
+                TimeSpan timeSinceLock = DateTime.Now - LastLogin;
+                remainingSeconds = 30 - (int)timeSinceLock.TotalSeconds;
+                if (Locked)
                 {
                     if (remainingSeconds <= 0)
                     {
@@ -506,10 +463,10 @@ public class AccountsLogic
                     }
                 }
                 return remainingSeconds;
-        }
+            }
         }
     }
-  
+
     public DateTime GetBirthday()
     {
         // Array of months
@@ -535,74 +492,18 @@ public class AccountsLogic
         }
 
         // Year selection (10 columns)
-        int selectedYear = years[NavigateBirthdayGrid(years, 10, "Select your birth year:")];
+        int selectedYear = years[HelperPresentation.NavigateBirthdayGrid(years, 10, "Select your birth year:")];
 
         // Month selection (4 columns)
-        int selectedMonth = NavigateBirthdayGrid(months, 4, $"{selectedYear} \nSelect your birth month:") + 1;
+        int selectedMonth = HelperPresentation.NavigateBirthdayGrid(months, 4, $"{selectedYear} \nSelect your birth month:") + 1;
 
         // Day selection (7 columns)
         int maxDays = GetDaysInMonth(selectedMonth, selectedYear);
-        int selectedDay = days[NavigateBirthdayGrid(days, 7, $"{selectedYear} {months[selectedMonth - 1]}\nSelect your birth day:", maxDays)];
+        int selectedDay = days[HelperPresentation.NavigateBirthdayGrid(days, 7, $"{selectedYear} {months[selectedMonth - 1]}\nSelect your birth day:", maxDays)];
 
         return new DateTime(selectedYear, selectedMonth, selectedDay);
     }
 
-
-    private static int NavigateBirthdayGrid<T>(T[] options, int columns, string prompt, int limit = 0)
-    {
-        int currentIndex = 0;
-        limit = (limit == 0 || limit > options.Length) ? options.Length : limit; // Limit the options
-        int rows = (limit + columns - 1) / columns; // Calculate number of rows
-
-        while (true)
-        {
-            Console.Clear();
-            System.Console.WriteLine(prompt);
-            // Print grid
-            for (int r = 0; r < rows; r++)
-            {
-                for (int c = 0; c < columns; c++)
-                {
-                    int index = r * columns + c;
-                    if (index < limit)
-                    {
-                        if (index == currentIndex)
-                        {
-                            Console.ForegroundColor = ConsoleColor.Green;
-                            // Adjust width for alignment
-                            Console.Write($"{options[index],-10}");
-                            Console.ResetColor();
-                        }
-                        else
-                        {
-                            Console.Write($"{options[index],-10}");
-                        }
-                    }
-                }
-                Console.WriteLine();
-            }
-
-            // move highlighted year, month, day
-            var key = Console.ReadKey(true).Key;
-            switch (key)
-            {
-                case ConsoleKey.UpArrow:
-                    currentIndex = (currentIndex - columns + limit) % limit;
-                    break;
-                case ConsoleKey.DownArrow:
-                    currentIndex = (currentIndex + columns) % limit;
-                    break;
-                case ConsoleKey.LeftArrow:
-                    currentIndex = (currentIndex - 1 + limit) % limit;
-                    break;
-                case ConsoleKey.RightArrow:
-                    currentIndex = (currentIndex + 1) % limit;
-                    break;
-                case ConsoleKey.Enter:
-                    return currentIndex;
-            }
-        }
-    }
 
     // Method to get the days in a month
     private static int GetDaysInMonth(int month, int year)
@@ -625,4 +526,47 @@ public class AccountsLogic
             _ => 31,
         };
     }
+
+
+    // -------------------- get account (by) ---------------------------------
+
+    // ge all accounts
+    public List<AccountModel> GetAccounts()
+    {
+        return _accounts;
+    }
+
+
+    public virtual AccountModel GetById(int id)
+    {
+        return _accounts.Find(i => i.Id == id);
+    }
+
+
+    public virtual AccountModel GetByEmail(string email)
+    {
+        return _accounts.Find(i => i.EmailAddress == email);
+    }
+
+    public List<AccountModel> GetAccountByNameOrEmail(string? filter = null)
+    {
+        List<AccountModel> accounts = new();
+        if (filter == null)
+        {
+            return _accounts;
+        }
+
+        foreach(AccountModel acc in _accounts)
+        {
+            if(acc.FullName == filter || acc.EmailAddress == filter)
+            {
+                accounts.Add(acc);
+            }
+        }
+        
+        return accounts;
+    }
+
+
+    //----------------- not used -------------------------------
 }
