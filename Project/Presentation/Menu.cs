@@ -2,6 +2,7 @@ static class Menu
 {
     static public void Start()
     {
+        ApplicationMenu.Start();
         string[] options = {
             "Login",
             "Make an Account",

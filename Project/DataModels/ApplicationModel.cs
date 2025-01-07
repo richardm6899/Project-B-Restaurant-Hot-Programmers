@@ -4,9 +4,10 @@ using System.Text.Json.Serialization;
 public class ApplicationModel
 {
     //Application Name,Name,Birthdate,gender,Email, Motivation, Cv, Status
-    
-    [JsonPropertyName("name")]
+    [JsonPropertyName("applicationName")]
     public string ApplicationName { get; set; }
+    [JsonPropertyName("name")]
+    public string ApplicantName { get; set; }
     [JsonPropertyName("birthdate")]
     public string Birthdate { get; set; }
     [JsonPropertyName("gender")]
@@ -21,9 +22,10 @@ public class ApplicationModel
     public string Status { get; set; }
 
      
-    public ApplicationModel(string applicationName, string birthdate, string gender, string email, string motivation, string cv, string status)
+    public ApplicationModel(string applicationName,string applicantName, string birthdate, string gender, string email, string motivation, string cv, string status)
     {
         ApplicationName = applicationName;
+        ApplicantName = applicantName;
         Birthdate = birthdate;
         Gender = gender;
         Email = email;
