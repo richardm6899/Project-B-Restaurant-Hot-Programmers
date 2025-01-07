@@ -1,5 +1,6 @@
 [
     {
+        "applicationName": "",
         "name": "",
         "birthdate": "",
         "gender": "",
@@ -7,9 +8,6 @@
         "motivation": "",
         "cv": "",
         "status": ""
-    },
-    {
-
     }
     
 

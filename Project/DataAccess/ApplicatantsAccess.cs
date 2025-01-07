@@ -1,8 +1,9 @@
 using System.Text.Json;
+using System.IO;
 
 static class ApplicationAccess
 {
-    static string path = System.IO.Path.GetFullPath(System.IO.Path.Combine(Environment.CurrentDirectory, @"DataSources/application.json"));
+    public static string path = System.IO.Path.GetFullPath(System.IO.Path.Combine(Environment.CurrentDirectory, @"DataSources/application.json"));
 
     public static List<ApplicationModel> LoadAll()
     {
@@ -12,8 +13,25 @@ static class ApplicationAccess
 
     public static void WriteAll(List<ApplicationModel> applications)
     {
-        var options = new JsonSerializerOptions { WriteIndented = true };
-        string json = JsonSerializer.Serialize(applications, options);
-        File.WriteAllText(path, json);
+        try
+        {
+            var options = new JsonSerializerOptions { WriteIndented = true };
+            string json = JsonSerializer.Serialize(applications, options);
+
+            try
+            {
+                File.WriteAllText(path, json);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("An error has occurred.");
+            }
+
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"An error occurred while writing to the JSON file: {ex.Message}");
+        }
     }
+
 }

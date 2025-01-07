@@ -6,6 +6,7 @@ static class Menu
             "Login",
             "Make an Account",
             "Look at the Menu",
+            "Looking for a job?",
             "Look at Info",
             "Quit"
         };
