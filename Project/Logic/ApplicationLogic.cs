@@ -3,7 +3,7 @@ class ApplicationLogic
 {
     public static string GetValidName()
     {
-        Console.Write("Name: ");
+        Console.Write("Full name: ");
         string name;
         while (true)
         {
@@ -297,7 +297,7 @@ class ApplicationLogic
             gender: gender,
             email: email,
             motivation: motivation,
-            cv: cvData,
+            cv: FileToJson(storeCvAsBase64, cvData),
             status: "Submitted"
         );
 
@@ -305,18 +305,28 @@ class ApplicationLogic
         var applications = ApplicationAccess.LoadAll();
         applications.Add(application);
         ApplicationAccess.WriteAll(applications);
+        Console.WriteLine("Your applicant information:");
+        Console.WriteLine($"Application: {application.ApplicationName}");
+        Console.WriteLine($"Name: {application.ApplicantName}");
+        Console.WriteLine($"Birthdate: {application.Birthdate}");
+        Console.WriteLine($"Gender: {application.Gender}");
+        Console.WriteLine($"Email: {application.Email}");
+        Console.WriteLine($"Motivation: {application.Motivation}");
+        Console.WriteLine($"Cv: {application.Cv}");
+        Console.ReadLine();
+    }
 
+    public static string FileToJson(bool storeCvAsBase64, string cvData)
+    {
+        string decodedCv = "";
         // Debug and verify the CV content
-        Console.WriteLine("Stored CV Data:");
         if (storeCvAsBase64)
         {
             // Decode and display Base64 data
             try
             {
-                byte[] cvBytes = Convert.FromBase64String(application.Cv);
-                string decodedCv = System.Text.Encoding.UTF8.GetString(cvBytes);
-                Console.WriteLine("Decoded CV Content:");
-                Console.WriteLine(decodedCv);
+                byte[] cvBytes = Convert.FromBase64String(cvData);
+                decodedCv = System.Text.Encoding.UTF8.GetString(cvBytes);
             }
             catch (Exception ex)
             {
@@ -326,11 +336,9 @@ class ApplicationLogic
         else
         {
             // Display the file path
-            Console.WriteLine($"CV File Path: {application.Cv}");
+            Console.WriteLine($"CV File Path: {cvData}");
         }
-
-        Console.WriteLine("\nPress any key to continue...");
-        Console.ReadKey();
+        return decodedCv;
     }
 
 }

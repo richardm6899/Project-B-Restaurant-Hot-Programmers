@@ -2,11 +2,11 @@ static class Menu
 {
     static public void Start()
     {
-        ApplicationMenu.Start();
         string[] options = {
             "Login",
             "Make an Account",
             "Look at the Menu",
+            "Looking for a job?",
             "Look at Info",
             "Quit"
         };

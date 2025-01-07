@@ -18,19 +18,15 @@ static class ApplicationAccess
             var options = new JsonSerializerOptions { WriteIndented = true };
             string json = JsonSerializer.Serialize(applications, options);
 
-            // Debugging: Display the serialized JSON in the console
-            Console.WriteLine("Serialized JSON Data:");
-            Console.WriteLine(json);
-
             try
             {
                 File.WriteAllText(path, json);
-                Console.WriteLine($"JSON written successfully to: {path}");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Failed to write JSON to file: {ex.Message}");
+                Console.WriteLine("An error has occurred.");
             }
+
         }
         catch (Exception ex)
         {
