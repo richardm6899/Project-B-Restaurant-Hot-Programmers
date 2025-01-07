@@ -34,80 +34,80 @@ Welcome back {acc.FullName}
                 // make reservation
                 //  public static void MakeReservation(string name, int clientID, string number, string email)
                 case 0:
-                Console.Clear();
+                    Console.Clear();
                     MakeReservation(acc);
                     break;
 
                 case 1:
                     // modify reservation
-  
-                Console.Clear();
+
+                    Console.Clear();
                     ModifyReservation(acc);
 
                     break;
                 // cancel reservation
                 case 2:
 
-                Console.Clear();
+                    Console.Clear();
                     CancelReservation(acc);
                     break;
                 // see accounts reservation
 
                 case 3:
-              Console.Clear();
+                    Console.Clear();
 
                     SeeReservations(acc);
-                
+                    break;
 
                 //  see the food menu
 
                 case 4:
-          Console.Clear();
+                    Console.Clear();
 
                     FoodMenuDisplay.StartFoodMenu();
-               
 
+                    break;
                 // see restaurant info
 
                 case 5:
-Console.Clear();
+                    Console.Clear();
 
                     RestaurantInfo.Start();
-                
+                    break;
 
                 //  show account data
 
                 case 6:
-Console.Clear();
+                    Console.Clear();
 
                     SeeData(acc);
-               
-                // log out
 
+                    // log out
+                    break;
 
                 case 7:
                     Console.Clear();
                     ModifyData.Start(acc);
-
+                    break;
                 case 8:
-                Console.Clear();
+                    Console.Clear();
                     Messages(acc);
 
                     break;
                 case 9:
 
 
-                Console.Clear();
+                    Console.Clear();
                     DeleteDeactivate(acc);
 
                     break;
 
 
-                
-                   
+
+
                 case 10:
 
-                Console.Clear();
+                    Console.Clear();
 
                     acc = null;
                     clientMenu = false;
@@ -423,7 +423,7 @@ Password: {acc.Password}");
                     break;
                 // return
                 case 2:
-                    if (acc != null) {ClientMenu.Start(acc, accountsLogic);}
+                    if (acc != null) { ClientMenu.Start(acc, accountsLogic); }
                     break;
             }
         }

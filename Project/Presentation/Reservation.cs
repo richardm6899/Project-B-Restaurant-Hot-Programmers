@@ -36,7 +36,7 @@ static class Reservation
             {
 
                 string[] HotOrReg = ["Regular", "HotSeat", "Quit"];
-                string HotOrRegChoice = Choice("Do you want to reserve a Hotseat or a Regular Seat\nHotSeat cost 10 euro extra.\nA Hotseat wil give you a seat at the edge of the restaurant.\n----------------------------------------", HotOrReg);
+                string HotOrRegChoice = Choice("Do you want to reserve a Hotseat or a Regular Seat\nHotSeat cost 10 euro extra.\nA Hotseat wil give you a seat near the kitchen.\n----------------------------------------", HotOrReg);
 
                 if (HotOrRegChoice == "HotSeat")
                 {
@@ -1002,7 +1002,7 @@ static class Reservation
         {
             nums = ["1", "2", "3", "4", "5", "6", "7", "8", "Quit"];
         }
-        string HowManycheck = Choice("\nFor how many people? We have a max of 6 per table.\n----------------------------------------", nums);
+        string HowManycheck = Choice($"\nFor how many people? We have a max of {nums.Count()-1} per table.\n----------------------------------------", nums);
         if (int.TryParse(HowManycheck, out int HowMany))
         {
             Console.ForegroundColor = ConsoleColor.Green;
