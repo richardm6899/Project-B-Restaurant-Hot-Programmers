@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Globalization;
 public class FinanceLogic
 {
@@ -6,11 +7,14 @@ public class FinanceLogic
     public List<ReceiptModel> _receipts;
     public List<ReservationModel> _reservations;
     public static int Revenue = 0;
+    static private AccountsAccess accountsAccess = new();
+    static private ReceiptAccess receiptAccess = new();
+    static private ReservationAccess reservationAccess = new();
     public FinanceLogic()
     {
-        _accounts = AccountsAccess.LoadAll();
-        _receipts = ReceiptAccess.LoadAllReceipts();
-        _reservations = ReservationAccess.LoadAllReservations();
+        _accounts = accountsAccess.LoadAll();
+        _receipts = receiptAccess.LoadAll();
+        _reservations = reservationAccess.LoadAll();
     }
 
 

@@ -17,6 +17,9 @@ using System.Runtime.Intrinsics.Arm;
 // user gets asked confirmation
 static class Reservation
 {
+    static private ReservationAccess reservationAccess = new(); 
+    static private RestaurantAccess restaurantAccess = new();
+    static private TableAccess tableAccess = new();
     static private ReservationLogic reservationlogic = new();
     static private RestaurantLogic restaurantLogic = new();
     static private AccountsLogic accountsLogic = new();
@@ -184,8 +187,8 @@ static class Reservation
 
     private static void HotSeat(string name, int clientID, string number, string email)
     {
-        ReservationAccess.LoadAllReservations();
-        TableAccess.LoadAllTables();
+        restaurantAccess.LoadAll();
+        tableAccess.LoadAll();
         reservationlogic.AddHotSeatsAvailableTables();
         bool running = true;
         int progress = 0;
@@ -542,6 +545,7 @@ static class Reservation
         {
             System.Console.WriteLine("Invalid date format. Please try again.");
         }
+        
     }
 
 
@@ -1641,10 +1645,10 @@ static class Reservation
 
                 string[] yn = { "Yes", "No" };
                 string choice = Choice("You had no food ordered.\nWould you like to add food to your reservation", yn);
-                if (choice == "Yes")
+                if (choice == "Yes")    
                 {
                     reservation.FoodOrdered = true;
-                    ReservationAccess.WriteAllReservations(reservationlogic._reservations);
+                    reservationAccess.WriteAll(reservationlogic._reservations);
 
                 }
                 else

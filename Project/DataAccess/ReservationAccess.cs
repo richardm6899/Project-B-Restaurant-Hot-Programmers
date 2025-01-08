@@ -1,18 +1,18 @@
 using System.Text.Json;
 
-static class ReservationAccess
+public class ReservationAccess :IJsonable<ReservationModel>
 {
-    static string path = System.IO.Path.GetFullPath(System.IO.Path.Combine(Environment.CurrentDirectory, @"DataSources/reservations.json"));
+    private string path = System.IO.Path.GetFullPath(System.IO.Path.Combine(Environment.CurrentDirectory, @"DataSources/reservations.json"));
 
 
-    public static List<ReservationModel> LoadAllReservations()
+    public  List<ReservationModel> LoadAll()
     {
         string json = File.ReadAllText(path);
         return JsonSerializer.Deserialize<List<ReservationModel>>(json);
     }
 
 
-    public static void WriteAllReservations(List<ReservationModel> reservations)
+    public  void WriteAll(List<ReservationModel> reservations)
     {
         var options = new JsonSerializerOptions { WriteIndented = true };
         string json = JsonSerializer.Serialize(reservations, options);

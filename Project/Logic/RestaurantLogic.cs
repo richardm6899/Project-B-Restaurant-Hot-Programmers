@@ -1,10 +1,11 @@
 using System.Runtime.CompilerServices;
 public class RestaurantLogic
 {
+    RestaurantAccess restaurantAccess = new();
     private List<RestaurantModel> _restaurant { get; set; }
     public RestaurantLogic()
     {
-        _restaurant = RestaurantAccess.LoadAll();
+        _restaurant = restaurantAccess.LoadAll();
     }
 
     public List<RestaurantModel> GetRestaurantInfo()

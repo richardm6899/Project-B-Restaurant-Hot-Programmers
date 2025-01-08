@@ -6,6 +6,9 @@ using System.Reflection.Metadata;
 //for now it chooses the first item in the list with the id
 public class ReservationLogic
 {
+    static private TableAccess tableAccess = new();
+    static private ReservationAccess reservationAccess = new();
+    static private ReceiptAccess receiptAccess = new();
     public List<ReceiptModel> _receipts { get; set; }
     public List<ReservationModel> _reservations { get; set; }
     public List<TableModel> _tables { get; set; }
@@ -16,9 +19,9 @@ public class ReservationLogic
     // load tables into properties
     public ReservationLogic()
     {
-        _tables = TableAccess.LoadAllTables();
-        _reservations = ReservationAccess.LoadAllReservations();
-        _receipts = ReceiptAccess.LoadAllReceipts();
+        _tables = tableAccess.LoadAll();
+        _reservations = reservationAccess.LoadAll();
+        _receipts = receiptAccess.LoadAll();
         // available tables is always empty at first
     }
     // create reservation -----------------------------------------
@@ -29,7 +32,7 @@ public class ReservationLogic
         int new_id = _tables.Count + 1;
         TableModel table = new TableModel(new_id, chairs, minCapacity, maxCapacity, type);
         _tables.Add(table);
-        TableAccess.WriteAllTables(_tables);
+        tableAccess.WriteAll(_tables);
         return table;
     }
 
@@ -48,7 +51,7 @@ public class ReservationLogic
             //add new model
             _reservations.Add(res);
         }
-        ReservationAccess.WriteAllReservations(_reservations);
+        reservationAccess.WriteAll(_reservations);
 
     }
 
@@ -71,8 +74,8 @@ public class ReservationLogic
         acc.ReservationIDs.Add(reservation.Id);
         accountsLogic.UpdateList(acc);
 
-        ReservationAccess.WriteAllReservations(_reservations);
-        TableAccess.WriteAllTables(_tables);
+        reservationAccess.WriteAll(_reservations);
+        tableAccess.WriteAll(_tables);
         return reservation;
 
     }
@@ -170,14 +173,14 @@ public class ReservationLogic
                 {
                     GetReceiptById(reservation_id).Status = "Canceled";
                 }
-                TableAccess.WriteAllTables(_tables);
-                ReceiptAccess.WriteAllReceipts(_receipts);
+                tableAccess.WriteAll(_tables);
+                receiptAccess.WriteAll(_receipts);
                 UpdateReservationsList(reservation);
                 return reservation;
             }
         }
-
         return null;
+
     }
 
     public void UnassignTable(int reservation_id)
@@ -194,7 +197,7 @@ public class ReservationLogic
                 }
             }
         }
-        TableAccess.WriteAllTables(_tables);
+        tableAccess.WriteAll(_tables);
 
     }
 
@@ -302,7 +305,7 @@ public class ReservationLogic
     public List<ReservationModel> DisplayAllReservationsByStatusAndID(int id, string status)
     {
         //  if _reservations doesn't update add this to the method. :)
-        _reservations = ReservationAccess.LoadAllReservations();
+        _reservations = reservationAccess.LoadAll();
         List<ReservationModel> reservations = new();
         foreach (ReservationModel reservation in _reservations)
         {
@@ -442,7 +445,7 @@ public class ReservationLogic
         ReceiptModel receipt = new(id, reservation.Id, reservation.ClientID, cost, reservation.Date, reservation.TimeSlot, reservation.Name, number, email, reservation.TypeOfReservation, Convert.ToString(reservation.TableID[0]), foodOrdered);
 
         _receipts.Add(receipt);
-        ReceiptAccess.WriteAllReceipts(_receipts);
+        receiptAccess.WriteAll(_receipts);
         return receipt;
     }
     public string DisplayReceipt(ReceiptModel receipt, List<List<string>> allergies)
@@ -574,9 +577,9 @@ public class ReservationLogic
                 {
                     GetReceiptById(reservation.Id).Status = "Canceled";
                 }
-                ReservationAccess.WriteAllReservations(_reservations);
-                TableAccess.WriteAllTables(_tables);
-                ReceiptAccess.WriteAllReceipts(_receipts);
+                reservationAccess.WriteAll(_reservations);
+                tableAccess.WriteAll(_tables);
+                receiptAccess.WriteAll(_receipts);
                 UpdateReservationsList(reservation);
             }
         }
@@ -796,8 +799,8 @@ public class ReservationLogic
         acc.ReservationIDs.Add(reservation.Id);
         accountsLogic.UpdateList(acc);
         _reservations.Add(reservationList[0]);
-        TableAccess.WriteAllTables(_tables);
-        ReservationAccess.WriteAllReservations(_reservations);
+        tableAccess.WriteAll(_tables);
+        reservationAccess.WriteAll(_reservations);
         return reservationList;
 
     }
@@ -806,7 +809,7 @@ public class ReservationLogic
         int id = _receipts.Count() + 1;
         ReceiptModel receipt = new(id, reservations[0].Id, reservations[0].ClientID, cost, reservations[0].Date, reservations[0].TimeSlot, reservations[0].Name, number, email, reservations[0].TypeOfReservation, string.Join(",", reservations[0].TableID), orderdFood);
         _receipts.Add(receipt);
-        ReceiptAccess.WriteAllReceipts(_receipts);
+        receiptAccess.WriteAll(_receipts);
         return receipt;
     }
 
@@ -872,9 +875,9 @@ public class ReservationLogic
                 }
             }
         }
-        ReservationAccess.WriteAllReservations(_reservations);
+        reservationAccess.WriteAll(_reservations);
 
-        TableAccess.WriteAllTables(_tables);
+        tableAccess.WriteAll(_tables);
     }
 
     public void ModifyReservation(ReservationModel reservation, List<int> TableID, int Howmany, DateTime Date, string Timeslot, string typeofreservation, bool FoodOrdered)
@@ -896,7 +899,7 @@ public class ReservationLogic
 
             }
         }
-        ReservationAccess.WriteAllReservations(_reservations);
+        reservationAccess.WriteAll(_reservations);
 
 
     }
@@ -913,7 +916,7 @@ public class ReservationLogic
 
 
         // Write updated reservations to storage
-        TableAccess.WriteAllTables(_tables);
+        tableAccess.WriteAll(_tables);
     }
     public List<ReservationModel> ModifyableReservations(int client_id)
     {
@@ -938,7 +941,7 @@ public class ReservationLogic
         {
             receipt.OrderedFood = foodOrdered;
         }
-        ReceiptAccess.WriteAllReceipts(_receipts);
+        receiptAccess.WriteAll(_receipts);
         return receipt;
     }
 
