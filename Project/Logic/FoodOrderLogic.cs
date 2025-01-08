@@ -1,10 +1,10 @@
 class FoodOrderLogic
 {
     private List<FoodMenuModel> _foodMenu;
-
+    private static FoodMenuAccess foodMenuAccess = new();
     public FoodOrderLogic()
     {
-        _foodMenu = FoodMenuAccess.LoadAll();
+        _foodMenu = foodMenuAccess.LoadAll();
     }
 
     // Method to return all food menu items

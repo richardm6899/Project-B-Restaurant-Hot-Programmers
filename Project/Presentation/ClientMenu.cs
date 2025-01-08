@@ -55,18 +55,24 @@ Welcome back {acc.FullName}
 
                 case 3:
                     Console.Clear();
+
+
                     SeeReservations(acc);
                     break;
 
                 //  see the food menu
                 case 4:
                     Console.Clear();
+
                     FoodMenuDisplay.StartFoodMenu();
                     break;
 
+
+               
                 // see restaurant info
                 case 5:
                     Console.Clear();
+
                     RestaurantInfo.Start();
                     break;
 
@@ -76,7 +82,7 @@ Welcome back {acc.FullName}
                     SeeData(acc);
                     break;
 
-                // log out
+              
                 case 7:
                     Console.Clear();
                     ModifyData.Start(acc);
@@ -92,8 +98,13 @@ Welcome back {acc.FullName}
                     DeleteDeactivate(acc);
                     break;
 
+
+
+
+
                 case 10:
                     Console.Clear();
+
                     acc = null;
                     clientMenu = false;
                     Menu.Start();

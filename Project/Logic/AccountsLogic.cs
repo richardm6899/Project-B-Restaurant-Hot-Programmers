@@ -20,10 +20,10 @@ public class AccountsLogic
 
     public DateTime LastLogin = DateTime.Now;
 
-
+    static private AccountsAccess accountsAccess = new();
     public AccountsLogic()
     {
-        _accounts = AccountsAccess.LoadAll();
+        _accounts = accountsAccess.LoadAll();
     }
 
 
@@ -42,7 +42,7 @@ public class AccountsLogic
             //add new model
             _accounts.Add(acc);
         }
-        AccountsAccess.WriteAll(_accounts);
+        accountsAccess.WriteAll(_accounts);
 
     }
 
@@ -50,7 +50,7 @@ public class AccountsLogic
 
     public AccountModel CheckLogin(string email, string password)
     {
-        _accounts = AccountsAccess.LoadAll();
+        _accounts = accountsAccess.LoadAll();
         if (email == null || password == null)
         {
             return null;
@@ -91,7 +91,7 @@ public class AccountsLogic
 
     public static string CreateAccount(string fullName, string email, string password, string phoneNumber, DateTime birthdate, List<string> allergies, string type, DateTime LastLogin)
     {
-        int newID = AccountsAccess.LoadAll().Count + 1;
+        int newID = accountsAccess.LoadAll().Count + 1;
         AccountModel account = new(newID, email, password, fullName, birthdate, phoneNumber, allergies, default, type, false, 0, LastLogin);
         AccountsLogic ac = new AccountsLogic();
         ac.UpdateList(account);

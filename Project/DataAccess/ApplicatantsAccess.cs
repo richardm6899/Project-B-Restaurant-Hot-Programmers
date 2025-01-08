@@ -1,17 +1,20 @@
 using System.Text.Json;
 using System.IO;
 
-static class ApplicationAccess
+public class ApplicationAccess : IJsonable<ApplicationModel>
 {
-    public static string path = System.IO.Path.GetFullPath(System.IO.Path.Combine(Environment.CurrentDirectory, @"DataSources/application.json"));
 
-    public static List<ApplicationModel> LoadAll()
+    private string path = System.IO.Path.GetFullPath(System.IO.Path.Combine(Environment.CurrentDirectory, @"DataSources/application.json"));
+
+
+
+    public List<ApplicationModel> LoadAll()
     {
         string json = File.ReadAllText(path);
         return JsonSerializer.Deserialize<List<ApplicationModel>>(json);
     }
 
-    public static void WriteAll(List<ApplicationModel> applications)
+    public void WriteAll(List<ApplicationModel> applications)
     {
         try
         {

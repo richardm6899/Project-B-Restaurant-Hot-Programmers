@@ -17,6 +17,9 @@ using System.Runtime.Intrinsics.Arm;
 // user gets asked confirmation
 static class Reservation
 {
+    static private ReservationAccess reservationAccess = new(); 
+    static private RestaurantAccess restaurantAccess = new();
+    static private TableAccess tableAccess = new();
     static private ReservationLogic reservationlogic = new();
     static private RestaurantLogic restaurantLogic = new();
     static private AccountsLogic accountsLogic = new();
@@ -36,7 +39,7 @@ static class Reservation
             {
 
                 string[] HotOrReg = ["Regular", "HotSeat", "Quit"];
-                string HotOrRegChoice = Choice("Do you want to reserve a Hotseat or a Regular Seat\nHotSeat cost 10 euro extra.\nA Hotseat wil give you a seat at the edge of the restaurant.\n----------------------------------------", HotOrReg);
+                string HotOrRegChoice = Choice("Do you want to reserve a Hotseat or a Regular Seat\nHotSeat cost 10 euro extra.\nA Hotseat wil give you a seat near the kitchen.\n----------------------------------------", HotOrReg);
 
                 if (HotOrRegChoice == "HotSeat")
                 {
@@ -184,8 +187,8 @@ static class Reservation
 
     private static void HotSeat(string name, int clientID, string number, string email)
     {
-        ReservationAccess.LoadAllReservations();
-        TableAccess.LoadAllTables();
+        restaurantAccess.LoadAll();
+        tableAccess.LoadAll();
         reservationlogic.AddHotSeatsAvailableTables();
         bool running = true;
         int progress = 0;
@@ -542,6 +545,7 @@ static class Reservation
         {
             System.Console.WriteLine("Invalid date format. Please try again.");
         }
+        
     }
 
 
@@ -1002,7 +1006,7 @@ static class Reservation
         {
             nums = ["1", "2", "3", "4", "5", "6", "7", "8", "Quit"];
         }
-        string HowManycheck = Choice("\nFor how many people? We have a max of 6 per table.\n----------------------------------------", nums);
+        string HowManycheck = Choice($"\nFor how many people? We have a max of {nums.Count()-1} per table.\n----------------------------------------", nums);
         if (int.TryParse(HowManycheck, out int HowMany))
         {
             Console.ForegroundColor = ConsoleColor.Green;
@@ -1641,10 +1645,10 @@ static class Reservation
 
                 string[] yn = { "Yes", "No" };
                 string choice = Choice("You had no food ordered.\nWould you like to add food to your reservation", yn);
-                if (choice == "Yes")
+                if (choice == "Yes")    
                 {
                     reservation.FoodOrdered = true;
-                    ReservationAccess.WriteAllReservations(reservationlogic._reservations);
+                    reservationAccess.WriteAll(reservationlogic._reservations);
 
                 }
                 else

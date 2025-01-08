@@ -1,18 +1,18 @@
 using System.Text.Json;
 
-static class AttendeesAccess
+public class AttendeesAccess: IJsonable<AttendeesModel>
 {
-    static string path = System.IO.Path.GetFullPath(System.IO.Path.Combine(Environment.CurrentDirectory, @"DataSources/attendees.json"));
+    private string path = System.IO.Path.GetFullPath(System.IO.Path.Combine(Environment.CurrentDirectory, @"DataSources/attendees.json"));
 
 
-    public static List<AttendeesModel> LoadAll()
+    public  List<AttendeesModel> LoadAll()
     {
         string json = File.ReadAllText(path);
         return JsonSerializer.Deserialize<List<AttendeesModel>>(json);
     }
 
 
-    public static void WriteAll(List<AttendeesModel> accounts)
+    public  void WriteAll(List<AttendeesModel> accounts)
     {
         var options = new JsonSerializerOptions { WriteIndented = true };
         string json = JsonSerializer.Serialize(accounts, options);

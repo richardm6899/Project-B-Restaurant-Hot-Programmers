@@ -2,9 +2,10 @@ public class FoodMenuLogic
 {
     public List<FoodMenuModel> _foodMenu;
 
+    static private FoodMenuAccess foodMenuAccess = new();
     public FoodMenuLogic()
     {
-        _foodMenu = FoodMenuAccess.LoadAll();
+        _foodMenu = foodMenuAccess.LoadAll();
     }
 
     // Method to return all food menu items
@@ -239,7 +240,7 @@ public class FoodMenuLogic
         _foodMenu.Add(newDish);
 
         // Save updated list to JSON
-        FoodMenuAccess.WriteAll(_foodMenu);
+        foodMenuAccess.WriteAll(_foodMenu);
     }
 
 
@@ -253,7 +254,7 @@ public class FoodMenuLogic
             {
                 _foodMenu.Remove(dishToRemove);
 
-                FoodMenuAccess.WriteAll(_foodMenu);
+                foodMenuAccess.WriteAll(_foodMenu);
                 return "Dish was successfully deleted";
             }
             else

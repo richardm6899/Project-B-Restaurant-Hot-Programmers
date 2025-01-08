@@ -1,12 +1,14 @@
 public static class MessageLogic
 {
+    static private ReservationAccess reservationAccess = new();
+    static private ReceiptAccess receiptAccess = new();
     public static List<ReservationModel> _reservations { get; set; }
     public static List<ReceiptModel> _receipts { get; set; }
 
     static MessageLogic()
     {
-        _reservations = ReservationAccess.LoadAllReservations();
-        _receipts = ReceiptAccess.LoadAllReceipts();
+        _reservations = reservationAccess.LoadAll();
+        _receipts = receiptAccess.LoadAll();
     }
 
     // Returns true if client(ID) has a reservation that has been canceled
