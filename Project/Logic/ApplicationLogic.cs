@@ -2,6 +2,8 @@
 class ApplicationLogic
 {
 
+    static private ApplicationAccess applicationAccess = new();
+
     public static bool IsNameValid(string name)
     {
         // Ensure that the name only contains letters, spaces, hyphens, and apostrophes
@@ -165,8 +167,9 @@ class ApplicationLogic
         );
 
         // Load existing applications and add the new one
-        var applications = ApplicationAccess.LoadAll();
+        var applications = applicationAccess.LoadAll();
         applications.Add(application);
+        application-pres-logic-fix
         ApplicationAccess.WriteAll(applications);
         ApplicationMenu.ShowApplication(application);
 

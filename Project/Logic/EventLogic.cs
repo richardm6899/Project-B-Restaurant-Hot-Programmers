@@ -6,10 +6,10 @@ using System.Text.Json;
 public class EventLogic
 {
     public List<EventModel> event_list;
-
+    static private EventAccess eventAccess = new();
     public EventLogic()
     {
-        event_list = EventAccess.LoadAll();
+        event_list = eventAccess.LoadAll();
     }
 
     //  CreateEvents() where the admin must be able to create an event and be added to the events list (JSON).
@@ -30,7 +30,7 @@ public class EventLogic
             //add new model
             event_list.Add(a_event);
         }
-        EventAccess.WriteAll(event_list);
+        eventAccess.WriteAll(event_list);
 
     }
 
@@ -42,7 +42,7 @@ public class EventLogic
 
         // add created event to event list
         event_list.Add(_event);
-        EventAccess.WriteAll(event_list);
+        eventAccess.WriteAll(event_list);
         return _event;
 
     }

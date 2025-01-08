@@ -1,18 +1,18 @@
 using System.Text.Json;
 
-static class TableAccess
+public class TableAccess : IJsonable<TableModel>
 {
-    static string path = System.IO.Path.GetFullPath(System.IO.Path.Combine(Environment.CurrentDirectory, @"DataSources/tables.json"));
+    private string path = System.IO.Path.GetFullPath(System.IO.Path.Combine(Environment.CurrentDirectory, @"DataSources/tables.json"));
 
 
-    public static List<TableModel> LoadAllTables()
+    public  List<TableModel> LoadAll()
     {
         string json = File.ReadAllText(path);
         return JsonSerializer.Deserialize<List<TableModel>>(json);
     }
 
 
-    public static void WriteAllTables(List<TableModel> tables)
+    public void WriteAll(List<TableModel> tables)
     {
         var options = new JsonSerializerOptions { WriteIndented = true };
         string json = JsonSerializer.Serialize(tables, options);

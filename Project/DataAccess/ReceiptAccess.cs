@@ -1,18 +1,18 @@
 using System.Text.Json;
 
-static class ReceiptAccess
+public class ReceiptAccess :IJsonable<ReceiptModel>
 {
-    static string path = System.IO.Path.GetFullPath(System.IO.Path.Combine(Environment.CurrentDirectory, @"DataSources/receipts.json"));
+    private string path = System.IO.Path.GetFullPath(System.IO.Path.Combine(Environment.CurrentDirectory, @"DataSources/receipts.json"));
 
 
-    public static List<ReceiptModel> LoadAllReceipts()
+    public  List<ReceiptModel> LoadAll()
     {
         string json = File.ReadAllText(path);
         return JsonSerializer.Deserialize<List<ReceiptModel>>(json);
     }
 
 
-    public static void WriteAllReceipts(List<ReceiptModel> receiptModels)
+    public  void WriteAll(List<ReceiptModel> receiptModels)
     {
         var options = new JsonSerializerOptions { WriteIndented = true };
         string json = JsonSerializer.Serialize(receiptModels, options);

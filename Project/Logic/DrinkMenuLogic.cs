@@ -3,11 +3,11 @@ using Microsoft.VisualBasic;
 class DrinkMenuLogic
 {
     private List<DrinkMenuModel> _drinkMenu;
-
+    static private DrinkMenuAccess drinkMenuAccess = new();
 
     public DrinkMenuLogic()
     {
-        _drinkMenu = DrinkMenuAccess.LoadAll();
+        _drinkMenu = drinkMenuAccess.LoadAll();
     }
 
     public List<DrinkMenuModel> GetAllMenuItems()
@@ -68,7 +68,7 @@ class DrinkMenuLogic
         _drinkMenu.Add(newDrink);
 
         // Save updated list to JSON
-        DrinkMenuAccess.WriteAll(_drinkMenu);
+        drinkMenuAccess.WriteAll(_drinkMenu);
     }
 
     private List<DrinkMenuModel> GetByType(string type)

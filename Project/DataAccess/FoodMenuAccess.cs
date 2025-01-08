@@ -1,18 +1,18 @@
 using System.Text.Json;
 
-static class FoodMenuAccess
+public class FoodMenuAccess :IJsonable<FoodMenuModel>
 {
-    static string path = System.IO.Path.GetFullPath(System.IO.Path.Combine(Environment.CurrentDirectory, @"DataSources/foodmenu.json"));
+    private string path = System.IO.Path.GetFullPath(System.IO.Path.Combine(Environment.CurrentDirectory, @"DataSources/foodmenu.json"));
 
 
-    public static List<FoodMenuModel> LoadAll()
+    public  List<FoodMenuModel> LoadAll()
     {
         string json = File.ReadAllText(path);
         return JsonSerializer.Deserialize<List<FoodMenuModel>>(json);
     }
 
 
-    public static void WriteAll(List<FoodMenuModel> foodMenu)
+    public  void WriteAll(List<FoodMenuModel> foodMenu)
     {
         var options = new JsonSerializerOptions { WriteIndented = true };
         string json = JsonSerializer.Serialize(foodMenu, options);
