@@ -1,6 +1,7 @@
 
 class ApplicationLogic
 {
+    static private ApplicationAccess applicationAccess = new();
     public static string GetValidName()
     {
         Console.Write("Full name: ");
@@ -302,9 +303,9 @@ class ApplicationLogic
         );
 
         // Load existing applications and add the new one
-        var applications = ApplicationAccess.LoadAll();
+        var applications = applicationAccess.LoadAll();
         applications.Add(application);
-        ApplicationAccess.WriteAll(applications);
+        applicationAccess.WriteAll(applications);
         Console.WriteLine("Your applicant information:");
         Console.WriteLine($"Application: {application.ApplicationName}");
         Console.WriteLine($"Name: {application.ApplicantName}");
