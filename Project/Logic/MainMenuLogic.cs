@@ -16,11 +16,20 @@ class MainMenuLogic
             case 2: // Look at the Menu
                 FoodMenuDisplay.Start();
                 break;
-            case 3: // Look at Info
+            case 3:
+                ApplicationMenu.Start();
+                break;
+            case 4: // Look at Info
                 RestaurantInfo.Start();
                 break;
-            case 4: // Quit
-                return false; // Exit the loop
+
+            case 5: // Quit
+                Console.WriteLine("Goodbye...");
+                Console.WriteLine("[press Enter to quit]");
+                Console.ReadLine();
+                break;
+
+          // Exit the loop
         }
         return true; // Keep running the menu
     }

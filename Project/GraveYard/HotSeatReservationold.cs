@@ -18,9 +18,9 @@ using System.Runtime.Intrinsics.Arm;
 // tips
 // at the end when everything works find a way to implement generics
 // so that you don't have alot of repeated code.
-static class HotSeatReservation
-{
-    static private ReservationLogic reservationlogic = new();
+// static class HotSeatReservation
+// {
+//     static private ReservationLogic reservationlogic = new();
 
 
     // public static void HotSeat(string name, int clientID, string number, string email)
@@ -122,5 +122,5 @@ static class HotSeatReservation
 
     // }
 
-}
+// }
 
