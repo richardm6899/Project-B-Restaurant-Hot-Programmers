@@ -24,8 +24,6 @@ class MainMenuLogic
                 break;
 
             case 5: // Quit
-                Console.WriteLine("Goodbye...");
-                Console.WriteLine("[press Enter to quit]");
                 Console.ReadLine();
                 break;
 
