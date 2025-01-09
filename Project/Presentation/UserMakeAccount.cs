@@ -11,11 +11,6 @@ static class UserMakeAccount
         {
             Menu.Start();
         }
-        else if (user_answer)
-        {
-            System.Console.WriteLine("Invalid input");
-            Start();
-        }
 
         // email
         System.Console.WriteLine("What is your Email: ");
