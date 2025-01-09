@@ -63,7 +63,8 @@ static class UserLogin
                     FailedLoginAttempts++;
                     // FailedLoginAttempts = accountsLogic.FailedToLogin();
                     Console.WriteLine($"Invalid password, try again!");
-                    Console.WriteLine($"You have {3 - FailedLoginAttempts} attempts left.");
+                    Console.WriteLine($"You have {3 - FailedLoginAttempts} attempts left.\nPress [enter] to continue");
+                    Console.ReadKey();
                     if (FailedLoginAttempts >= 3)
                     {
                         FailedLoginAttempts = 0;
@@ -101,7 +102,8 @@ static class UserLogin
             }
         if (Locked == true)
         {
-            Console.WriteLine($"Your account is blocked for {remainingSeconds} seconds.");
+            Console.WriteLine($"Your account is blocked for {remainingSeconds} seconds.\nPress [enter] to continue");
+            Console.ReadKey();
             if (remainingSeconds <= 0)
             {
                 FailedLoginAttempts = 0;
