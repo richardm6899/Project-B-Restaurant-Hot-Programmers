@@ -6,16 +6,10 @@ static class UserMakeAccount
     {
 
         System.Console.WriteLine("Welcome to the make an account page.");
-        System.Console.WriteLine("Are you sure you want to make an account? Y/N");
-        string user_answer = System.Console.ReadLine();
-        if (user_answer.ToLower() == "n" || user_answer.ToLower() == "no")
+        bool user_answer = HelperPresentation.YesOrNo("Are you sure you want to make an account?");
+        if (!user_answer)
         {
             Menu.Start();
-        }
-        else if (user_answer.ToLower() != "y" && user_answer.ToLower() != "yes")
-        {
-            System.Console.WriteLine("Invalid input");
-            Start();
         }
 
         // email
@@ -123,18 +117,9 @@ static class UserMakeAccount
 
         // allergies
         List<string> allergies = [];
-        System.Console.WriteLine("Do you have/ do you want to fill in you allergies. Y/N ");
-        string user_answer_allergies = Console.ReadLine();
+        bool user_answer_allergies = HelperPresentation.YesOrNo("Do you have/ do you want to fill in you allergies.");
 
-        while (user_answer_allergies.ToLower() != "n" && user_answer_allergies.ToLower() != "no" && user_answer_allergies.ToLower() != "y" && user_answer_allergies.ToLower() != "yes")
-        {
-            System.Console.WriteLine("Invalid input.");
-            System.Console.WriteLine("Do you have/ do you want to fill in you allergies. Y/N ");
-            user_answer_allergies = Console.ReadLine();
-
-        };
-
-        if (user_answer_allergies.ToLower() == "y" || user_answer_allergies.ToLower() == "yes")
+        if (user_answer_allergies)
         {
             System.Console.WriteLine(@"Here are a list of our allergies:
             1. Fish

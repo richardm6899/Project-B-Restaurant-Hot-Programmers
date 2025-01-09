@@ -124,15 +124,15 @@ Welcome back {acc.FullName}
         {
             System.Console.WriteLine("The following reservations are scheduled:");
             System.Console.WriteLine(reservationsForDay);
-            System.Console.WriteLine("Are you sure you want to close the restaurant for a day and cancel one of the reservations? (Y/N)");
+            System.Console.WriteLine("Press [enter] to continue.");
+            Console.ReadKey();
         }
         else
         {
             System.Console.WriteLine("There are no reservations scheduled for this day.");
-            System.Console.WriteLine("Are you sure you want to close the restaurant for the day? (Y/N)");
         }
-        string confirmation = Console.ReadLine().ToUpper();
-        if (confirmation == "Y")
+        bool confirmation = HelperPresentation.YesOrNo("Are you sure you want to close the restaurant for a day?\nIf there are reservations on that day they will be canceled.");
+        if (confirmation)
         {
             // Cancel all reservations for the day
             Reservation.AdminCloseDay();
