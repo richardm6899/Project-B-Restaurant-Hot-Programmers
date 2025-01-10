@@ -48,7 +48,7 @@ public class AccountsLogic
 
 
 
-    public AccountModel CheckLogin(string email, string password)
+    public AccountModel? CheckLogin(string email, string password)
     {
         _accounts = accountsAccess.LoadAll();
         if (email == null || password == null)
@@ -92,7 +92,7 @@ public class AccountsLogic
     public static string CreateAccount(string fullName, string email, string password, string phoneNumber, DateTime birthdate, List<string> allergies, string type, DateTime LastLogin)
     {
         int newID = accountsAccess.LoadAll().Count + 1;
-        AccountModel account = new(newID, email, password, fullName, birthdate, phoneNumber, allergies, default, type, false, 0, LastLogin);
+        AccountModel account = new(newID, email, password, fullName, birthdate, phoneNumber, allergies, new List<int>(), type, false, 0, LastLogin);
         AccountsLogic ac = new AccountsLogic();
         ac.UpdateList(account);
         if (ac.GetById(newID) == null)
@@ -154,87 +154,9 @@ public class AccountsLogic
     }
 
 
-
-    public string ChangeName(int id, string newFullName)
-    {
-
-        AccountModel account = GetById(id);
-        if (account != null)
-        {
-            account.FullName = newFullName;
-            UpdateList(account);
-            return "Name changed successfully";
-        }
-        else
-        {
-            return "Account not found";
-        }
-    }
-
-
-    public string ChangeAllergies(int id, List<string> newAllergies)
-    {
-        if (newAllergies == null || newAllergies.Count == 0)
-        {
-            return "Allergies list is required";
-        }
-
-        AccountModel account = GetById(id);
-        if (account != null)
-        {
-            account.Allergies = newAllergies;
-            UpdateList(account);
-            return "Allergies changed successfully";
-        }
-        else
-        {
-            return "Account not found";
-        }
-    }
-
-    public string ChangePassword(int id, string oldPassword, string newPassword)
-    {
-        if (string.IsNullOrWhiteSpace(oldPassword) || string.IsNullOrWhiteSpace(newPassword))
-        {
-            return "Old password and new password are required";
-        }
-
-        AccountModel account = GetById(id);
-        if (account != null && account.Password == oldPassword)
-        {
-            string passwordCheck = CheckCreatePassword(newPassword);
-            if (passwordCheck == "Password has been set")
-            {
-                account.Password = newPassword;
-                UpdateList(account);
-                return "Password changed successfully";
-            }
-            else
-            {
-                return passwordCheck;
-            }
-        }
-        else
-        {
-            return "Invalid old password";
-        }
-    }
-
-
-    public void ChangeEmail(int id, string newEmail)
-    {
-        AccountModel account = GetById(id);
-        if (account != null)
-        {
-            account.EmailAddress = newEmail;
-            UpdateList(account);
-        }
-    }
-
-
     public string UserInfo(int id)
     {
-        AccountModel account = GetById(id);
+        AccountModel? account = GetById(id);
         if (account != null)
         {
             return $"Your accounts data:\nName: {account.FullName}\nBirthdate: {HelperPresentation.DateTimeToReadableDate(account.Birthdate)}\nEmail: {account.EmailAddress}\nPhone Number: {account.PhoneNumber}\nAllergies: {string.Join(", ", account.Allergies)}\nPassword: {account.Password}";
@@ -245,63 +167,6 @@ public class AccountsLogic
         }
     }
 
-    public bool deactivateAccount(int clientID)
-    {
-        AccountModel account = GetById(clientID);
-        if (account == null)
-        {
-            return false;
-        }
-
-        account.Status = "Deactivated";
-        UpdateList(account);
-        if (account.Status == "Deactivated") { return true; }
-
-
-        return false;
-    }
-
-    public bool ActivateAccount(string email)
-    {
-        AccountModel account = GetByEmail(email);
-        if (account == null)
-        {
-            return false;
-        }
-
-        account.Status = "Activated";
-        UpdateList(account);
-        if (account.Status == "Activated") { return true; }
-
-
-        return false;
-    }
-
-    public bool deleteAccount(int clientID)
-    {
-        AccountModel account = GetById(clientID);
-        if (account == null)
-        {
-            return false;
-        }
-        // changing
-        account.EmailAddress = null;
-        account.Password = null;
-        account.FullName = null;
-        account.Birthdate = default;
-        account.PhoneNumber = null;
-        account.Allergies = null;
-        account.ReservationIDs = null;
-        account.Type = null;
-        account.Status = "Deleted";
-
-        UpdateList(account);
-
-        if (account.Status == "Deleted")
-        { return true; }
-
-        return false;
-    }
 
     public bool ReCheckPassWord(AccountModel acc, string passToCheck)
     {
@@ -530,20 +395,20 @@ public class AccountsLogic
 
     // -------------------- get account (by) ---------------------------------
 
-    // ge all accounts
+    // get all accounts
     public List<AccountModel> GetAccounts()
     {
         return _accounts;
     }
 
 
-    public virtual AccountModel GetById(int id)
+    public virtual AccountModel? GetById(int id)
     {
         return _accounts.Find(i => i.Id == id);
     }
 
 
-    public virtual AccountModel GetByEmail(string email)
+    public virtual AccountModel? GetByEmail(string email)
     {
         return _accounts.Find(i => i.EmailAddress == email);
     }
@@ -556,17 +421,158 @@ public class AccountsLogic
             return _accounts;
         }
 
-        foreach(AccountModel acc in _accounts)
+        foreach (AccountModel acc in _accounts)
         {
-            if(acc.FullName == filter || acc.EmailAddress == filter)
+            if (acc.FullName == filter || acc.EmailAddress == filter)
             {
                 accounts.Add(acc);
             }
         }
-        
+
         return accounts;
     }
 
 
+
+    // --------------- modify ---------------------------------
+    public string ModifyName(int id, string newFullName)
+    {
+
+        AccountModel? account = GetById(id);
+        if (account != null)
+        {
+            account.FullName = newFullName;
+            UpdateList(account);
+            return "Name changed successfully";
+        }
+        else
+        {
+            return "Account not found";
+        }
+    }
+
+
+    public string ModifyAllergies(int id, List<string> newAllergies)
+    {
+        if (newAllergies == null || newAllergies.Count == 0)
+        {
+            return "Allergies list is required";
+        }
+
+        AccountModel? account = GetById(id);
+        if (account != null)
+        {
+            account.Allergies = newAllergies;
+            UpdateList(account);
+            return "Allergies changed successfully";
+        }
+        else
+        {
+            return "Account not found";
+        }
+    }
+
+
+    public string ChangePassword(int id, string oldPassword, string newPassword)
+    {
+        if (string.IsNullOrWhiteSpace(oldPassword) || string.IsNullOrWhiteSpace(newPassword))
+        {
+            return "Old password and new password are required";
+        }
+
+        AccountModel? account = GetById(id);
+        if (account != null && account.Password == oldPassword)
+        {
+            string passwordCheck = CheckCreatePassword(newPassword);
+            if (passwordCheck == "Password has been set")
+            {
+                account.Password = newPassword;
+                UpdateList(account);
+                return "Password changed successfully";
+            }
+            else
+            {
+                return passwordCheck;
+            }
+        }
+        else
+        {
+            return "Invalid old password";
+        }
+    }
+
+
+
+    public void ChangeEmail(int id, string newEmail)
+    {
+        AccountModel? account = GetById(id);
+        if (account != null)
+        {
+            account.EmailAddress = newEmail;
+            UpdateList(account);
+        }
+    }
+
+
+
+    // -------------------- deactivate delete ----------------
+
+    public bool deactivateAccount(int clientID)
+    {
+        AccountModel? account = GetById(clientID);
+        if (account == null)
+        {
+            return false;
+        }
+
+        account.Status = "Deactivated";
+        UpdateList(account);
+        if (account.Status == "Deactivated") { return true; }
+
+
+        return false;
+    }
+
+    public bool ActivateAccount(string email)
+    {
+        AccountModel? account = GetByEmail(email);
+        if (account == null)
+        {
+            return false;
+        }
+
+        account.Status = "Activated";
+        UpdateList(account);
+        if (account.Status == "Activated") { return true; }
+
+
+        return false;
+    }
+
+    public bool deleteAccount(int clientID)
+    {
+        AccountModel? account = GetById(clientID);
+        if (account == null)
+        {
+            return false;
+        }
+        // changing
+        account.EmailAddress = string.Empty;
+        account.Password = string.Empty;
+        account.FullName = string.Empty;
+        account.Birthdate = DateTime.MinValue;
+        account.PhoneNumber = string.Empty;
+        account.Allergies = new List<string>();
+        account.ReservationIDs = new List<int>();
+        account.Type = string.Empty;
+        account.Status = "Deleted";
+
+        UpdateList(account);
+
+        if (account.Status == "Deleted")
+        { return true; }
+
+        return false;
+    }
     //----------------- not used -------------------------------
 }
