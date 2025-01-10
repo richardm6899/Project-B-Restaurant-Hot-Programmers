@@ -48,7 +48,7 @@ public class AccountsLogic
 
 
 
-    public AccountModel? CheckLogin(string email, string password)
+    public AccountModel? CheckLogin(string? email, string password)
     {
         _accounts = accountsAccess.LoadAll();
         if (email == null || password == null)
@@ -64,7 +64,7 @@ public class AccountsLogic
     }
 
     // check if given email is connected to a deactivated account, return true if found
-    public bool CheckAccountDeactivated(string email)
+    public bool CheckAccountDeactivated(string? email)
     {
         foreach (AccountModel account in _accounts)
         {
@@ -179,7 +179,7 @@ public class AccountsLogic
 
     // Menu.cs Console.clear() is working weird, so its commented so that user can see how he attempts to log in
     // Returns true or false if account is null or not null. True meaning its Locked, so account won't be able to log in
-    public bool CancelLogin(AccountModel logged_in_account, string email)
+    public bool CancelLogin(AccountModel? logged_in_account, string? email)
     {
 
         if (logged_in_account != null)
@@ -222,7 +222,11 @@ public class AccountsLogic
                 }
                 else
                 {
-                    if (CalculateRemainingSeconds(accountFound, email) <= 0)
+                    if (email == null)
+                    {
+                        return false;
+                    }
+                    else if (CalculateRemainingSeconds(accountFound, email) <= 0)
                     {
                         accountFound.Locked = false;
                         accountFound.LastLogin = DateTime.Now;
@@ -259,7 +263,7 @@ public class AccountsLogic
         }
     }
     // Returns remaining seconds starting from 30. When reached to 0, user can log in
-    public int CalculateRemainingSeconds(AccountModel account, string email)
+    public int CalculateRemainingSeconds(AccountModel? account, string? email)
     {
         int remainingSeconds = 0;
         if (account != null)
@@ -408,7 +412,7 @@ public class AccountsLogic
     }
 
 
-    public virtual AccountModel? GetByEmail(string email)
+    public virtual AccountModel? GetByEmail(string? email)
     {
         return _accounts.Find(i => i.EmailAddress == email);
     }
@@ -533,7 +537,7 @@ public class AccountsLogic
         return false;
     }
 
-    public bool ActivateAccount(string email)
+    public bool ActivateAccount(string? email)
     {
         AccountModel? account = GetByEmail(email);
         if (account == null)
