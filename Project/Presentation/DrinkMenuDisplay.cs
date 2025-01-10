@@ -87,7 +87,7 @@ class DrinkMenuDisplay
                     break;
             }
         }
-        List<DrinkMenuModel> drinks = DrinkMenuLogic.GetOptionTypes(options);
+        List<DrinkMenuModel>? drinks = DrinkMenuLogic.GetOptionTypes(options);
         if (drinks != null)
         {
             foreach (DrinkMenuModel drink in drinks)
