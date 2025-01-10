@@ -39,13 +39,13 @@ class DrinkMenuLogic
         return Allergies;
     }
 
-    private DrinkMenuModel GetMenuItemByName(string drinkName)
+    private DrinkMenuModel? GetMenuItemByName(string drinkName)
     {
         // if no drink found returns null, else returns drink.
         return _drinkMenu.FirstOrDefault(item => item.DrinkName == drinkName);
     }
 
-    public List<DrinkMenuModel> GetMenuExcludingAllergies(List<string> allergiesToAvoid)
+    public List<DrinkMenuModel>? GetMenuExcludingAllergies(List<string> allergiesToAvoid)
     {
         if (allergiesToAvoid != null)
         {
@@ -71,7 +71,7 @@ class DrinkMenuLogic
         drinkMenuAccess.WriteAll(_drinkMenu);
     }
 
-    private List<DrinkMenuModel> GetByType(string type)
+    public List<DrinkMenuModel> GetByType(string type)
     {
         //  make new list with typed drinks
         List<DrinkMenuModel> TypedDrinks = new();
