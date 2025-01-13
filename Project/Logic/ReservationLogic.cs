@@ -376,6 +376,19 @@ public class ReservationLogic
         return reservations;
     }
 
+    public List<ReservationModel> AllOngoingReservationsListReservationModel()
+    {
+        List<ReservationModel> reservations = new();
+        foreach (ReservationModel reservation in _reservations)
+        {
+            if (reservation.Status == "Ongoing")
+            {
+                reservations.Add(reservation);
+            }
+        }
+        return reservations;
+    }
+
     public List<int> IsReservationInAccount(int clientID, int reservation_id)
     {
         List<int> valid_reservations = new();

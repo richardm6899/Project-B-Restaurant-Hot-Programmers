@@ -169,6 +169,7 @@ class ApplicationLogic
         // Load existing applications and add the new one
         var applications = applicationAccess.LoadAll();
         applications.Add(application);
+
         applicationAccess.WriteAll(applications);
         ApplicationMenu.ShowApplication(application);
 
