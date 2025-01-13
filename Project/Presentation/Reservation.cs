@@ -17,7 +17,7 @@ using System.Runtime.Intrinsics.Arm;
 // user gets asked confirmation
 static class Reservation
 {
-    static private ReservationAccess reservationAccess = new(); 
+    static private ReservationAccess reservationAccess = new();
     static private RestaurantAccess restaurantAccess = new();
     static private TableAccess tableAccess = new();
     static private ReservationLogic reservationlogic = new();
@@ -39,6 +39,7 @@ static class Reservation
             {
 
                 string[] HotOrReg = ["Regular", "HotSeat", "Quit"];
+
                 string HotOrRegChoice = Choice("Do you want to reserve a Hotseat or a Regular Seat\nHotSeat cost 10 euro extra.\nA Hotseat wil give you a seat near the kitchen.\n----------------------------------------", HotOrReg);
 
                 if (HotOrRegChoice == "HotSeat")
@@ -517,35 +518,42 @@ static class Reservation
         // System.Console.Write("Enter table ID:");
         // int tableID = Convert.ToInt32(Console.ReadLine());
         // string typeofreservation = reservationlogic.TypeOfReservation(tableID);
+        int amount = 0;
         if (DateTime.TryParse(dateInput, out date))
         {
             reservationlogic.RemoveReservationsByDate(date);
+            restaurantLogic.AddClosedDay(date.ToString("dd/MM/yyyy"));
             System.Console.WriteLine("Reservations for the specified date have been canceled.");
             // Users that had a reservation on that day get a refund. (paid out of financials)
             foreach (var reservation in reservationlogic._reservations)
             {
-
                 if (reservation.TypeOfReservation == "HotSeat")
                 {
                     FinanceLogic.SubtractFromRevenue(60);
-                    Console.WriteLine($"{reservation.TypeOfReservation} seat refunded:\nSubtracted from Revenue: 60$)");
+                    amount += 60;
+
                 }
                 else if (reservation.TypeOfReservation == "Regular")
                 {
+                    amount += 50;
                     FinanceLogic.SubtractFromRevenue(50);
-                    Console.WriteLine($"{reservation.TypeOfReservation} seat refunded:\nSubtracted from Revenue: 50$");
+
                 }
-                else if (reservation.TypeOfReservation is null)
-                {
-                    Console.WriteLine("No reservation to be funded");
-                }
+            }
+            if (amount == 0)
+            {
+                Console.WriteLine("No reservation to be funded");
+            }
+            else
+            {
+                System.Console.WriteLine($"{amount} amount of revenue lost");
             }
         }
         else
         {
             System.Console.WriteLine("Invalid date format. Please try again.");
         }
-        
+
     }
 
 
@@ -1006,7 +1014,7 @@ static class Reservation
         {
             nums = ["1", "2", "3", "4", "5", "6", "7", "8", "Quit"];
         }
-        string HowManycheck = Choice($"\nFor how many people? We have a max of {nums.Count()-1} per table.\n----------------------------------------", nums);
+        string HowManycheck = Choice($"\nFor how many people? We have a max of {nums.Count() - 1} per table.\n----------------------------------------", nums);
         if (int.TryParse(HowManycheck, out int HowMany))
         {
             Console.ForegroundColor = ConsoleColor.Green;
@@ -1581,7 +1589,7 @@ static class Reservation
                 // // choose table
                 if (type == "Regular")
                 {
-                    int madereservation = RegularModifyReservation(reservation, Date,timeSlot, amount, type, reservation.FoodOrdered);
+                    int madereservation = RegularModifyReservation(reservation, Date, timeSlot, amount, type, reservation.FoodOrdered);
                     if (50 == madereservation)
                     {
                         // print reservation and make sure all receipt is modified aswell
@@ -1645,7 +1653,7 @@ static class Reservation
 
                 string[] yn = { "Yes", "No" };
                 string choice = Choice("You had no food ordered.\nWould you like to add food to your reservation", yn);
-                if (choice == "Yes")    
+                if (choice == "Yes")
                 {
                     reservation.FoodOrdered = true;
                     reservationAccess.WriteAll(reservationlogic._reservations);
