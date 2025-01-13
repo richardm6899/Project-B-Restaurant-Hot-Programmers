@@ -1,3 +1,6 @@
+using System.Globalization;
+using System.Runtime.CompilerServices;
+
 class FoodOrderMenu
 {
     static private FoodMenuLogic foodMenuLogic = new FoodMenuLogic();
@@ -10,7 +13,19 @@ class FoodOrderMenu
         List<(FoodMenuModel, int)> FoodCart = new List<(FoodMenuModel, int)>();
         List<List<string>> allergies = new List<List<string>>();
 
-        FoodMenuModel[] foodChoices = foodMenu.ToArray();
+                List<FoodMenuModel> chefsmenu = [];
+        
+        foreach(FoodMenuModel item in foodMenu)
+        {
+            foreach( string type in item.Type)
+            {
+                if(type == "Chef's Menu")
+                {
+                    chefsmenu.Add(item);
+                }
+            }
+        }
+        FoodMenuModel[] foodChoices = chefsmenu.ToArray();
         OrderFoodMenu(foodChoices, FoodCart, allergies);
 
         return (FoodCart, allergies);
@@ -19,9 +34,22 @@ class FoodOrderMenu
     {
         // Get all menu items
         List<FoodMenuModel> foodMenu = foodOrderLogic.GetAllMenuItems();
+        
+        List<FoodMenuModel> chefsmenu = [];
+        
+        foreach(FoodMenuModel item in foodMenu)
+        {
+            foreach( string type in item.Type)
+            {
+                if(type == "Chef's Menu")
+                {
+                    chefsmenu.Add(item);
+                }
+            }
+        }
+        FoodMenuModel[] foodChoices = chefsmenu.ToArray();
 
 
-        FoodMenuModel[] foodChoices = foodMenu.ToArray();
         OrderFoodMenu(foodChoices, FoodCart, allergies);
 
         return (FoodCart, allergies);
