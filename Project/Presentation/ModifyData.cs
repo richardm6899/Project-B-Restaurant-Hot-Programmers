@@ -131,7 +131,7 @@ public class ModifyData
 
             // Update the full name
             acc.FullName = HelperLogic.CreateFullName(firstName, infix, surname);
-            accountsLogic.ChangeName(acc.Id, HelperLogic.CreateFullName(firstName, infix, surname));
+            accountsLogic.ModifyName(acc.Id, HelperLogic.CreateFullName(firstName, infix, surname));
         }
     }
     // case 1 change birthdate 

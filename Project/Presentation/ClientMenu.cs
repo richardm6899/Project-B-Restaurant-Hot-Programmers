@@ -25,7 +25,7 @@ class ClientMenu
             Console.Clear();
             string mainPrompt = @$"Welcome to the client menu.
 -----------------------------------------
-Welcome back {acc.FullName}
+Welcome back {acc!.FullName}
 -----------------------------------------";
             selectedIndex = HelperPresentation.ChooseOption(mainPrompt, options, selectedIndex);
 

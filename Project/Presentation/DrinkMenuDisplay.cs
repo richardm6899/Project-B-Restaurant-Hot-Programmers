@@ -57,7 +57,37 @@ class DrinkMenuDisplay
             "Non-Alcoholic",
             "Return"
         };
-        List<DrinkMenuModel> drinks = DrinkMenuLogic.GetOptionTypes(options);
+        bool drinkMenu = true;
+        while (drinkMenu)
+        {
+            int selectedIndexDrinks = 0;
+            Console.Clear();
+            selectedIndexDrinks = HelperPresentation.ChooseOption("Types", options, selectedIndexDrinks);
+
+            switch (selectedIndexDrinks)
+            {
+                // soft drinks
+                case 0:
+                    drinkMenuLogic.GetByType("Soft Drink");
+                    break;
+                // hot drinks
+                case 1:
+                    drinkMenuLogic.GetByType("Hot Drink");
+                    break;
+                // alcoho;
+                case 2:
+                    drinkMenuLogic.GetByType("Alcohol");
+                    break;
+                // non alcoholic
+                case 3:
+                    drinkMenuLogic.GetByType("Non-Alcoholic");
+                    break;
+                // return
+                case 4:
+                    break;
+            }
+        }
+        List<DrinkMenuModel>? drinks = DrinkMenuLogic.GetOptionTypes(options);
         if (drinks != null)
         {
             foreach (DrinkMenuModel drink in drinks)
@@ -74,9 +104,9 @@ class DrinkMenuDisplay
         System.Console.WriteLine("Allergies");
         // all allergies in the json
         List<string> allergies = drinkMenuLogic.GetAllAllergies();
-        List<string> selectedAllergies = HelperPresentation.SelectAllergies(allergies);
-        List<DrinkMenuModel> drinks = drinkMenuLogic.GetMenuExcludingAllergies(selectedAllergies);
-        if (drinks == null)
+        List<string>? selectedAllergies = HelperPresentation.SelectAllergies(allergies);
+        List<DrinkMenuModel>? drinks = drinkMenuLogic.GetMenuExcludingAllergies(selectedAllergies ?? new List<string>());
+        if (drinks == null || drinks.Count == 0)
         {
             return;
         }
