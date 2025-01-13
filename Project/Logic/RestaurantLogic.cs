@@ -49,4 +49,9 @@ public class RestaurantLogic
             }
         }
     }
+    public void AddClosedDay(string Date)
+    {
+        _restaurant[0].closed_dates.Add(Date);
+        restaurantAccess.WriteAll(_restaurant);
+    }
 }

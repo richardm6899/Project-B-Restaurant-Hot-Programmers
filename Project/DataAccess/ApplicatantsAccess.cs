@@ -10,8 +10,17 @@ public class ApplicationAccess : IJsonable<ApplicationModel>
 
     public List<ApplicationModel> LoadAll()
     {
-        string json = File.ReadAllText(path);
-        return JsonSerializer.Deserialize<List<ApplicationModel>>(json);
+        try
+        {
+            string json = File.ReadAllText(path);
+            return JsonSerializer.Deserialize<List<ApplicationModel>>(json);
+        }
+        catch (Exception ex)
+        {
+            // Log the exception or handle it as needed
+            Console.WriteLine($"An error occurred while reading the file: {ex.Message}");
+            return null;
+        }
     }
 
     public void WriteAll(List<ApplicationModel> applications)

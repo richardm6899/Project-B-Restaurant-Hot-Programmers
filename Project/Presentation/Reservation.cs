@@ -39,7 +39,11 @@ static class Reservation
             {
 
                 string[] HotOrReg = ["Regular", "HotSeat", "Quit"];
-                string HotOrRegChoice = Choice("Do you want to reserve a HotSeat or a Regular Seat\nHotSeat cost 10 euro extra.\nA HotSeat wil give you a seat near the kitchen.\n----------------------------------------", HotOrReg);
+
+
+                string HotOrRegChoice = Choice("Do you want to reserve a Hotseat or a Regular Seat\nHotSeat cost 10 euro extra.\nA Hotseat wil give you a seat near the kitchen.\n----------------------------------------", HotOrReg);
+
+
 
                 if (HotOrRegChoice == "HotSeat")
                 {
@@ -518,29 +522,38 @@ static class Reservation
         DateTime date;
         // System.Console.Write("Enter table ID:");
         // int tableID = Convert.ToInt32(Console.ReadLine());
-        // string typeOfReservation = reservationLogic.TypeOfReservation(tableID);
+
+        // string typeofreservation = reservationlogic.TypeOfReservation(tableID);
+        int amount = 0;
         if (DateTime.TryParse(dateInput, out date))
         {
-            reservationLogic.RemoveReservationsByDate(date);
+            reservationlogic.RemoveReservationsByDate(date);
+            restaurantLogic.AddClosedDay(date.ToString("dd/MM/yyyy"));
+
             System.Console.WriteLine("Reservations for the specified date have been canceled.");
             // Users that had a reservation on that day get a refund. (paid out of financial)
             foreach (var reservation in reservationLogic._reservations)
             {
-
                 if (reservation.TypeOfReservation == "HotSeat")
                 {
                     FinanceLogic.SubtractFromRevenue(60);
-                    Console.WriteLine($"{reservation.TypeOfReservation} seat refunded:\nSubtracted from Revenue: 60$)");
+                    amount += 60;
+
                 }
                 else if (reservation.TypeOfReservation == "Regular")
                 {
+                    amount += 50;
                     FinanceLogic.SubtractFromRevenue(50);
-                    Console.WriteLine($"{reservation.TypeOfReservation} seat refunded:\nSubtracted from Revenue: 50$");
+
                 }
-                else if (reservation.TypeOfReservation is null)
-                {
-                    Console.WriteLine("No reservation to be funded");
-                }
+            }
+            if (amount == 0)
+            {
+                Console.WriteLine("No reservation to be funded");
+            }
+            else
+            {
+                System.Console.WriteLine($"{amount} amount of revenue lost");
             }
         }
         else
