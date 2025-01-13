@@ -358,93 +358,144 @@ static class Reservation
             }
         }
     }
+    // public static void CancelReservation(int clientID)
+    // {
+    //     bool cancelReservation = true;
+    //     while (cancelReservation)
+    //     {
+    //         bool choice = HelperPresentation.YesOrNo("Would you like to cancel your reservation?");
+    //         if(choice)
+    //         {
+
+    //             if (reservationLogic.DisplayReservations(clientID) != "")
+    //             {
+    //                 bool ReservationIDCheck = true;
+    //                 while (ReservationIDCheck)
+    //                 {
+    //                     System.Console.WriteLine("Which reservation would you like to cancel?\n");
+    //                     System.Console.WriteLine(reservationLogic.DisplayReservations(clientID));
+    //                     System.Console.WriteLine("enter ID: ");
+    //                     string? str_id = Console.ReadLine();
+    //                     {
+    //                         if (int.TryParse(str_id, out int reservationID))
+    //                         {
+    //                             // can only choose id if in reserved by person
+    //                             if (reservationLogic.DisplayReservationByID(reservationID) != null && reservationLogic.IsReservationInAccount(clientID, reservationID).Contains(reservationID))
+    //                             {
+
+    //                                 ReservationIDCheck = false;
+    //                                 bool confirmation = true;
+    //                                 while (confirmation)
+    //                                 {
+
+    //                                     System.Console.WriteLine(reservationLogic.DisplayReservationByID(reservationID));
+    //                                     bool choice2 = HelperPresentation.YesOrNo("Are You sure you want to cancel this reservation?");
+
+    //                                     if (choice2)
+    //                                     {
+    //                                         Console.Clear();
+    //                                         ReservationModel reservation = reservationLogic.GetReservationById(reservationID);
+    //                                         System.Console.WriteLine(reservationLogic.DisplayReservationByID(reservation.Id) + " has been canceled.\n");
+    //                                         reservationLogic.RemoveReservationByID(reservationID);
+
+    //                                         System.Console.WriteLine("[enter]");
+    //                                         Console.ReadLine();
+    //                                         Console.Clear();
+
+    //                                         confirmation = false;
+    //                                     }
+    //                                     else if (!choice2)
+    //                                     {
+    //                                         confirmation = false;
+
+    //                                     }
+
+    //                                 }
+    //                             }
+    //                             else
+    //                             {
+    //                                 System.Console.WriteLine("Invalid id given");
+    //                                 System.Console.WriteLine("[enter]");
+    //                                 Console.ReadLine();
+    //                             }
+    //                         }
+
+    //                         else
+    //                         {
+    //                             System.Console.WriteLine("invalid input");
+    //                             System.Console.WriteLine("[enter]");
+    //                             System.Console.ReadLine();
+
+    //                         }
+    //                     }
+    //                 }
+    //             }
+    //             else
+    //             {
+    //                 System.Console.WriteLine("You have no available reservations to cancel");
+    //                 System.Console.WriteLine("[enter]");
+    //                 System.Console.ReadLine();
+    //                 cancelReservation = false;
+    //             }
+
+    //         }
+    //         else
+    //         {
+    //             System.Console.WriteLine("Goodbye....");
+    //             System.Console.WriteLine("[enter]");
+    //             System.Console.ReadLine();
+    //             cancelReservation = false;
+    //         }
+    //     }
+    // }
     public static void CancelReservation(int clientID)
     {
-        bool cancelReservation = true;
-        while (cancelReservation)
+        bool cancelingReservation = true;
+        while (cancelingReservation)
         {
-            bool choice = HelperPresentation.YesOrNo("Would you like to cancel your reservation?");
-            if(choice)
+            if (HelperPresentation.YesOrNo("Would you like to cancel a reservation?"))
             {
-
-                if (reservationLogic.DisplayReservations(clientID) != "")
+                int selectedIndexCancelingReservation = 0;
+                List<ReservationModel> ongoingReservations = reservationLogic.DisplayAllReservationsByStatusAndID(clientID,"Ongoing");
+                if(ongoingReservations.Count == 0)
                 {
-                    bool ReservationIDCheck = true;
-                    while (ReservationIDCheck)
+                    System.Console.WriteLine("No reservations found.\nPress [enter] to return");
+                    Console.ReadKey();
+                    break;
+                }
+                List<string> ReservationsInformation = new();
+                    foreach (ReservationModel reservation in ongoingReservations)
                     {
-                        System.Console.WriteLine("Which reservation would you like to cancel?\n");
-                        System.Console.WriteLine(reservationLogic.DisplayReservations(clientID));
-                        System.Console.WriteLine("enter ID: ");
-                        string? str_id = Console.ReadLine();
-                        {
-                            if (int.TryParse(str_id, out int reservationID))
-                            {
-                                // can only choose id if in reserved by person
-                                if (reservationLogic.DisplayReservationByID(reservationID) != null && reservationLogic.IsReservationInAccount(clientID, reservationID).Contains(reservationID))
-                                {
-
-                                    ReservationIDCheck = false;
-                                    bool confirmation = true;
-                                    while (confirmation)
-                                    {
-
-                                        System.Console.WriteLine(reservationLogic.DisplayReservationByID(reservationID));
-                                        bool choice2 = HelperPresentation.YesOrNo("Are You sure you want to cancel this reservation?");
-
-                                        if (choice2)
-                                        {
-                                            Console.Clear();
-                                            ReservationModel reservation = reservationLogic.GetReservationById(reservationID);
-                                            System.Console.WriteLine(reservationLogic.DisplayReservationByID(reservation.Id) + " has been canceled.\n");
-                                            reservationLogic.RemoveReservationByID(reservationID);
-
-                                            System.Console.WriteLine("[enter]");
-                                            Console.ReadLine();
-                                            Console.Clear();
-
-                                            confirmation = false;
-                                        }
-                                        else if (!choice2)
-                                        {
-                                            confirmation = false;
-
-                                        }
-
-                                    }
-                                }
-                                else
-                                {
-                                    System.Console.WriteLine("Invalid id given");
-                                    System.Console.WriteLine("[enter]");
-                                    Console.ReadLine();
-                                }
-                            }
-
-                            else
-                            {
-                                System.Console.WriteLine("invalid input");
-                                System.Console.WriteLine("[enter]");
-                                System.Console.ReadLine();
-
-                            }
-                        }
+                        ReservationsInformation.Add($"Reservation ID: {reservation.Id}\nHow many People: {reservation.HowMany}\nDate: {reservation.Date}\nTime slot: {reservation.TimeSlot}\nStatus: {reservation.Status}\n");
                     }
-                }
-                else
-                {
-                    System.Console.WriteLine("You have no available reservations to cancel");
-                    System.Console.WriteLine("[enter]");
-                    System.Console.ReadLine();
-                    cancelReservation = false;
-                }
 
+                int toCancelIndex = HelperPresentation.ChooseItem("Which reservation would you like to cancel?", ReservationsInformation, selectedIndexCancelingReservation);
+                
+                ReservationModel selectedReservation = ongoingReservations[toCancelIndex];
+
+                bool Canceling = true;
+                while (Canceling)
+                {
+                    // make this so when an incorrect input is entered ask again
+                    // make an escape
+                    Console.Clear();
+                    System.Console.WriteLine("Reservation to cancel.");
+
+                    bool cancelReservation = HelperPresentation.YesOrNo($"Are you sure you want to cancel this reservation:\nId: {selectedReservation.Id}\nName: {selectedReservation.Name}\nTotal people: {selectedReservation.HowMany}\nDate: {selectedReservation.Date.ToShortDateString()} {selectedReservation.TimeSlot}\nType of reservation: {selectedReservation.TypeOfReservation}");
+                    if (cancelReservation)
+                    {
+                        reservationLogic.RemoveReservationByID(selectedReservation.Id);
+                    }
+                    Canceling = false;
+
+                }
             }
             else
             {
                 System.Console.WriteLine("Goodbye....");
                 System.Console.WriteLine("[enter]");
                 System.Console.ReadLine();
-                cancelReservation = false;
+                cancelingReservation = false;
             }
         }
     }
@@ -480,7 +531,7 @@ static class Reservation
                     // make this so when an incorrect input is entered ask again
                     // make an escape
                     Console.Clear();
-                    System.Console.WriteLine("Reservatrion to cancel.");
+                    System.Console.WriteLine("Reservation to cancel.");
 
                     bool cancelReservation = HelperPresentation.YesOrNo($"Are you sure you want to cancel this reservation:\nId: {selectedReservation.Id}\nName: {selectedReservation.Name}\nTotal people: {selectedReservation.HowMany}\nDate: {selectedReservation.Date.ToShortDateString()} {selectedReservation.TimeSlot}\nType of reservation: {selectedReservation.TypeOfReservation}");
                     if (cancelReservation)
