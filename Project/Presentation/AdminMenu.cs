@@ -118,19 +118,6 @@ Welcome back {acc.FullName}
     private static void CloseRestaurant()
     {
         Console.Clear();
-        string reservationsForDay = Reservation.AdminShowReservations();
-        System.Console.WriteLine("[enter]");
-        if (reservationsForDay != "")
-        {
-            System.Console.WriteLine("The following reservations are scheduled:");
-            System.Console.WriteLine(reservationsForDay);
-            System.Console.WriteLine("Press [enter] to continue.");
-            Console.ReadKey();
-        }
-        else
-        {
-            System.Console.WriteLine("There are no reservations scheduled for this day.");
-        }
         bool confirmation = HelperPresentation.YesOrNo("Are you sure you want to close the restaurant for a day?\nIf there are reservations on that day they will be canceled.");
         if (confirmation)
         {
