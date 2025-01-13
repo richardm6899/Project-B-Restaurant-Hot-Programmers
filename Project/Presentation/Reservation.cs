@@ -527,7 +527,7 @@ static class Reservation
         int amount = 0;
         if (DateTime.TryParse(dateInput, out date))
         {
-            reservationlogic.RemoveReservationsByDate(date);
+            reservationLogic.RemoveReservationsByDate(date);
             restaurantLogic.AddClosedDay(date.ToString("dd/MM/yyyy"));
 
             System.Console.WriteLine("Reservations for the specified date have been canceled.");

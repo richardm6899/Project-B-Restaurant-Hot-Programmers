@@ -590,12 +590,12 @@ public class ReservationLogic
                 {
                     GetReceiptById(reservation.Id).Status = "Canceled";
                 }
+            }
+        }
                 reservationAccess.WriteAll(_reservations);
                 tableAccess.WriteAll(_tables);
                 receiptAccess.WriteAll(_receipts);
-                UpdateReservationsList(reservation);
-            }
-        }
+              
     }
 
 
