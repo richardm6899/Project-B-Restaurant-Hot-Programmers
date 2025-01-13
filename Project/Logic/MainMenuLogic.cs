@@ -6,11 +6,11 @@ class MainMenuLogic
         switch (selectedIndex)
         {
             // Login
-            case 0: 
+            case 0:
                 UserLogin.Start();
                 break;
             // Make an Account
-            case 1: 
+            case 1:
                 UserMakeAccount.Start();
                 break;
             case 2: // Look at the Menu
@@ -24,10 +24,11 @@ class MainMenuLogic
                 break;
 
             case 5: // Quit
-                Console.ReadLine();
+            System.Console.WriteLine("Goodbye. \nPress [enter] to continue.");
+            Console.ReadKey();
+                Environment.Exit(0);
                 break;
-
-          // Exit the loop
+                // Exit the loop
         }
         return true; // Keep running the menu
     }
