@@ -155,7 +155,9 @@ public class ApplicationMenu
         {
             ApplicationLogic.SaveApplicationToJson(selectedVacancy, name, birthDate, gender, email, phoneNumber, cvPath, motivation);
             Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Your application has been submitted successfully!");
+            Console.ResetColor();
             Console.WriteLine("\nPress any key to return to the main menu...");
             Console.ReadKey();
         }
