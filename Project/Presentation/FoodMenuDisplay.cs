@@ -9,7 +9,9 @@ public class FoodMenuDisplay
             "Drink menu",
             "Return"
         };
-        FoodMenuLogic.FoodOrDrinksOption(options);
+        int selectedIndexMenu = 0;
+        selectedIndexMenu = HelperPresentation.ChooseOption("Which menu would you like to look at?", options, selectedIndexMenu);
+        FoodMenuLogic.SelectedMenu(selectedIndexMenu);
         return;
     }
 

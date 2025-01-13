@@ -68,23 +68,59 @@ class DrinkMenuDisplay
             {
                 // soft drinks
                 case 0:
-                    drinkMenuLogic.GetByType("Soft Drink");
+                    List<DrinkMenuModel> softDrinks = drinkMenuLogic.GetByType("Soft Drink");
+                    foreach (DrinkMenuModel softdrink in softDrinks)
+                    {
+                        System.Console.WriteLine($@"--------------------
+{softdrink.DrinkName}
+{softdrink.Description}
+{softdrink.Price}");
+                    }
+                    System.Console.WriteLine("Press [enter] to continue");
+                    Console.ReadKey();
                     break;
                 // hot drinks
                 case 1:
-                    drinkMenuLogic.GetByType("Hot Drink");
+                    List<DrinkMenuModel> hotDrinks = drinkMenuLogic.GetByType("Hot Drink");
+                    foreach (DrinkMenuModel hotdrink in hotDrinks)
+                    {
+                        System.Console.WriteLine($@"--------------------
+{hotdrink.DrinkName}
+{hotdrink.Description}
+{hotdrink.Price}");
+                    }
+                    System.Console.WriteLine("Press [enter] to continue");
+                    Console.ReadKey();
                     break;
                 // alcoho;
                 case 2:
-                    drinkMenuLogic.GetByType("Alcohol");
+                    List<DrinkMenuModel> alcohols = drinkMenuLogic.GetByType("Alcohol");
+                    foreach (DrinkMenuModel alcohol in alcohols)
+                    {
+                        System.Console.WriteLine($@"--------------------
+{alcohol.DrinkName}
+{alcohol.Description}
+{alcohol.Price}");
+                    }
+                    System.Console.WriteLine("Press [enter] to continue");
+                    Console.ReadKey();
                     break;
                 // non alcoholic
                 case 3:
-                    drinkMenuLogic.GetByType("Non-Alcoholic");
+                    List<DrinkMenuModel> nonAlcohols = drinkMenuLogic.GetByType("Non-Alcoholic");
+                    foreach (DrinkMenuModel nonAlcohol in nonAlcohols)
+                    {
+                        System.Console.WriteLine($@"--------------------
+{nonAlcohol.DrinkName}
+{nonAlcohol.Description}
+{nonAlcohol.Price}");
+                    }
+                    System.Console.WriteLine("Press [enter] to continue");
+                    Console.ReadKey();
                     break;
                 // return
                 case 4:
-                    break;
+                    return;
             }
         }
         List<DrinkMenuModel>? drinks = DrinkMenuLogic.GetOptionTypes(options);
