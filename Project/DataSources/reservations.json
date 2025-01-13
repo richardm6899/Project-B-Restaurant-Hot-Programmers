@@ -1,7 +1,9 @@
 [
   {
     "id": 1,
-    "tableID": [1],
+    "tableID": [
+      1
+    ],
     "name": "oli",
     "clientID": 1,
     "howMany": 1,
@@ -9,11 +11,13 @@
     "timeslot": null,
     "status": "Past",
     "typeofreservation": null,
-    "orderedFood": false
+    "foodOrdered": false
   },
   {
     "id": 2,
-    "tableID": [11],
+    "tableID": [
+      11
+    ],
     "name": "TEST",
     "clientID": 2,
     "howMany": 4,
@@ -21,59 +25,105 @@
     "timeslot": null,
     "status": "Canceled",
     "typeofreservation": null,
-    "orderedFood": false
-
+    "foodOrdered": false
   },
   {
     "id": 3,
-    "tableID": [1],
+    "tableID": [
+      1
+    ],
     "name": "TEST",
     "clientID": 2,
     "howMany": 2,
     "date": "2025-01-01T00:00:00",
     "timeslot": null,
-    "status": "Ongoing",
+    "status": "Past",
     "typeofreservation": null,
-    "orderedFood": false
+    "foodOrdered": false
   },
   {
     "id": 4,
-    "tableID": [11],
+    "tableID": [
+      11
+    ],
     "name": "Jane Joe",
     "clientID": 7,
     "howMany": 4,
     "date": "2024-11-15T00:00:00",
     "timeslot": null,
-    "status": "Ongoing",
+    "status": "Past",
     "typeofreservation": "Regular",
-    "orderedFood": false
+    "foodOrdered": false
   },
   {
     "id": 5,
-
-    "tableID": [13],
+    "tableID": [
+      13
+    ],
     "name": "Clien Test",
-
     "clientID": 10,
     "howMany": 4,
     "date": "2024-12-12T00:00:00",
     "timeslot": "Dinner 3 (21:00 - 23:00)",
-    "status": "Ongoing",
+    "status": "Past",
     "typeofreservation": "Regular",
-    "orderedFood": false
+    "foodOrdered": false
   },
   {
     "id": 6,
-
-    "tableID": [8],
+    "tableID": [
+      8
+    ],
     "name": "Clien Test",
-
     "clientID": 10,
     "howMany": 2,
     "date": "2024-12-23T00:00:00",
     "timeslot": "Dinner 1 (17:00 - 19:00)",
+    "status": "Past",
+    "typeofreservation": "Regular",
+    "foodOrdered": false
+  },
+  {
+    "id": 7,
+    "tableID": [
+      9
+    ],
+    "name": "Client Test",
+    "clientID": 10,
+    "howMany": 3,
+    "date": "2025-02-22T00:00:00",
+    "timeslot": "Dinner 2 (19:00 - 21:00)",
     "status": "Ongoing",
     "typeofreservation": "Regular",
-    "orderedFood": false
+    "foodOrdered": true
+  },
+  {
+    "id": 8,
+    "tableID": [
+      16,
+      17
+    ],
+    "name": "Client Test",
+    "clientID": 10,
+    "howMany": 2,
+    "date": "2025-02-01T00:00:00",
+    "timeslot": "Dinner 3 (21:00 - 23:00)",
+    "status": "Ongoing",
+    "typeofreservation": "HotSeat",
+    "foodOrdered": false
+  },
+  {
+    "id": 9,
+    "tableID": [
+      14
+    ],
+    "name": "Client Test",
+    "clientID": 10,
+    "howMany": 5,
+    "date": "2025-01-14T00:00:00",
+    "timeslot": "Dinner 1 (17:00 - 19:00)",
+    "status": "Canceled",
+    "typeofreservation": "Regular",
+    "foodOrdered": false
   }
 ]

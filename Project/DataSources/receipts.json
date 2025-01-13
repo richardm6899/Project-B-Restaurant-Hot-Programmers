@@ -5,11 +5,14 @@
     "clientid": 7,
     "cost": 60,
     "date": "2024-11-11T00:00:00",
+    "timeslot": null,
     "name": null,
     "phoneNumber": null,
     "email": null,
     "status": "Ongoing",
-    "foodOrdered": []
+    "typeofreservation": null,
+    "tableid": null,
+    "orderedFood": null
   },
   {
     "id": 2,
@@ -17,11 +20,14 @@
     "clientid": 7,
     "cost": 50,
     "date": "2024-11-15T00:00:00",
+    "timeslot": null,
     "name": null,
     "phoneNumber": null,
     "email": null,
     "status": "Ongoing",
-    "foodOrdered": []
+    "typeofreservation": null,
+    "tableid": null,
+    "orderedFood": null
   },
   {
     "id": 3,
@@ -29,11 +35,14 @@
     "clientid": 10,
     "cost": 50,
     "date": "2024-12-12T00:00:00",
+    "timeslot": null,
     "name": "Client Test",
     "phoneNumber": "123456789",
     "email": "client@test.nl",
     "status": "Ongoing",
-    "foodOrdered": []
+    "typeofreservation": null,
+    "tableid": null,
+    "orderedFood": null
   },
   {
     "id": 4,
@@ -41,10 +50,61 @@
     "clientid": 10,
     "cost": 50,
     "date": "2024-12-23T00:00:00",
+    "timeslot": null,
     "name": "Client Test",
     "phoneNumber": "123456789",
     "email": "client@test.nl",
     "status": "Ongoing",
-    "foodOrdered": []
+    "typeofreservation": null,
+    "tableid": null,
+    "orderedFood": null
+  },
+  {
+    "id": 5,
+    "reservationid": 7,
+    "clientid": 10,
+    "cost": 50,
+    "date": "2025-02-22T00:00:00",
+    "timeslot": "Dinner 2 (19:00 - 21:00)",
+    "name": "Client Test",
+    "phoneNumber": "123456789",
+    "email": "client@test.nl",
+    "status": "Ongoing",
+    "typeofreservation": "Regular",
+    "tableid": "9",
+    "orderedFood": [
+      {},
+      {}
+    ]
+  },
+  {
+    "id": 6,
+    "reservationid": 8,
+    "clientid": 10,
+    "cost": 60,
+    "date": "2025-02-01T00:00:00",
+    "timeslot": "Dinner 3 (21:00 - 23:00)",
+    "name": "Client Test",
+    "phoneNumber": "123456789",
+    "email": "client@test.nl",
+    "status": "Ongoing",
+    "typeofreservation": "HotSeat",
+    "tableid": "16,17",
+    "orderedFood": []
+  },
+  {
+    "id": 7,
+    "reservationid": 9,
+    "clientid": 10,
+    "cost": 50,
+    "date": "2025-01-14T00:00:00",
+    "timeslot": "Dinner 1 (17:00 - 19:00)",
+    "name": "Client Test",
+    "phoneNumber": "123456789",
+    "email": "client@test.nl",
+    "status": "Canceled",
+    "typeofreservation": "Regular",
+    "tableid": "14",
+    "orderedFood": []
   }
 ]
