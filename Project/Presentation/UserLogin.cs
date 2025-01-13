@@ -4,7 +4,7 @@ using System.Text;
 static class UserLogin
 {
     static private AccountsLogic accountsLogic = new AccountsLogic();
-    static private AccountModel acc = null;
+    static private AccountModel? acc = null;
 
     static public int FailedLoginAttempts = 0;
     static public bool Locked = false;
@@ -19,7 +19,7 @@ static class UserLogin
             System.Console.WriteLine("-----------------------------------------");
 
             Console.WriteLine("Please enter your email address");
-            string email = Console.ReadLine();
+            string? email = Console.ReadLine();
 
             Console.WriteLine("Please enter your password");
             string password = HelperPresentation.ReadPassword();
@@ -48,67 +48,72 @@ static class UserLogin
                 if (acc == null)
                 {
                     if (Locked)
+                    {
+                        Console.WriteLine($"Your account is blocked for {remainingSeconds} seconds.");
+                        if (remainingSeconds <= 0)
                         {
-                            Console.WriteLine($"Your account is blocked for {remainingSeconds} seconds.");
-                            if (remainingSeconds <= 0)
+                            if (acc != null)
                             {
                                 acc.FailedLoginAttempts = 0;
                                 FailedLoginAttempts = 0;
                                 Locked = false;
                             }
                         }
+                    }
                     // if (FailedLoginAttempts >= 3)
                     else
                     {
-                    FailedLoginAttempts++;
-                    // FailedLoginAttempts = accountsLogic.FailedToLogin();
-                    Console.WriteLine($"Invalid password, try again!");
-                    Console.WriteLine($"You have {3 - FailedLoginAttempts} attempts left.");
-                    if (FailedLoginAttempts >= 3)
-                    {
-                        FailedLoginAttempts = 0;
-                    }
-                    Menu.Start();
+                        FailedLoginAttempts++;
+                        // FailedLoginAttempts = accountsLogic.FailedToLogin();
+                        Console.WriteLine($"Invalid password, try again!");
+                        Console.WriteLine($"You have {3 - FailedLoginAttempts} attempts left.\nPress [enter] to continue");
+                        Console.ReadKey();
+                        if (FailedLoginAttempts >= 3)
+                        {
+                            FailedLoginAttempts = 0;
+                        }
+                        Menu.Start();
                     }
                 }
-        // Menu.Start();
-        // proceed to the corresponding menu based on the account type
-        // if logged in show this
-        if (acc != null)
-        {
-            accountsLogic.CancelLogin(acc, email);
-            FailedLoginAttempts = 0;
-            acc.FailedLoginAttempts = 0;
-            if (acc.Type == "admin")
-            {
-                    AdminMenu.Start(acc);   
-            }
-            else if (acc.Type == "client")
-            {
-                ClientMenu.Start(acc, accountsLogic);
-            }
-            else if (acc.Type == "staff")
-            {
-                StaffMenu.Start(acc);
-            }
-            else if (acc.Type == "finance")
-            {
-                FinancialMenu.Start(acc);
-            }
+                // Menu.Start();
+                // proceed to the corresponding menu based on the account type
+                // if logged in show this
+                if (acc != null)
+                {
+                    accountsLogic.CancelLogin(acc, email);
+                    FailedLoginAttempts = 0;
+                    acc.FailedLoginAttempts = 0;
+                    if (acc.Type == "admin")
+                    {
+                        AdminMenu.Start(acc);
+                    }
+                    else if (acc.Type == "client")
+                    {
+                        ClientMenu.Start(acc, accountsLogic);
+                    }
+                    else if (acc.Type == "staff")
+                    {
+                        StaffMenu.Start(acc);
+                    }
+                    else if (acc.Type == "finance")
+                    {
+                        FinancialMenu.Start(acc);
+                    }
 
-        }
-        
+                }
+
             }
-        if (Locked == true)
-        {
-            Console.WriteLine($"Your account is blocked for {remainingSeconds} seconds.");
-            if (remainingSeconds <= 0)
+            if (Locked == true)
             {
-                FailedLoginAttempts = 0;
-                Locked = false;
+                Console.WriteLine($"Your account is blocked for {remainingSeconds} seconds.\nPress [enter] to continue");
+                Console.ReadKey();
+                if (remainingSeconds <= 0)
+                {
+                    FailedLoginAttempts = 0;
+                    Locked = false;
+                }
             }
-        }
         }
     }
-    
+
 }

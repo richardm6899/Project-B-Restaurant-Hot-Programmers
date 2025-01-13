@@ -2,103 +2,99 @@ class StaffMenu
 {
     public static void Start(AccountModel acc)
     {
+        string[] optionsStaff = {
+            "Make Reservation",
+            "Cancel Reservation",
+            "Find Reservation",
+            "See all reservations",
+            "See food/drink menu",
+            "see restaurant info",
+            "See account data",
+            "log out"
+        };
         bool staffmenu = true;
+
         while (staffmenu)
         {
-            Console.WriteLine("Welcome to the staff menu.");
-            System.Console.WriteLine("-----------------------------------------");
-            Console.WriteLine("Welcome back " + acc.FullName);
-            System.Console.WriteLine("-----------------------------------------");
-            System.Console.WriteLine("Enter 1 to make a reservation.");
-            System.Console.WriteLine("Enter 2 to cancel a reservation.");
-            System.Console.WriteLine("Enter 3 to find a reservation");
-            System.Console.WriteLine("Enter 4 to see all reservations.");
-            System.Console.WriteLine("Enter 5 to see the food menu.");
-            System.Console.WriteLine("Enter 6 to see the restaurant info.");
-            System.Console.WriteLine("Enter 7 to see your accounts data.");
-            System.Console.WriteLine("Enter 8 to log out");
-
-
-            string user_logged_in_answer = System.Console.ReadLine();
-            switch (user_logged_in_answer)
+            if (acc != null)
             {
-                // make reservation
-                case "1":
-                    System.Console.WriteLine("Make reservation:");
-                    // when you want to make a reservation as staff you have to ask all info of the person that wants to make said reservation
-                    // don't add the info of the staff to the reservation.
-                    System.Console.WriteLine("Not implemented yet");
-                    System.Console.WriteLine("[enter]");
-                    Console.ReadLine();
+                int selectedIndexStaff = 0;
+                Console.Clear();
+                string mainPrompt = @$"Welcome to the Staff menu.
+-----------------------------------------
+Welcome back {acc.FullName}
+-----------------------------------------";
+                selectedIndexStaff = HelperPresentation.ChooseOption(mainPrompt, optionsStaff, selectedIndexStaff);
 
-                    break;
+                switch (selectedIndexStaff)
+                {
+                    // make reservation 
+                    case 0:
+                        System.Console.WriteLine("Make reservation:");
+                        // when you want to make a reservation as staff you have to ask all info of the person that wants to make said reservation
+                        // don't add the info of the staff to the reservation.
+                        System.Console.WriteLine("Not implemented yet");
+                        System.Console.WriteLine("[enter]");
+                        Console.ReadLine();
+                        break;
 
-                // cancel reservation
-                case "2":
-                    System.Console.WriteLine("Cancel reservation");
-                    // staff can cancel all reservations
-                    System.Console.WriteLine("Not implemented yet");
-                    System.Console.WriteLine("[enter]");
-                    Console.ReadLine();
+                    // cancel reservation
+                    case 1:
+                        System.Console.WriteLine("Cancel reservation");
+                        // staff can cancel all reservations
+                        System.Console.WriteLine("Not implemented yet");
+                        System.Console.WriteLine("[enter]");
+                        Console.ReadLine();
+                        break;
 
-                    break;
+                    // find reservation
+                    case 2:
+                        System.Console.WriteLine("Find reservation.");
+                        // can be found by name or maybe reservation id
+                        System.Console.WriteLine("Not implemented yet.");
+                        System.Console.WriteLine("[enter]");
+                        Console.ReadLine();
+                        break;
 
-                // find a reservation
-                case "3":
-                    System.Console.WriteLine("Find reservation.");
-                    // can be found by name or maybe reservation id
-                    System.Console.WriteLine("Not implemented yet.");
-                    System.Console.WriteLine("[enter]");
-                    Console.ReadLine();
-                    break;
+                    // see all reservations
+                    case 3:
+                        System.Console.WriteLine("All reservations: ");
+                        System.Console.WriteLine("Not implemented yet");
+                        System.Console.WriteLine("[enter]");
+                        Console.ReadLine();
+                        break;
 
-                // see all reservations
-                case "4":
-                    System.Console.WriteLine("All reservations: ");
-                    System.Console.WriteLine("Not implemented yet");
-                    System.Console.WriteLine("[enter]");
-                    Console.ReadLine();
+                    // see food/drink menu
+                    case 4:
+                        // add question with what allergies to look at if admin wants to look at allergies
+                        FoodMenuDisplay.Start();
+                        break;
 
-                    break;
+                    // see restaurant info
+                    case 5:
+                        RestaurantInfo.Start();
+                        break;
 
-                //  see the food menu
-                case "5":
-                    // add question with what allergies to look at if admin wants to look at allergies
-                    FoodMenuDisplay.Start();
+                    // see acounts data
+                    case 6:
+                        System.Console.WriteLine("Your accounts data: ");
+                        // full name
+                        System.Console.WriteLine("Name: " + acc.FullName);
+                        // email
+                        System.Console.WriteLine("Email: " + acc.EmailAddress);
+                        // phone numb
+                        System.Console.WriteLine("Phone number: " + acc.PhoneNumber);
+                        // pass
+                        System.Console.WriteLine("Password: " + acc.Password);
+                        Console.ReadLine();
+                        break;
 
-                    break;
-
-                // see restaurant info
-                case "6":
-                    RestaurantInfo.Start();
-
-                    break;
-
-                //  show account data
-                case "7":
-                    System.Console.WriteLine("Your accounts data: ");
-                    // full name
-                    System.Console.WriteLine("Name: " + acc.FullName);
-                    // email
-                    System.Console.WriteLine("Email: " + acc.EmailAddress);
-                    // phone numb
-                    System.Console.WriteLine("Phone number: " + acc.PhoneNumber);
-                    // pass
-                    System.Console.WriteLine("Password: " + acc.Password);
-                    Console.ReadLine();
-
-                    break;
-
-                // log out
-                case "8":
-                    acc = null;
-                    staffmenu = false;
-                    break;
-
-                default:
-                    System.Console.WriteLine("Invalid input");
-
-                    break;
+                    // logout
+                    case 7:
+                        acc = null!;
+                        staffmenu = false;
+                        break;
+                }
             }
         }
     }

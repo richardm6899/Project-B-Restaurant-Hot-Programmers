@@ -63,7 +63,7 @@ public class FoodMenuLogic
         return Types;
     }
     // Method to return food menu item by name
-    public FoodMenuModel GetMenuItemByName(string dishName)
+    public FoodMenuModel? GetMenuItemByName(string dishName)
     {
         return _foodMenu.FirstOrDefault(item => item.DishName == dishName);
     }
@@ -128,7 +128,7 @@ public class FoodMenuLogic
     }
 
 
-    public static List<FoodMenuModel> GetOptionTypes(string[] options)
+    public static List<FoodMenuModel>? GetOptionTypes(string[] options)
     {
         FoodMenuLogic foodMenuLogic = new();
         int selectedIndex = 0;
