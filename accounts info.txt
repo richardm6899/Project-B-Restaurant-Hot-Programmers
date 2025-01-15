@@ -1,0 +1,16 @@
+accounts:
+Client:
+E-Mail: client@test.nl
+Password: ClientTest123
+
+Admin:
+E-Mail: admin@test.nl
+Password: Test123!
+
+Finance:
+E-Mail: finance@test.nl
+Password: TestFinance1
+
+Staff:
+E-Mail: staff@test.nl
+Password: TestStaff1
